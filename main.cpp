@@ -1,3 +1,5 @@
+// Ryan Ragle created this
+
 #include <QCoreApplication>
 #include <iostream>
 #include <leveldb/db.h>
