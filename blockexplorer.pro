@@ -34,6 +34,11 @@ unix:macx {
              -lboost_thread \
              -lboost_context \
               -lboost_date_time
+
+    LIBS += -lfc
+  LIBS+= -lssl \
+         -lcrypto
+
 }
 
 INCLUDEPATH += $$PWD/include
