@@ -19,8 +19,7 @@ public:
     blockchain();
     static fc::sha256 create_merkle(fantasybit::Block block);
     static void test(leveldb::DB *db);
-
-    static void newBlockChain(leveldb::DB *src, leveldb::DB *dest);
+    static void new_blockchain(leveldb::DB *src, leveldb::DB *dest);
 
 };
 

@@ -69,7 +69,29 @@ void blockchain::test(leveldb::DB *db) {
     cout << "merkle: " << (string) merkle << endl;
 }
 
-
 void blockchain::new_blockchain(leveldb::DB *src, leveldb::DB *dest) {
+    leveldb::Iterator* it = src->NewIterator(leveldb::ReadOptions());
+    for (it->SeekToFirst(); it->Valid(); it->Next()) {
+        //leveldb::Slice key = it->key();
 
+        fantasybit::Block block{};
+        block.ParseFromString(it->value().ToString());
+
+        fantasybit::SignedBlockHeader signedhead{};
+        signedhead.CopyFrom(block.signedhead());
+
+        fantasybit::BlockHeader head{};
+        head.CopyFrom(block.signedhead().head());
+
+        fc::sha256 merkle = blockchain::create_merkle(block);
+        head.set_transaction_id((string) merkle);
+
+        // Problem with two lines below. free pointer that does not exist
+        signedhead.set_allocated_head(&head);
+        block.set_allocated_signedhead(&signedhead);
+
+        cout << block.DebugString() << endl;
+    }
+    assert(it->status().ok());  // Check for any errors found during the scan
+    delete it;
 }

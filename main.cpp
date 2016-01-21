@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
     Int32Comparator *cmp = new Int32Comparator();
     leveldb::Options optionsInt;
     optionsInt.create_if_missing = true;
+    optionsInt.error_if_exists = false;
     optionsInt.comparator = cmp;
 
     leveldb::Status status;
@@ -31,7 +32,16 @@ int main(int argc, char *argv[])
     leveldb::DB *db;
     status = leveldb::DB::Open(optionsInt, "/Users/satoshi/ryan_work/block/blockchain", &db);
     if (!status.ok()) {
-        cout << " error opening block/blockchain" << endl;
+        cout << "!!! error opening db block/blockchain" << endl;
+        cout << "!!! " << status.ToString() << endl;
+        return 0;
+    }
+
+    leveldb::DB *dest;
+    status = leveldb::DB::Open(optionsInt, "/Users/satoshi/ryan_work/block/blockchain_2", &dest);
+    if (!status.ok()) {
+        cout << "!!! error opening dest block/blockchain" << endl;
+        cout << "!!! " << status.ToString() << endl;
         return 0;
     }
 
@@ -44,25 +54,13 @@ int main(int argc, char *argv[])
     // Print Diagnostics
     //displayDiagnostics(db);
 
-    blockchain::test(db);
+    //blockchain::test(db);
 
-    /*
-    string s = "Howdy";
-    fc::sha256 digest = fc::sha256::hash(s);
-
-    cout << s << ": sha256 = " << (string) digest << endl;
-
-    string ss = "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad";
-
-    fc::sha256 f = (fc::sha256) ss;
-
-    cout << ss << endl;
-
-    cout << (string) f << endl;
-    */
+    blockchain::new_blockchain(db, dest);
 
     cout << "*** Cleaning Up" << endl;
     delete db;
+    delete dest;
 
     return a.exec();
 }
