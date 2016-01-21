@@ -11,6 +11,8 @@
 #include <fc/crypto/elliptic.hpp>
 #include <fc/filesystem.hpp>
 
+#include <blockchain.h>
+
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -42,9 +44,22 @@ int main(int argc, char *argv[])
     // Print Diagnostics
     //displayDiagnostics(db);
 
+    blockchain::test(db);
+
+    /*
     string s = "Howdy";
     fc::sha256 digest = fc::sha256::hash(s);
-    cout << s << ": sha256 = " << digest << endl;
+
+    cout << s << ": sha256 = " << (string) digest << endl;
+
+    string ss = "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad";
+
+    fc::sha256 f = (fc::sha256) ss;
+
+    cout << ss << endl;
+
+    cout << (string) f << endl;
+    */
 
     cout << "*** Cleaning Up" << endl;
     delete db;
