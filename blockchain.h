@@ -20,7 +20,8 @@ public:
     static fc::sha256 create_merkle(fantasybit::Block block);
     static void test(leveldb::DB *db);
     static void new_blockchain(leveldb::DB *src, leveldb::DB *dest);
-
+    static bool verify_block(fantasybit::Block block);
+    static void verify_blocks(leveldb::DB *db);
 };
 
 #endif // BLOCKCHAIN_H

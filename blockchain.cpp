@@ -12,8 +12,11 @@ fc::sha256 blockchain::create_merkle(fantasybit::Block block) {
     
     for (int i = 0; i < block.signed_transactions_size();  ++i) {
         // Transaction not signedtransaction?
-        fantasybit::SignedTransaction st = block.signed_transactions(i);
-        fc::sha256 digest = fc::sha256::hash(st.SerializeAsString());
+        //fantasybit::SignedTransaction st = block.signed_transactions(i);
+        //fc::sha256 digest = fc::sha256::hash(st.SerializeAsString());
+
+        fantasybit::Transaction trans = block.signed_transactions(i).trans();
+        fc::sha256 digest = fc::sha256::hash(trans.SerializeAsString());
         
         merkle.push(digest);
     }
@@ -50,7 +53,7 @@ fc::sha256 blockchain::create_merkle(fantasybit::Block block) {
 
 void blockchain::test(leveldb::DB *db) {
     // 381 block is first with valid timestamp
-    int32_t num = 1000;
+    int32_t num = 1;
 
     string value;
     leveldb::Slice snum((char*)&num, sizeof(int32_t));
@@ -95,8 +98,27 @@ void blockchain::new_blockchain(leveldb::DB *src, leveldb::DB *dest) {
         leveldb::WriteOptions write_options;
         write_options.sync = true;
         dest->Put(write_options, key, block.SerializeAsString());
+    }
+    assert(it->status().ok());  // Check for any errors found during the scan
+    delete it;
+}
 
-        cout << block.DebugString() << endl;
+bool blockchain::verify_block(fantasybit::Block block) {
+    return true;
+}
+
+void blockchain::verify_blocks(leveldb::DB *db) {
+    leveldb::Iterator* it = db->NewIterator(leveldb::ReadOptions());
+    for (it->SeekToFirst(); it->Valid(); it->Next()) {
+        leveldb::Slice key = it->key();
+
+        fantasybit::Block block{};
+        block.ParseFromString(it->value().ToString());
+
+        if (!verify_block(block)) {
+            cout << "!!! Invalid Block" << endl;
+            cout << block.DebugString() << endl;
+        }
     }
     assert(it->status().ok());  // Check for any errors found during the scan
     delete it;

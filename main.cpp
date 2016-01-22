@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     }
 
     // Print out block
-    displayBlock(dest, 1);
+    //displayBlock(db, 1);
 
     // Print out signed headers
     //displayHeaders(dest);
@@ -57,6 +57,9 @@ int main(int argc, char *argv[])
     //blockchain::test(db);
 
     //blockchain::new_blockchain(db, dest);
+
+    cout << "*** Verifying Blocks" << endl;
+    blockchain::verify_blocks(db);
 
     cout << "*** Cleaning Up" << endl;
     delete db;
