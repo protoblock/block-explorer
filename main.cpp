@@ -46,17 +46,17 @@ int main(int argc, char *argv[])
     }
 
     // Print out block
-    //displayBlock(db, 200);
+    displayBlock(dest, 1);
 
     // Print out signed headers
-    //displayHeaders(db);
+    //displayHeaders(dest);
 
     // Print Diagnostics
     //displayDiagnostics(db);
 
     //blockchain::test(db);
 
-    blockchain::new_blockchain(db, dest);
+    //blockchain::new_blockchain(db, dest);
 
     cout << "*** Cleaning Up" << endl;
     delete db;
