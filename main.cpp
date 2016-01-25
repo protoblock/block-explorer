@@ -44,11 +44,11 @@ int main(int argc, char *argv[])
     //}
 
     // Print Last 10 Blocks
-    bc.SeekToLast();
-    for (int i = 10; i > 0 && bc.Valid(); --i, bc.Prev()) {
-        fantasybit::Block b = bc.GetCurrentBlock();
-        cout << "Block " << b.signedhead().head().num() << ": " << b.signedhead().DebugString() << endl;
-    }
+    //bc.SeekToLast();
+    //for (int i = 10; i > 0 && bc.Valid(); --i, bc.Prev()) {
+    //    fantasybit::Block b = bc.GetCurrentBlock();
+    //    cout << "Block " << b.signedhead().head().num() << ": " << b.signedhead().DebugString() << endl;
+    //}
 
     // Note: When executing, the program must finish in order to prevent locks
     return a.exec();
