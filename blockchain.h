@@ -15,13 +15,34 @@ using namespace std;
 
 class blockchain
 {
+protected:
+    int32_t block_height;
+    leveldb::DB *db;
+    leveldb::Iterator* it;
+
 public:
     blockchain();
+    ~blockchain();
+
+    // LevelDB stuff
+    fantasybit::Block GetCurrentBlock();
+    void Seek(int32_t n);
+    void SeekToFirst();
+    void SeekToLast();
+    void Next();
+    void Prev();
+    bool Valid();
+
+    int32_t GetBlockHeight();
+    bool Verify();
+
+    /*
     static fc::sha256 create_merkle(fantasybit::Block block);
     static void test(leveldb::DB *db);
     static void new_blockchain(leveldb::DB *src, leveldb::DB *dest);
     static bool verify_block(fantasybit::Block block);
     static void verify_blocks(leveldb::DB *db);
+    */
 };
 
 #endif // BLOCKCHAIN_H

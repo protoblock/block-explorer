@@ -20,6 +20,7 @@ class Int32Comparator : public leveldb::Comparator {
 
 void displayBlock(leveldb::DB *db, int32_t blockNum);
 void displayHeaders(leveldb::DB *db);
+void displayTimestamps(leveldb::DB *db);
 void displayDiagnostics(leveldb::DB *db);
 
 #endif // UTILS_H

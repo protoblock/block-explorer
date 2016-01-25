@@ -56,6 +56,24 @@ void displayHeaders(leveldb::DB *db) {
     delete it;
 }
 
+void displayTimestamps(leveldb::DB *db) {
+    leveldb::Iterator* it = db->NewIterator(leveldb::ReadOptions());
+    for (it->SeekToFirst(); it->Valid(); it->Next()) {
+        fantasybit::Block block{};
+        block.ParseFromString(it->value().ToString());
+
+        int32_t block_num = block.signedhead().head().num();
+
+        cout << "Timestamp " << block_num << ": " << block.signedhead().head().timestamp() << endl;
+    }
+
+    if (!it->status().ok()) {
+        cout << "Errors during scan" << endl;
+    }
+
+    delete it;
+}
+
 void displayDiagnostics(leveldb::DB *db) {
     leveldb::Iterator* it = db->NewIterator(leveldb::ReadOptions());
 

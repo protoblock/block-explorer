@@ -4,9 +4,111 @@
 
 blockchain::blockchain()
 {
+    cout << "Constructor called" << endl;
 
+    Int32Comparator *cmp = new Int32Comparator();
+    leveldb::Options optionsInt;
+    optionsInt.create_if_missing = true;
+    optionsInt.error_if_exists = false;
+    optionsInt.comparator = cmp;
+
+    leveldb::Status status;
+
+    leveldb::DB *db;
+    status = leveldb::DB::Open(optionsInt, "/Users/satoshi/ryan_work/block/blockchain", &db);
+    if (!status.ok()) {
+        cout << "!!! error opening db block/blockchain" << endl;
+        cout << "!!! " << status.ToString() << endl;
+        exit(1);
+    }
+
+    this->db = db;
+
+    // Get Block Height
+    leveldb::Iterator* it = db->NewIterator(leveldb::ReadOptions());
+    it->SeekToLast();
+
+    if (!it->Valid()) {
+        cout << "!!! Error reading iterator" << endl;
+        exit(1);
+    }
+
+    fantasybit::Block block{};
+    block.ParseFromString(it->value().ToString());
+
+    this->block_height = block.signedhead().head().num();
+
+    // misc
+    this->it = it;
+    it->SeekToFirst();
 }
 
+blockchain::~blockchain() {
+    cout << "Deconstructor called" << endl;
+    delete this->db;
+    delete this->it;
+}
+
+int32_t blockchain::GetBlockHeight() {
+    return this->block_height;
+}
+
+fantasybit::Block blockchain::GetCurrentBlock() {
+    fantasybit::Block b{};
+    b.ParseFromString(it->value().ToString());
+
+    return b;
+}
+
+void blockchain::Seek(int32_t n) {
+    leveldb::Slice s((char*)&n, sizeof(int32_t));
+    it->Seek(s);
+}
+
+void blockchain::SeekToFirst() {
+    it->SeekToFirst();
+}
+
+void blockchain::SeekToLast() {
+    it->SeekToLast();
+}
+
+void blockchain::Next() {
+    it->Next();
+}
+
+void blockchain::Prev() {
+    it->Prev();
+}
+
+bool blockchain::Valid() {
+    return it->Valid();
+}
+
+bool blockchain::Verify() {
+    return true;
+}
+
+
+/*
+fantasybit::Block blockchain::getBlock(int32_t n) {
+    fantasybit::Block b{};
+    string value;
+    leveldb::Slice snum((char*)&n, sizeof(int32_t));
+
+    auto ret = this->db->Get(leveldb::ReadOptions(), snum, &value);
+    if ( !ret.ok() ){
+        cout << "block not found " << n << endl;
+        exit(1);
+    }
+
+    b.ParseFromString(value);
+
+    return b;
+}
+*/
+
+/*
 fc::sha256 blockchain::create_merkle(fantasybit::Block block) {
     queue<fc::sha256> merkle;
     
@@ -123,3 +225,4 @@ void blockchain::verify_blocks(leveldb::DB *db) {
     assert(it->status().ok());  // Check for any errors found during the scan
     delete it;
 }
+*/

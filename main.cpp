@@ -19,6 +19,47 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
+    blockchain bc{};
+
+    cout << "*** Block Height: " << bc.GetBlockHeight() << endl;
+
+    //bc.SeekToFirst();
+    //cout << "*** Genesis Block: " << bc.GetCurrentBlock().DebugString() << endl;
+
+    //bc.Seek(2);
+    //cout << "Block 2: " << bc.GetCurrentBlock().DebugString() << endl;
+
+    //void Next();
+    //void Prev();
+    //bool Valid();
+
+    //bc.SeekToLast();
+    //cout << "Block " << bc.GetBlockHeight() << ": " << bc.GetCurrentBlock().DebugString() << endl;
+
+    // Print First 10 Blocks
+    //bc.SeekToFirst();
+    //for (int i = 0; i < 10 && bc.Valid(); ++i, bc.Next()) {
+    //    fantasybit::Block b = bc.GetCurrentBlock();
+    //    cout << "Block " << b.signedhead().head().num() << ": " << b.signedhead().DebugString() << endl;
+    //}
+
+    // Print Last 10 Blocks
+    bc.SeekToLast();
+    for (int i = 10; i > 0 && bc.Valid(); --i, bc.Prev()) {
+        fantasybit::Block b = bc.GetCurrentBlock();
+        cout << "Block " << b.signedhead().head().num() << ": " << b.signedhead().DebugString() << endl;
+    }
+
+    // Note: When executing, the program must finish in order to prevent locks
+    return a.exec();
+}
+
+/*
+
+int main(int argc, char *argv[])
+{
+    QCoreApplication a(argc, argv);
+
     cout << "*** init" << endl;
 
     Int32Comparator *cmp = new Int32Comparator();
@@ -46,10 +87,13 @@ int main(int argc, char *argv[])
     }
 
     // Print out block
-    //displayBlock(db, 1);
+    //displayBlock(db, 381);
 
     // Print out signed headers
     //displayHeaders(dest);
+
+    // Print out timestamps
+    displayTimestamps(db);
 
     // Print Diagnostics
     //displayDiagnostics(db);
@@ -58,8 +102,8 @@ int main(int argc, char *argv[])
 
     //blockchain::new_blockchain(db, dest);
 
-    cout << "*** Verifying Blocks" << endl;
-    blockchain::verify_blocks(db);
+    //cout << "*** Verifying Blocks" << endl;
+    //blockchain::verify_blocks(db);
 
     cout << "*** Cleaning Up" << endl;
     delete db;
@@ -67,3 +111,4 @@ int main(int argc, char *argv[])
 
     return a.exec();
 }
+*/
