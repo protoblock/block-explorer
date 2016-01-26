@@ -8,6 +8,15 @@
 
 using namespace std;
 
+/*
+Blockchain
+Protocol
+Mutable
+Operator
+Command
+Action
+ */
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);

@@ -19,6 +19,7 @@ const char* Int32Comparator::Name() const { return "Int32Comparator"; }
 void Int32Comparator::FindShortestSeparator(std::string*, const leveldb::Slice&) const { }
 void Int32Comparator::FindShortSuccessor(std::string*) const { }
 
+/*
 void displayBlock(leveldb::DB *db, int32_t blockNum) {
     // Print out block
     cout << "*** displaying block" << endl;
@@ -124,3 +125,4 @@ void displayDiagnostics(leveldb::DB *db) {
 
     delete it;
 }
+*/
