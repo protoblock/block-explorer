@@ -1,11 +1,8 @@
 #include "blockchain.h"
 
-#include <queue>
 
-blockchain::blockchain()
+Blockchain::Blockchain()
 {
-    cout << "Constructor called" << endl;
-
     Int32Comparator *cmp = new Int32Comparator();
     leveldb::Options optionsInt;
     optionsInt.create_if_missing = true;
@@ -43,116 +40,81 @@ blockchain::blockchain()
     it->SeekToFirst();
 }
 
-blockchain::~blockchain() {
-    cout << "Deconstructor called" << endl;
-    delete this->db;
+Blockchain::~Blockchain() {
     delete this->it;
+    delete this->db;
 }
 
-int32_t blockchain::GetBlockHeight() {
+int32_t Blockchain::GetBlockHeight() {
     return this->block_height;
 }
 
-fantasybit::Block blockchain::GetCurrentBlock() {
+fantasybit::Block Blockchain::GetCurrentBlock() {
     fantasybit::Block b{};
     b.ParseFromString(it->value().ToString());
 
     return b;
 }
 
-void blockchain::Seek(int32_t n) {
+void Blockchain::Seek(int32_t n) {
     leveldb::Slice s((char*)&n, sizeof(int32_t));
     it->Seek(s);
 }
 
-void blockchain::SeekToFirst() {
+void Blockchain::SeekToFirst() {
     it->SeekToFirst();
 }
 
-void blockchain::SeekToLast() {
+void Blockchain::SeekToLast() {
     it->SeekToLast();
 }
 
-void blockchain::Next() {
+void Blockchain::Next() {
     it->Next();
 }
 
-void blockchain::Prev() {
+void Blockchain::Prev() {
     it->Prev();
 }
 
-bool blockchain::Valid() {
+bool Blockchain::Valid() {
     return it->Valid();
 }
 
-bool blockchain::Verify() {
+bool Blockchain::Verify() {
     return true;
 }
 
+void Blockchain::Test() {
+    Blockchain bc{};
 
-/*
-fantasybit::Block blockchain::getBlock(int32_t n) {
-    fantasybit::Block b{};
-    string value;
-    leveldb::Slice snum((char*)&n, sizeof(int32_t));
+    cout << "*** Block Height: " << bc.GetBlockHeight() << endl;
 
-    auto ret = this->db->Get(leveldb::ReadOptions(), snum, &value);
-    if ( !ret.ok() ){
-        cout << "block not found " << n << endl;
-        exit(1);
-    }
+    //bc.SeekToFirst();
+    //cout << "*** Genesis Block: " << bc.GetCurrentBlock().DebugString() << endl;
 
-    b.ParseFromString(value);
+    //bc.Seek(2);
+    //cout << "Block 2: " << bc.GetCurrentBlock().DebugString() << endl;
 
-    return b;
-}
-*/
+    //bc.SeekToLast();
+    //cout << "Block " << bc.GetBlockHeight() << ": " << bc.GetCurrentBlock().DebugString() << endl;
 
-/*
-fc::sha256 blockchain::create_merkle(fantasybit::Block block) {
-    queue<fc::sha256> merkle;
-    
-    for (int i = 0; i < block.signed_transactions_size();  ++i) {
-        // Transaction not signedtransaction?
-        //fantasybit::SignedTransaction st = block.signed_transactions(i);
-        //fc::sha256 digest = fc::sha256::hash(st.SerializeAsString());
+    // Print First 10 Blocks
+    //bc.SeekToFirst();
+    //for (int i = 0; i < 10 && bc.Valid(); ++i, bc.Next()) {
+    //    fantasybit::Block b = bc.GetCurrentBlock();
+    //    cout << "Block " << b.signedhead().head().num() << ": " << b.signedhead().DebugString() << endl;
+    //}
 
-        fantasybit::Transaction trans = block.signed_transactions(i).trans();
-        fc::sha256 digest = fc::sha256::hash(trans.SerializeAsString());
-        
-        merkle.push(digest);
-    }
-
-    if (merkle.empty())
-        return (fc::sha256) NULL;
-
-    while (merkle.size() > 1) {
-        if (merkle.size() % 2 != 0) {
-            merkle.push(merkle.back());
-        }
-
-        queue<fc::sha256> new_merkle;
-
-        for (int i = 0; i < merkle.size(); i += 2) {
-            fc::sha256 first = merkle.front();
-            merkle.pop();
-
-            fc::sha256 second = merkle.front();
-            merkle.pop();
-
-            string concat;
-
-            concat = (string) first + (string) second;
-
-            new_merkle.push(fc::sha256::hash(concat));
-        }
-
-        merkle = new_merkle;
-    }
-
-    return merkle.front();
+    // Print Last 10 Blocks
+    //bc.SeekToLast();
+    //for (int i = 10; i > 0 && bc.Valid(); --i, bc.Prev()) {
+    //    fantasybit::Block b = bc.GetCurrentBlock();
+    //    cout << "Block " << b.signedhead().head().num() << ": " << b.signedhead().DebugString() << endl;
+    //}
 }
 
+/*
 void blockchain::test(leveldb::DB *db) {
     // 381 block is first with valid timestamp
     int32_t num = 1;

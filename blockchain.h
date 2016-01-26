@@ -13,7 +13,7 @@
 
 using namespace std;
 
-class blockchain
+class Blockchain
 {
 protected:
     int32_t block_height;
@@ -21,8 +21,8 @@ protected:
     leveldb::Iterator* it;
 
 public:
-    blockchain();
-    ~blockchain();
+    Blockchain();
+    ~Blockchain();
 
     // LevelDB stuff
     fantasybit::Block GetCurrentBlock();
@@ -35,6 +35,8 @@ public:
 
     int32_t GetBlockHeight();
     bool Verify();
+
+    static void Test();
 
     /*
     static fc::sha256 create_merkle(fantasybit::Block block);

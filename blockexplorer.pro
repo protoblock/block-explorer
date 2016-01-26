@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     generated/StaticData.pb.cc \
     generated/StatusData.pb.cc \
     utils.cpp \
-    blockchain.cpp
+    blockchain.cpp \
+    actions.cpp
 
 unix:macx {
     LIBS +=  -L$$PWD/libs \
@@ -47,4 +48,5 @@ INCLUDEPATH += $$PWD/generated
 
 HEADERS += \
     utils.h \
-    blockchain.h
+    blockchain.h \
+    actions.h
