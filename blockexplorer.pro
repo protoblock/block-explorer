@@ -43,6 +43,31 @@ unix:macx {
 
 }
 
+win32 {
+   LIBS+= -L$$PWD/libwin64
+
+    CONFIG(debug, debug|release) {
+       LIBS+= -llibprotobufd \
+              -lleveldbd \
+              -llibeay32 \
+              -lssleay32 \
+              -lfcd
+
+    }
+    CONFIG(release, debug|release) {
+       LIBS+= -llibprotobuf \
+              -lleveldb \
+              -llibeay32 \
+              -lssleay32 \
+              -lfc
+    }
+
+    BOOST_DIR = C:/work/boost
+    LIBS += -L$${BOOST_DIR}/lib64-msvc-12.0
+    LIBS += -lboost_log-vc120-1_55
+    INCLUDEPATH += $${BOOST_DIR}
+}
+
 INCLUDEPATH += $$PWD/include
 INCLUDEPATH += $$PWD/generated
 
