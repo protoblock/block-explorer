@@ -1,5 +1,13 @@
 QT += core
-QT -= gui
+QT += qml quick widgets
+
+RESOURCES += qml.qrc
+
+# Additional import path used to resolve QML modules in Qt Creator's code model
+QML_IMPORT_PATH =
+
+# Default rules for deployment.
+include(deployment.pri)
 
 TARGET = blockexplorer
 CONFIG += console
@@ -18,7 +26,8 @@ SOURCES += main.cpp \
     generated/StatusData.pb.cc \
     utils.cpp \
     blockchain.cpp \
-    actions.cpp
+    actions.cpp \
+    test.cpp
 
 unix:macx {
     LIBS +=  -L$$PWD/libs \
@@ -74,4 +83,5 @@ INCLUDEPATH += $$PWD/generated
 HEADERS += \
     utils.h \
     blockchain.h \
-    actions.h
+    actions.h \
+    test.h

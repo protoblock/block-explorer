@@ -1,12 +1,11 @@
-// Ryan Ragle created this
+#include <QApplication>
+#include <QQmlApplicationEngine>
 
-#include <QCoreApplication>
-#include <iostream>
+#include <QtQml>
 
 #include <blockchain.h>
 #include <actions.h>
-
-using namespace std;
+#include <test.h>
 
 /*
 Blockchain
@@ -19,6 +18,28 @@ Action
 
 int main(int argc, char *argv[])
 {
+    QApplication app(argc, argv);
+
+    QQmlApplicationEngine engine;
+
+    Test t;
+
+    engine.rootContext()->setContextProperty("Test", &t);
+
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
+    QObject *item = engine.rootObjects().at(0);
+
+    QObject::connect(item, SIGNAL(nextPressed()),
+                     &t, SLOT(nextPressedSlot()));
+    QObject::connect(item, SIGNAL(prevPressed()),
+                     &t, SLOT(prevPressedSlot()));
+
+
+
+    return app.exec();
+
+    /*
     QCoreApplication a(argc, argv);
 
     Blockchain::Test();
@@ -26,6 +47,7 @@ int main(int argc, char *argv[])
     Actions::Test();
 
     return a.exec();
+    */
 }
 
 /*
