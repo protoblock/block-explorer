@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include <blockchain.h>
+
 class Test : public QObject
 {
     Q_OBJECT
@@ -22,6 +24,7 @@ public slots:
 
 protected:
     QString m_text = "Default String";
+    Blockchain bc{};
 };
 
 #endif // TEST_H

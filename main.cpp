@@ -3,8 +3,6 @@
 
 #include <QtQml>
 
-#include <blockchain.h>
-#include <actions.h>
 #include <test.h>
 
 /*
