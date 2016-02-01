@@ -8,32 +8,53 @@ Test::Test(QObject *parent) : QObject(parent)
 {
     bc.SeekToFirst();
     QString qstr = QString::fromStdString(bc.GetCurrentBlock().signedhead().DebugString());
-    this->setText(qstr);
+    this->setBlockHeader(qstr);
+
+    this->setTransactions(this->getTransactionsString());
 }
 
 void Test::prevPressedSlot() {
-    //qDebug() << "Test::prevPressedSlot called" << endl;
-    //this->setText("prevPressedSlot");
-
     bc.Prev();
     QString qstr = QString::fromStdString(bc.GetCurrentBlock().signedhead().DebugString());
-    this->setText(qstr);
+    this->setBlockHeader(qstr);
+
+    this->setTransactions(this->getTransactionsString());
 }
 
 void Test::nextPressedSlot() {
-    //qDebug() << "Test::nextPressedSlot called" << endl;
-    //this->setText("nextPressedSlot");
-
     bc.Next();
     QString qstr = QString::fromStdString(bc.GetCurrentBlock().signedhead().DebugString());
-    this->setText(qstr);
+    this->setBlockHeader(qstr);
+
+    this->setTransactions(this->getTransactionsString());
 }
 
-QString Test::text() const {
-    return this->m_text;
+QString Test::blockHeader() const {
+    return this->m_block;
 }
 
-void Test::setText(QString txt) {
-    this->m_text = txt;
-    emit textChanged();
+void Test::setBlockHeader(QString txt) {
+    this->m_block = txt;
+    emit blockHeaderChanged();
+}
+
+QString Test::transactions() const {
+    return this->m_transactions;
+}
+
+void Test::setTransactions(QString txt) {
+    this->m_transactions = txt;
+    emit transactionsChanged();
+
+}
+
+QString Test::getTransactionsString() {
+    string trans = "";
+
+    for (int i = 0; i < bc.GetCurrentBlock().signed_transactions().size(); ++i) {
+        fantasybit::SignedTransaction tran = bc.GetCurrentBlock().signed_transactions(i);
+        trans += tran.DebugString() + '\n';
+    }
+
+    return QString::fromStdString(trans);
 }

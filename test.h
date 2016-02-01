@@ -8,22 +8,31 @@
 class Test : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+    Q_PROPERTY(QString blockHeader READ blockHeader WRITE setBlockHeader NOTIFY blockHeaderChanged)
+    Q_PROPERTY(QString transactions READ transactions WRITE setTransactions NOTIFY transactionsChanged)
 
 public:
     explicit Test(QObject *parent = 0);
-    QString text() const;
-    void setText(QString txt);
+
+    QString blockHeader() const;
+    void setBlockHeader(QString txt);
+
+    QString transactions() const;
+    void setTransactions(QString txt);
+
+    QString getTransactionsString();
 
 signals:
-    void textChanged();
+    void blockHeaderChanged();
+    void transactionsChanged();
 
 public slots:
     void prevPressedSlot();
     void nextPressedSlot();
 
 protected:
-    QString m_text = "Default String";
+    QString m_block = "Default String";
+    QString m_transactions = "Default String";
     Blockchain bc{};
 };
 
