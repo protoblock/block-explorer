@@ -47,7 +47,7 @@ ApplicationWindow {
                     frameVisible: true
                     tabChangesFocus: false
                     readOnly: true
-                    text: Test.blockHeader
+                    text: Display.blockHeader
                 }
 
                 Button {
@@ -83,7 +83,7 @@ ApplicationWindow {
                     frameVisible: true
                     tabChangesFocus: false
                     readOnly: true
-                    text: Test.transactions
+                    text: Display.transactions
                 }
 
                 Button {

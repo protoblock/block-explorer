@@ -27,7 +27,7 @@ SOURCES += main.cpp \
     utils.cpp \
     blockchain.cpp \
     actions.cpp \
-    test.cpp
+    display.cpp
 
 unix:macx {
     LIBS +=  -L$$PWD/libs \
@@ -84,4 +84,4 @@ HEADERS += \
     utils.h \
     blockchain.h \
     actions.h \
-    test.h
+    display.h

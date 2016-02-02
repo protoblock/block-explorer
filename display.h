@@ -5,14 +5,14 @@
 
 #include <blockchain.h>
 
-class Test : public QObject
+class Display : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString blockHeader READ blockHeader WRITE setBlockHeader NOTIFY blockHeaderChanged)
     Q_PROPERTY(QString transactions READ transactions WRITE setTransactions NOTIFY transactionsChanged)
 
 public:
-    explicit Test(QObject *parent = 0);
+    explicit Display(QObject *parent = 0);
 
     QString blockHeader() const;
     void setBlockHeader(QString txt);

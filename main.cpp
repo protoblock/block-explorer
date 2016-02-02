@@ -3,7 +3,7 @@
 
 #include <QtQml>
 
-#include <test.h>
+#include <display.h>
 
 /*
 Blockchain
@@ -20,18 +20,18 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    Test t;
+    Display dsply;
 
-    engine.rootContext()->setContextProperty("Test", &t);
+    engine.rootContext()->setContextProperty("Display", &dsply);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     QObject *item = engine.rootObjects().at(0);
 
     QObject::connect(item, SIGNAL(nextPressed()),
-                     &t, SLOT(nextPressedSlot()));
+                     &dsply, SLOT(nextPressedSlot()));
     QObject::connect(item, SIGNAL(prevPressed()),
-                     &t, SLOT(prevPressedSlot()));
+                     &dsply, SLOT(prevPressedSlot()));
 
 
 
