@@ -1,0 +1,43 @@
+package fantasybit;
+import "ProtoData.proto";
+
+message Tx {
+	optional int32 blocknum = 10;
+	optional string fantasy_name = 40; 
+	optional Transaction trans = 50;     
+}
+			
+message TxTree {
+	repeated Tx tx = 20;
+}
+
+message BlockState {
+	//optional bytes txroot = 10;
+	optional bytes txstateid = 20;
+	optional bytes trstateid = 30;
+}
+
+message tstate {
+	repeated bytes schedulestateid = 10;
+	repeated bytes playerstateid = 20;
+	repeated bytes fnamestateid = 30;
+	optional bytes globalstateid = 40;
+}
+
+message PlayerDataState {
+	optional PlayerData playerdata = 10;
+	optional bytes playertxhead = 20;
+}
+
+message PlayerDataId {
+	optional bytes prev = 10; 
+}
+
+message FantasyNameState {
+	optional string fantasy_name = 10;
+	optional bytes playertxhead = 20;
+}
+
+message PlayerDataId {
+	optional bytes prev = 10; 
+}
