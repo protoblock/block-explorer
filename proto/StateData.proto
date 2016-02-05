@@ -34,10 +34,10 @@ message PlayerDataId {
 }
 
 message FantasyNameState {
-	optional string fantasy_name = 10;
-	optional bytes playertxhead = 20;
+	optional FantasyNameBal fname_bal = 10; 
+	optional bytes fnamehead = 20;
 }
 
-message PlayerDataId {
+message FantasyNameChain {
 	optional bytes prev = 10; 
 }
