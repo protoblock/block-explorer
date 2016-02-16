@@ -12,7 +12,7 @@ Blockchain::Blockchain()
     leveldb::Status status;
 
     leveldb::DB *db;
-    status = leveldb::DB::Open(optionsInt, "/Users/satoshi/ryan_work/block/blockchain", &db);
+    status = leveldb::DB::Open(optionsInt, "./block/blockchain", &db);
     if (!status.ok()) {
         cout << "!!! error opening db block/blockchain" << endl;
         cout << "!!! " << status.ToString() << endl;

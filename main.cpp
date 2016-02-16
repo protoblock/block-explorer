@@ -1,10 +1,10 @@
-#include <QApplication>
+#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
 #include <QtQml>
 
 #include <display.h>
-
+#include <modelclass.h>
 /*
 Blockchain
 Protocol
@@ -16,16 +16,32 @@ Action
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
 
-    Display dsply;
+    //Display dsply;
 
-    engine.rootContext()->setContextProperty("Display", &dsply);
+    //engine.rootContext()->setContextProperty("Display", &dsply);
 
+    ModelClass mc;
+
+    QStringList qstrl;
+
+    Blockchain bc{};
+    bc.SeekToLast();
+    while (bc.Valid()) {
+       qstrl.append(bc.GetCurrentBlock().signedhead().DebugString().data());
+       bc.Prev();
+    };
+
+    mc.setStringList(qstrl);
+
+    engine.rootContext()->setContextProperty("mc", &mc);
+    qmlRegisterUncreatableType<ModelClass>("satoshifantasy.com",1,1,"ModelClass","modelclass singleton");
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
+    /*
     QObject *item = engine.rootObjects().at(0);
 
     QObject::connect(item, SIGNAL(nextPressed()),
@@ -33,7 +49,7 @@ int main(int argc, char *argv[])
     QObject::connect(item, SIGNAL(prevPressed()),
                      &dsply, SLOT(prevPressedSlot()));
 
-
+    */
 
     return app.exec();
 

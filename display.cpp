@@ -51,6 +51,9 @@ void Display::setTransactions(QString txt) {
 QString Display::getTransactionsString() {
     string trans = "";
 
+    //for( auto tran : bc.GetCurrentBlock().signed_transactions() ) {
+
+
     for (int i = 0; i < bc.GetCurrentBlock().signed_transactions().size(); ++i) {
         fantasybit::SignedTransaction tran = bc.GetCurrentBlock().signed_transactions(i);
         trans += tran.DebugString() + '\n';

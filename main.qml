@@ -28,7 +28,16 @@ ApplicationWindow {
         }
     }
 
+    ListView {
+        anchors.fill: parent
+        model: mc
 
+        delegate: Row {
+            Text {text: display}
+        }
+    }
+
+/*
     TabView {
         anchors.fill: parent
 
@@ -112,7 +121,7 @@ ApplicationWindow {
             }
         }
     }
-
+*/
     MessageDialog {
         id: messageDialog
         title: qsTr("May I have your attention, please?")
