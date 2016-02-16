@@ -41,3 +41,9 @@ message FantasyNameState {
 message FantasyNameChain {
 	optional bytes prev = 10; 
 }
+
+
+message MerkleTree {
+	optional bytes root = 10;
+	repeated bytes leaves = 20;
+}
