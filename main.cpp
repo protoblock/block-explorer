@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
 
     ModelClass mc;
 
+    /*
     QStringList qstrl;
 
     Blockchain bc{};
@@ -34,11 +35,18 @@ int main(int argc, char *argv[])
        qstrl.append(bc.GetCurrentBlock().signedhead().DebugString().data());
        bc.Prev();
     };
-
     mc.setStringList(qstrl);
+    */
+
+    for (int i = 0; i < 10; ++i)
+        mc.insertRow(i);
+
 
     engine.rootContext()->setContextProperty("mc", &mc);
-    qmlRegisterUncreatableType<ModelClass>("satoshifantasy.com",1,1,"ModelClass","modelclass singleton");
+
+    // 2016-02-18 - RTR commented out this line because I don't think it's needed
+    //qmlRegisterUncreatableType<ModelClass>("satoshifantasy.com",1,1,"ModelClass","modelclass singleton");
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     /*

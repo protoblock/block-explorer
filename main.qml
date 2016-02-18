@@ -12,6 +12,7 @@ ApplicationWindow {
     height: 480
     title: qsTr("Block Explorer")
 
+    /*
     signal prevPressed();
     signal nextPressed();
 
@@ -28,24 +29,34 @@ ApplicationWindow {
             }
         }
     }
+    */
 
     //ScrollView {
     //    anchors.fill: parent
 
     //    Keys.forwardTo: list
 
-        ListView {
+        Component {
+            id: row
+            Text {
+                text: blocknum
+
+                MouseArea {
+                    anchors.fill: parent
+                    //onClicked: list.currentIndex = index
+                    onClicked: {
+                        list.currentIndex = index;
+                        messageDialog.show(display);
+                    }
+                }
+            }
+        }
+
+        GridView {
             id: list
             model: mc
             anchors.fill: parent
-            delegate: Text {
-                text: display
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: list.currentIndex = index
-                }
-
-            }
+            delegate: row
  /*
                 Component {
                 //width: ListView.view.width
@@ -64,7 +75,9 @@ ApplicationWindow {
                  color: 'grey'
             }
 
-            onCurrentItemChanged: console.log(model.get(list.currentIndex).index + ' selected')
+            // 2016-02-18 - Commented out by Ryan to surpress errors
+            //onCurrentItemChanged: console.log(model.get(list.currentIndex).index + ' selected')
+
 
             focus: true
 
@@ -75,11 +88,11 @@ ApplicationWindow {
             Keys.onPressed: {
                 var pageDown = currentIndex+10;
                 var pageUp = currentIndex-10;
-                if (event.key == Qt.Key_PageDown && event.modifiers == Qt.NoModifier) {
+                if (event.key === Qt.Key_PageDown && event.modifiers === Qt.NoModifier) {
                     currentIndex = pageDown >= count ? count-1 : pageDown;
                     event.accepted = true;
                 }
-                if (event.key == Qt.Key_PageUp && event.modifiers == Qt.NoModifier) {
+                if (event.key === Qt.Key_PageUp && event.modifiers === Qt.NoModifier) {
                     currentIndex = pageUp < 0 ? 0 : pageUp;
                     event.accepted = true;
                 }
