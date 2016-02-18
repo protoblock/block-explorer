@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.2
 import QtQuick.Dialogs 1.2
 
 
+
 ApplicationWindow {
     id: mainWindow
     visible: true
@@ -28,14 +29,64 @@ ApplicationWindow {
         }
     }
 
-    ListView {
-        anchors.fill: parent
-        model: mc
+    //ScrollView {
+    //    anchors.fill: parent
 
-        delegate: Row {
-            Text {text: display}
+    //    Keys.forwardTo: list
+
+        ListView {
+            id: list
+            model: mc
+            anchors.fill: parent
+            delegate: Text {
+                text: display
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: list.currentIndex = index
+                }
+
+            }
+ /*
+                Component {
+                //width: ListView.view.width
+                //height: 40
+                Text {
+                    anchors.centerIn: parent
+
+                    //font.pixelSize: 10
+
+                    text: display
+                }
+                //Text {text: display}
+//            }
+*/
+            highlight: Rectangle {
+                 color: 'grey'
+            }
+
+            onCurrentItemChanged: console.log(model.get(list.currentIndex).index + ' selected')
+
+            focus: true
+
+            keyNavigationWraps: true
+
+            //Keys.onReturnPressed: currentItem.clicked()
+
+            Keys.onPressed: {
+                var pageDown = currentIndex+10;
+                var pageUp = currentIndex-10;
+                if (event.key == Qt.Key_PageDown && event.modifiers == Qt.NoModifier) {
+                    currentIndex = pageDown >= count ? count-1 : pageDown;
+                    event.accepted = true;
+                }
+                if (event.key == Qt.Key_PageUp && event.modifiers == Qt.NoModifier) {
+                    currentIndex = pageUp < 0 ? 0 : pageUp;
+                    event.accepted = true;
+                }
+            }
+
         }
-    }
+   // }
 
 /*
     TabView {
