@@ -1,6 +1,7 @@
 #include "modelclass.h"
 
 #include <string.h>
+#include <qdebug>
 
 using namespace std;
 
@@ -13,14 +14,9 @@ int ModelClass::rowCount(const QModelIndex &parent) const {
     return bc.GetBlockHeight();
 }
 
-int ModelClass::columnCount(const QModelIndex &parent) const
-{
-    return 1;
-}
-
 QVariant ModelClass::data(const QModelIndex & index, int role) const {
     if (index.isValid()) {
-        bc.Seek(index.row());
+        bc.Seek(index.row() + 1);
 
         if (bc.Valid()) {
             if (role == BlockNum) {
@@ -30,14 +26,6 @@ QVariant ModelClass::data(const QModelIndex & index, int role) const {
     }
 
     return QVariant();
-}
-
-QModelIndex ModelClass::parent(const QModelIndex & index) const {
-    return index;
-}
-
-QModelIndex ModelClass::index(int row, int column, const QModelIndex & parent) const {
-    return parent;
 }
 
 QHash<int, QByteArray> ModelClass::roleNames() const {
