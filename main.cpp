@@ -5,6 +5,10 @@
 
 #include <display.h>
 #include <modelclass.h>
+
+#include <string>
+using namespace std;
+
 /*
 Blockchain
 Protocol
@@ -38,9 +42,14 @@ int main(int argc, char *argv[])
     mc.setStringList(qstrl);
     */
 
-    for (int i = 0; i < 10; ++i)
-        mc.insertRow(i);
+    //bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole)
 
+    for (int i = 0; i < 10; ++i) {
+        QString s {"index"};
+        QModelIndex mi {};
+        QVariant v {s};
+        mc.setData(mi.child(i, 1), v, mc.BlockNum);
+    }
 
     engine.rootContext()->setContextProperty("mc", &mc);
 

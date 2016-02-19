@@ -25,16 +25,16 @@ public:
     ~Blockchain();
 
     // LevelDB stuff
-    fantasybit::Block GetCurrentBlock();
-    void Seek(int32_t n);
-    void SeekToFirst();
-    void SeekToLast();
-    void Next();
-    void Prev();
-    bool Valid();
+    fantasybit::Block GetCurrentBlock() const;
+    void Seek(int32_t n) const;
+    void SeekToFirst() const;
+    void SeekToLast() const;
+    void Next() const;
+    void Prev() const;
+    bool Valid() const;
 
-    int32_t GetBlockHeight();
-    bool Verify();
+    int32_t GetBlockHeight() const;
+    bool Verify() const;
 
     static void Test();
 

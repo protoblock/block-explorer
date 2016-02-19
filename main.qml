@@ -36,27 +36,21 @@ ApplicationWindow {
 
     //    Keys.forwardTo: list
 
-        Component {
-            id: row
-            Text {
+        GridView {
+            id: list
+            model: mc
+            anchors.fill: parent
+            delegate: Text {
                 text: blocknum
 
                 MouseArea {
                     anchors.fill: parent
-                    //onClicked: list.currentIndex = index
                     onClicked: {
                         list.currentIndex = index;
                         messageDialog.show(display);
                     }
                 }
             }
-        }
-
-        GridView {
-            id: list
-            model: mc
-            anchors.fill: parent
-            delegate: row
  /*
                 Component {
                 //width: ListView.view.width

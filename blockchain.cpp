@@ -45,43 +45,43 @@ Blockchain::~Blockchain() {
     delete this->db;
 }
 
-int32_t Blockchain::GetBlockHeight() {
+int32_t Blockchain::GetBlockHeight() const {
     return this->block_height;
 }
 
-fantasybit::Block Blockchain::GetCurrentBlock() {
+fantasybit::Block Blockchain::GetCurrentBlock() const {
     fantasybit::Block b{};
     b.ParseFromString(it->value().ToString());
 
     return b;
 }
 
-void Blockchain::Seek(int32_t n) {
+void Blockchain::Seek(int32_t n) const {
     leveldb::Slice s((char*)&n, sizeof(int32_t));
     it->Seek(s);
 }
 
-void Blockchain::SeekToFirst() {
+void Blockchain::SeekToFirst() const {
     it->SeekToFirst();
 }
 
-void Blockchain::SeekToLast() {
+void Blockchain::SeekToLast() const {
     it->SeekToLast();
 }
 
-void Blockchain::Next() {
+void Blockchain::Next() const {
     it->Next();
 }
 
-void Blockchain::Prev() {
+void Blockchain::Prev() const {
     it->Prev();
 }
 
-bool Blockchain::Valid() {
+bool Blockchain::Valid() const {
     return it->Valid();
 }
 
-bool Blockchain::Verify() {
+bool Blockchain::Verify() const {
     return true;
 }
 
