@@ -18,7 +18,8 @@ public:
     ModelClass();
 
     enum ModelRoles {
-        BlockNum = Qt::UserRole + 1
+        BlockNum = Qt::UserRole + 1,
+        CreationTime
     };
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;

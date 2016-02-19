@@ -39,7 +39,7 @@ ApplicationWindow {
         Component {
             id: gridComp
             Row {
-                Item {
+                Column {
                     Text {
                         text: blocknum
 
@@ -52,6 +52,11 @@ ApplicationWindow {
                         }
                     }
                 }
+                Column {
+                    Text {
+                        text: time
+                    }
+                }
             }
         }
 
@@ -59,6 +64,8 @@ ApplicationWindow {
             id: list
             model: mc
             anchors.fill: parent
+            cellWidth: parent.width;
+            cellHeight: 15
             delegate: gridComp
  /*
                 Component {
@@ -84,7 +91,9 @@ ApplicationWindow {
 
             focus: true
 
-            keyNavigationWraps: true
+            // 2016-02-19 - Ryan commented out this line to prevent wrapping from 1 to blockheight
+            // on scroll up
+            //keyNavigationWraps: true
 
             //Keys.onReturnPressed: currentItem.clicked()
 

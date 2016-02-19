@@ -22,6 +22,9 @@ QVariant ModelClass::data(const QModelIndex & index, int role) const {
             if (role == BlockNum) {
                 return QVariant(bc.GetCurrentBlock().signedhead().head().num());
             }
+            else if (role == CreationTime) {
+                return QVariant(bc.GetCurrentBlock().signedhead().head().timestamp());
+            }
         }
     }
 
@@ -31,5 +34,6 @@ QVariant ModelClass::data(const QModelIndex & index, int role) const {
 QHash<int, QByteArray> ModelClass::roleNames() const {
     QHash<int, QByteArray> roles;
     roles[BlockNum] = "blocknum";
+    roles[CreationTime] = "time";
     return roles;
 }
