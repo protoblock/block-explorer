@@ -47,7 +47,12 @@ ApplicationWindow {
                             anchors.fill: parent
                             onClicked: {
                                 list.currentIndex = index;
-                                messageDialog.show(blocknum);
+                                //messageDialog.show(blocknum);
+
+                                var component = Qt.createComponent("qrc:/detail.qml")
+                                var window    = component.createObject(mainWindow)
+                                window.show()
+                                mainWindow.hide()
                             }
                         }
                     }
