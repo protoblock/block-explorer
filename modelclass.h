@@ -11,11 +11,15 @@
 class ModelClass : public QAbstractListModel
 {
     Q_OBJECT
+
+    Q_PROPERTY(qint32 blockheight READ blockheight)
+
 protected:
     Blockchain bc{};
     int first;
 public:
     ModelClass();
+    qint32 blockheight();
     void init();
     enum ModelRoles {
         BlockNum = Qt::UserRole + 1,

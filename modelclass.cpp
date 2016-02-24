@@ -22,6 +22,12 @@ void ModelClass::init() {
         else
             first = bc.GetCurrentBlock().signedhead().head().num();
     }
+
+    //setProperty("blockheight",bc.GetBlockHeight());
+}
+
+qint32 ModelClass::blockheight() {
+    return bc.GetBlockHeight();
 }
 
 int ModelClass::rowCount(const QModelIndex &parent) const {

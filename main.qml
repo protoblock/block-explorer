@@ -36,41 +36,24 @@ ApplicationWindow {
 
     //    Keys.forwardTo: list
 
-        Component {
-            id: gridComp
-            Row {
-                Column {
-                    Text {
-                        text: blocknum + " "
+    ColumnLayout {
+        id: mainLayout
+        anchors.fill: parent
+        anchors.margins: margin
 
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: {
-                                list.currentIndex = index;
-                                //messageDialog.show(blocknum);
-
-                                var component = Qt.createComponent("qrc:/detail.qml")
-                                var window    = component.createObject(mainWindow)
-                                window.show()
-                                mainWindow.hide()
-                            }
-                        }
-                    }
-                }
-                Column {
-                    Text {
-                        text: time + " "
-                    }
-                }
-            }
+        Text {
+            //id: tophead
+            text: mc.blockheight
         }
 
-        GridView {
+        ListView {
             id: list
             model: mc
-            anchors.fill: parent
-            cellWidth: parent.width;
-            cellHeight: 15
+            //anchors.fill: parent
+            //anchors.top: tophead.bottom
+            Layout.fillHeight: true
+            //cellWidth: 200 //parent.width;
+            //cellHeight: 15
             delegate: gridComp
  /*
                 Component {
@@ -116,7 +99,7 @@ ApplicationWindow {
             }
 
         }
-   // }
+    }
 
 /*
     TabView {
@@ -203,6 +186,35 @@ ApplicationWindow {
         }
     }
 */
+
+    Component {
+        id: gridComp
+        Row {
+            Text {
+                text: blocknum + " "
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        list.currentIndex = index;
+                        //messageDialog.show(blocknum);
+
+                        var component = Qt.createComponent("qrc:/detail.qml")
+                        var window    = component.createObject(mainWindow)
+                        window.show()
+                        mainWindow.hide()
+                    }
+                }
+
+            }
+            //Column {
+                Text {
+                    text: time + " "
+                }
+            //}
+        }
+    }
+
     MessageDialog {
         id: messageDialog
         title: qsTr("May I have your attention, please?")
