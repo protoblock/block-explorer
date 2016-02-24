@@ -3,14 +3,18 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.2
 import QtQuick.Dialogs 1.2
 
-
-
 ApplicationWindow {
     id: mainWindow
     visible: true
     width: 640
     height: 480
     title: qsTr("Block Explorer")
+
+    Loader {
+        id: ld
+        anchors.fill: parent
+        source: "blocks.qml"
+    }
 
     /*
     signal prevPressed();
@@ -36,6 +40,7 @@ ApplicationWindow {
 
     //    Keys.forwardTo: list
 
+/*
     ColumnLayout {
         id: mainLayout
         anchors.fill: parent
@@ -55,20 +60,7 @@ ApplicationWindow {
             //cellWidth: 200 //parent.width;
             //cellHeight: 15
             delegate: gridComp
- /*
-                Component {
-                //width: ListView.view.width
-                //height: 40
-                Text {
-                    anchors.centerIn: parent
 
-                    //font.pixelSize: 10
-
-                    text: display
-                }
-                //Text {text: display}
-//            }
-*/
             highlight: Rectangle {
                  color: 'grey'
             }
@@ -97,10 +89,9 @@ ApplicationWindow {
                     event.accepted = true;
                 }
             }
-
         }
     }
-
+*/
 /*
     TabView {
         anchors.fill: parent
@@ -187,6 +178,7 @@ ApplicationWindow {
     }
 */
 
+    /*
     Component {
         id: gridComp
         Row {
@@ -205,7 +197,6 @@ ApplicationWindow {
                         mainWindow.hide()
                     }
                 }
-
             }
             //Column {
                 Text {
@@ -224,5 +215,6 @@ ApplicationWindow {
             messageDialog.open();
         }
     }
+    */
 }
 

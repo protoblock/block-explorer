@@ -3,15 +3,22 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.2
 import QtQuick.Dialogs 1.2
 
-ApplicationWindow {
+Item {
     id: detailWindow
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("Block Explorer")
 
-    Text {
-        text: "detail.qml"
+    ColumnLayout {
+        Text {
+            text: "detail.qml"
+        }
+
+        Button {
+            text: "Back"
+
+            onClicked: {
+                ld.source = "blocks.qml"
+            }
+        }
     }
 }
 
