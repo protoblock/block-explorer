@@ -28,28 +28,43 @@ int main(int argc, char *argv[])
 
     //engine.rootContext()->setContextProperty("Display", &dsply);
 
-    ModelClass mc;
+
+
+    //QStringList qstrl;
 
     /*
-    QStringList qstrl;
-
+    {
     Blockchain bc{};
+    bc.init();
+    bc.GetBlock(10);
     bc.SeekToLast();
     while (bc.Valid()) {
-       qstrl.append(bc.GetCurrentBlock().signedhead().DebugString().data());
+       string ss{ bc.GetCurrentBlock().signedhead().DebugString().data() };
+       //qstrl.append(ss);
        bc.Prev();
     };
-    mc.setStringList(qstrl);
+    //mc.setStringList(qstrl);
+    }
     */
 
     //bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole)
 
+    ModelClass mc{};
+    mc.init();
+    //Blockchain bc{};
+
+    //Blockchain bc{};
+
+    /*
     for (int i = 0; i < 10; ++i) {
+
+        string ss{ bc.GetBlock(i).signedhead().DebugString().data() };
         QString s {"index"};
         QModelIndex mi {};
         QVariant v {s};
-        mc.setData(mi.child(i, 1), v, mc.BlockNum);
+        //mc.setData(mi.child(i, 1), v, mc.BlockNum);
     }
+    */
 
     engine.rootContext()->setContextProperty("mc", &mc);
 

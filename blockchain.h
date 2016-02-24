@@ -24,8 +24,11 @@ public:
     Blockchain();
     ~Blockchain();
 
+    void init();
     // LevelDB stuff
     fantasybit::Block GetCurrentBlock() const;
+    fantasybit::Block GetBlock(int32_t) const;
+
     void Seek(int32_t n) const;
     void SeekToFirst() const;
     void SeekToLast() const;

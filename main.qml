@@ -41,7 +41,7 @@ ApplicationWindow {
             Row {
                 Column {
                     Text {
-                        text: blocknum
+                        text: blocknum + " "
 
                         MouseArea {
                             anchors.fill: parent
@@ -59,7 +59,7 @@ ApplicationWindow {
                 }
                 Column {
                     Text {
-                        text: time
+                        text: time + " "
                     }
                 }
             }

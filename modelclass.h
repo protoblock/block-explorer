@@ -13,10 +13,10 @@ class ModelClass : public QAbstractListModel
     Q_OBJECT
 protected:
     Blockchain bc{};
-
+    int first;
 public:
     ModelClass();
-
+    void init();
     enum ModelRoles {
         BlockNum = Qt::UserRole + 1,
         CreationTime

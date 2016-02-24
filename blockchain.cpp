@@ -1,8 +1,9 @@
 #include "blockchain.h"
+#include <QDebug>
 
+Blockchain::Blockchain() {}
 
-Blockchain::Blockchain()
-{
+void Blockchain::init() {
     Int32Comparator *cmp = new Int32Comparator();
     leveldb::Options optionsInt;
     optionsInt.create_if_missing = true;
@@ -19,24 +20,43 @@ Blockchain::Blockchain()
         exit(1);
     }
 
+    /*
+    int32_t num{3861};
+    fantasybit::Block b{};
+    leveldb::Slice s((char*)&num, sizeof(int32_t));
+    std::string value;
+    auto ret = (*db)->Get(leveldb::ReadOptions(),s,&value);
+    if ( !ret.ok() ){
+        qWarning() << "block not found " << num;
+    }
+    else
+        b.ParseFromString(value);
+*/
+
     this->db = db;
 
     // Get Block Height
-    leveldb::Iterator* it = db->NewIterator(leveldb::ReadOptions());
-    it->SeekToLast();
+    leveldb::Iterator* iit = db->NewIterator(leveldb::ReadOptions());
+    iit->SeekToLast();
 
-    if (!it->Valid()) {
+
+    if (!iit->Valid()) {
         cout << "!!! Error reading iterator" << endl;
         exit(1);
     }
 
     fantasybit::Block block{};
-    block.ParseFromString(it->value().ToString());
+    auto str = iit->value().ToString();
+    block.ParseFromString(str);
+
+    auto key = iit->key();
+    auto value = iit->value();
 
     this->block_height = block.signedhead().head().num();
 
+    //delete iit;
     // misc
-    this->it = it;
+    this->it = iit;
     it->SeekToFirst();
 }
 
@@ -56,9 +76,27 @@ fantasybit::Block Blockchain::GetCurrentBlock() const {
     return b;
 }
 
+fantasybit::Block Blockchain::GetBlock(int32_t num) const {
+    fantasybit::Block b{};
+    leveldb::Slice s((char*)&num, sizeof(int32_t));
+    std::string value;
+    auto ret = db->Get(leveldb::ReadOptions(),s,&value);
+    if ( !ret.ok() ){
+        qWarning() << "block not found " << num;
+    }
+    else
+        b.ParseFromString(value);
+
+    return b;
+}
+
+
 void Blockchain::Seek(int32_t n) const {
     leveldb::Slice s((char*)&n, sizeof(int32_t));
     it->Seek(s);
+    bool v = false;
+    v = it->Valid();
+    std::string ss = it->value().ToString();
 }
 
 void Blockchain::SeekToFirst() const {
