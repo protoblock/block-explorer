@@ -3,6 +3,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.2
 import QtQuick.Dialogs 1.2
 
+import "content"
+
 ApplicationWindow {
     id: mainWindow
     visible: true
@@ -10,10 +12,13 @@ ApplicationWindow {
     height: 480
     title: qsTr("Block Explorer")
 
-    Loader {
-        id: ld
+    Blocks {
+        id: blk
         anchors.fill: parent
-        source: "blocks.qml"
+        modelclass: mc
+        bh: mc.blockheight
+        //lm: mc
+        //source: "blocks.qml"
     }
 
     /*

@@ -1,7 +1,3 @@
 <RCC>
-    <qresource prefix="/">
-        <file>main.qml</file>
-        <file>detail.qml</file>
-        <file>blocks.qml</file>
-    </qresource>
+    <qresource prefix="/"/>
 </RCC>

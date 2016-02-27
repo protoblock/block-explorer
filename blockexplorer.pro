@@ -30,6 +30,10 @@ SOURCES += main.cpp \
     display.cpp \
     modelclass.cpp
 
+OTHER_FILES += main.qml \
+    content/Blocks.qml \
+    content/Detail.qml
+
 unix:macx {
     LIBS +=  -L$$PWD/libs \
               -L/usr/local/lib

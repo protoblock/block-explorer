@@ -69,9 +69,9 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("mc", &mc);
 
     // 2016-02-18 - RTR commented out this line because I don't think it's needed
-    //qmlRegisterUncreatableType<ModelClass>("satoshifantasy.com",1,1,"ModelClass","modelclass singleton");
+    qmlRegisterUncreatableType<ModelClass>("satoshifantasy.com",1,1,"ModelClass","modelclass singleton");
 
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    engine.load(QUrl(QStringLiteral("main.qml")));
 
     /*
     QObject *item = engine.rootObjects().at(0);
