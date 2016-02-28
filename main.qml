@@ -9,8 +9,9 @@ ApplicationWindow {
     visible: true
     title: "ProtoBlock Explorer"
     property int margin: 10
-    width: mainLayout.implicitWidth + 2 * margin
-    height: mainLayout.implicitHeight + 2 * margin
+
+    width: 800//mainLayout.implicitWidth + 2 * margin
+    height: 600//mainLayout.implicitHeight + 2 * margin
     minimumWidth: mainLayout.Layout.minimumWidth + 2 * margin
     minimumHeight: mainLayout.Layout.minimumHeight + 2 * margin
 
@@ -93,6 +94,7 @@ ApplicationWindow {
 
                         Keys.onReturnPressed: console.log(currentIndex + 'enter')
 
+                        Component.onCompleted: { forceActiveFocus(); }
                         Keys.onPressed: {
                             console.log("onPressed " + event.key);
                             if (event.key == Qt.Key_Up || event.key == Qt.Key_Down) {
