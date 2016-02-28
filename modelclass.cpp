@@ -38,11 +38,11 @@ qint32 ModelClass::blockheight() {
 int ModelClass::rowCount(const QModelIndex &parent) const {
     //qInfo() << " 0test " << bc.GetBlockHeight();
 
-    return bc.GetBlockHeight() - first;
+    return bc.GetBlockHeight();// - first;
 }
 
 QVariant ModelClass::data(const QModelIndex & index, int role) const {
-    qInfo() << " 1test " << index;
+    //qInfo() << " 1test " << index;
     int row = bc.GetBlockHeight() - index.row();// + 1 + first;
     if (index.isValid()) {
 
@@ -51,12 +51,12 @@ QVariant ModelClass::data(const QModelIndex & index, int role) const {
         if (bc.Valid()) {
 
             if (role == BlockNum) {
-                qInfo() << " BlockNum " << bc.GetCurrentBlock().DebugString().data();
+                //qInfo() << " BlockNum " << bc.GetCurrentBlock().DebugString().data();
 
                 return QVariant(bc.GetCurrentBlock().signedhead().head().num());
             }
             else if (role == CreationTime) {
-                qInfo() << " CreationTime " << bc.GetCurrentBlock().DebugString().data();
+                //qInfo() << " CreationTime " << bc.GetCurrentBlock().DebugString().data();
 
                 return QVariant(bc.GetCurrentBlock().signedhead().head().timestamp());
             }
