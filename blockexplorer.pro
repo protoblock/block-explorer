@@ -1,7 +1,10 @@
-QT += core
-QT += qml quick widgets
+#QT += core
+#QT += qml quick
 
-RESOURCES += qml.qrc
+QT += quick
+!no_desktop: QT += widgets
+
+#RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -10,12 +13,12 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 TARGET = blockexplorer
-CONFIG += console
-CONFIG -= app_bundle
+#CONFIG += console
+#CONFIG -= app_bundle
 CONFIG += c++11
 -stdlib=libc++
 
-TEMPLATE = app
+#TEMPLATE = app
 
 SOURCES += main.cpp \
     generated/ApiData.pb.cc \
@@ -91,3 +94,6 @@ HEADERS += \
     actions.h \
     display.h \
     modelclass.h
+
+DISTFILES += \
+    content/Labeltext.qml

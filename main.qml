@@ -6,12 +6,49 @@ import QtQuick.Dialogs 1.2
 import "content"
 
 ApplicationWindow {
-    id: mainWindow
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("Block Explorer")
+    title: "ProtoBlock Explorer"
+    property int margin: 11
+    width: mainLayout.implicitWidth + 2 * margin
+    height: mainLayout.implicitHeight + 2 * margin
+    minimumWidth: mainLayout.Layout.minimumWidth + 2 * margin
+    minimumHeight: mainLayout.Layout.minimumHeight + 2 * margin
 
+
+    ColumnLayout {
+        id: mainLayout
+        anchors.fill: parent
+        anchors.margins: margin
+
+        Button {
+            text: "run"
+        }
+
+        GroupBox {
+            id: rowBox
+            title: "Block Chain"
+            Layout.fillWidth: true
+
+            ColumnLayout {
+                id: rowLayout
+                anchors.fill: parent
+
+                Labeltext {
+                    Layout.fillWidth: true
+                    pLable: "Block Height"
+                    pText: mc.blockheight
+                }
+
+                Labeltext {
+                    Layout.fillWidth: true
+                    pLable: "Start Block"
+                    pText: mc.firstblock
+                }
+            }
+        }
+    }
+}
+    /*
     Blocks {
         id: blk
         anchors.fill: parent
@@ -221,5 +258,5 @@ ApplicationWindow {
         }
     }
     */
-}
+//}
 

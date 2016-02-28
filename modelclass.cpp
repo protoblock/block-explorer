@@ -16,7 +16,7 @@ void ModelClass::init() {
         qDebug() << "invalid";
     else {
         bc.SeekToFirst();
-        bc.Next();
+        //bc.Next();
         if ( !bc.Valid() )
             qDebug() << "invalid";
         else
@@ -24,6 +24,11 @@ void ModelClass::init() {
     }
 
     //setProperty("blockheight",bc.GetBlockHeight());
+}
+
+
+qint32 ModelClass::firstblock() {
+    return first;
 }
 
 qint32 ModelClass::blockheight() {
