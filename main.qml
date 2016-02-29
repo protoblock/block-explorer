@@ -80,17 +80,19 @@ ApplicationWindow {
                         //Layout.preferredHeight: 3000
                         //Layout.fillHeight: true
                         highlight: Rectangle {
-                             color: 'grey'
+                             color: 'lightgrey'
                              visible: list.activeFocus
                         }
 
-                       highlightFollowsCurrentItem: true;
+                        //highlightFollowsCurrentItem: true;
 
                         clip: true
 
                         delegate: blockdel
 
-                        onCurrentItemChanged: console.log(currentIndex + 'selected')
+                        onCurrentItemChanged: {
+                            console.log(currentIndex + 'selected')
+                        }
 
                         Keys.onReturnPressed: console.log(currentIndex + 'enter')
 
@@ -133,7 +135,7 @@ ApplicationWindow {
         Label {
             //Layout.fillWidth: true
             text: blocknum + " " + time
-
+            color: ListView.isCurrentItem ? "Blue" : "Black"
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
@@ -141,6 +143,7 @@ ApplicationWindow {
                     console.log("clicked " + index);
                     list.focus = true;
                     Keys.forwardTo = list  ;
+                    //list.highlightItem = list.currentItem;
                 }
             }
         }
