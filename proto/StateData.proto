@@ -1,5 +1,6 @@
 package fantasybit;
 import "ProtoData.proto";
+import "NameData.proto";
 
 message Tx {
 	optional int32 blocknum = 10;

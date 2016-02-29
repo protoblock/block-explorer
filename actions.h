@@ -1,7 +1,7 @@
 #ifndef ACTIONS_H
 #define ACTIONS_H
 
-#include <ProtoData.pb.h>
+#include <proto/ProtoData.pb.h>
 #include <fc/crypto/sha256.hpp>
 #include <fc/crypto/elliptic.hpp>
 #include <fc/filesystem.hpp>

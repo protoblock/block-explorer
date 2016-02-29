@@ -21,12 +21,6 @@ CONFIG += c++11
 #TEMPLATE = app
 
 SOURCES += main.cpp \
-    generated/ApiData.pb.cc \
-    generated/ExData.pb.cc \
-    generated/NameData.pb.cc \
-    generated/ProtoData.pb.cc \
-    generated/StaticData.pb.cc \
-    generated/StatusData.pb.cc \
     utils.cpp \
     blockchain.cpp \
     actions.cpp \
@@ -36,6 +30,8 @@ SOURCES += main.cpp \
 OTHER_FILES += main.qml \
     content/Blocks.qml \
     content/Detail.qml
+
+
 
 unix:macx {
     LIBS +=  -L$$PWD/libs \
@@ -86,7 +82,7 @@ win32 {
 }
 
 INCLUDEPATH += $$PWD/include
-INCLUDEPATH += $$PWD/generated
+#INCLUDEPATH += $$PWD/generated
 
 HEADERS += \
     utils.h \
@@ -97,3 +93,7 @@ HEADERS += \
 
 DISTFILES += \
     content/Labeltext.qml
+
+
+PROTOS = proto/*.proto
+include(Protobuf.pri)

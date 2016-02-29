@@ -4,7 +4,7 @@
 #include <iostream>
 #include <leveldb/db.h>
 #include <leveldb/comparator.h>
-#include <ProtoData.pb.h>
+#include <proto/ProtoData.pb.h>
 
 using namespace std;
 
