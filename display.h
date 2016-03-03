@@ -5,6 +5,8 @@
 
 #include <blockchain.h>
 
+namespace fantasybit {
+
 class Display : public QObject
 {
     Q_OBJECT
@@ -35,5 +37,7 @@ protected:
     QString m_transactions = "Default String";
     Blockchain bc{};
 };
+
+}
 
 #endif // TEST_H

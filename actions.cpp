@@ -1,53 +1,32 @@
 #include "actions.h"
+#include "proto/StateData.pb.h"
+#include "utils.h"
 
+using namespace fantasybit;
 Actions::Actions()
 {
 
 }
 
-fc::sha256 Actions::CreateMerkle(fantasybit::Block block) {
-    queue<fc::sha256> merkle;
+MerkleTree Actions::CreateMerkle(fantasybit::Block &block) {
+    MerkleTree merkle;
 
     for (int i = 0; i < block.signed_transactions_size();  ++i) {
         fantasybit::Transaction trans = block.signed_transactions(i).trans();
         fc::sha256 digest = fc::sha256::hash(trans.SerializeAsString());
 
-        merkle.push(digest);
+        *(merkle.add_leaves()) = digest.str();
     }
 
-    if (merkle.empty())
-        return (fc::sha256) NULL;
+    merkle.set_root(makeMerkleRoot(merkle.leaves()));
 
-    while (merkle.size() > 1) {
-        if (merkle.size() % 2 != 0) {
-            merkle.push(merkle.back());
-        }
+    return merkle;
 
-        queue<fc::sha256> new_merkle;
-
-        for (int i = 0; i < merkle.size(); i += 2) {
-            fc::sha256 first = merkle.front();
-            merkle.pop();
-
-            fc::sha256 second = merkle.front();
-            merkle.pop();
-
-            string concat;
-
-            concat = (string) first + (string) second;
-
-            new_merkle.push(fc::sha256::hash(concat));
-        }
-
-        merkle = new_merkle;
-    }
-
-    return merkle.front();
 }
 
 void Actions::Test() {
     Blockchain bc{};
     bc.SeekToFirst();
     cout << "*** Genesis Block Merkle: " << bc.GetCurrentBlock().signedhead().head().transaction_id() << endl;
-    cout << "*** CreateMerkle: " << (string) Actions::CreateMerkle(bc.GetCurrentBlock()) << endl;
+    cout << "*** CreateMerkle: " << Actions::CreateMerkle(bc.GetCurrentBlock()).DebugString() << endl;
 }

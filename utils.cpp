@@ -1,4 +1,9 @@
 #include "utils.h"
+#include <fc/crypto/sha256.hpp>
+#include <queue>
+
+
+namespace fantasybit {
 
 // Three-way comparison function:
 //   if a < b: negative result
@@ -18,6 +23,66 @@ int Int32Comparator::Compare(const leveldb::Slice& a, const leveldb::Slice& b) c
 const char* Int32Comparator::Name() const { return "Int32Comparator"; }
 void Int32Comparator::FindShortestSeparator(std::string*, const leveldb::Slice&) const { }
 void Int32Comparator::FindShortSuccessor(std::string*) const { }
+
+std::string makeMerkleRoot(decltype(fantasybit::MerkleTree::default_instance().leaves()) &in) {
+    queue<fc::sha256> merkle;
+
+    for (const auto elem : in ) {
+        fc::sha256 digest = fc::sha256::hash(elem);
+
+        merkle.push(digest);
+    }
+
+    if (merkle.empty())
+        return "";//(fc::sha256) NULL;
+
+    int rows = 0;
+    while (merkle.size() > 1) {
+       /*
+        if (merkle.size() % 2 != 0) {
+            merkle.push(merkle.back());
+        }
+       */
+        queue<fc::sha256> new_merkle;
+
+        rows++;
+        int j =  merkle.size();
+
+        while (merkle.size() > 1) {
+            j =  merkle.size();
+
+            fc::sha256 first = merkle.front();
+            merkle.pop();
+
+            j =  merkle.size();
+
+            fc::sha256 second = merkle.front();
+            merkle.pop();
+
+            j =  merkle.size();
+
+            string concat;
+
+            concat = (string) first + (string) second;
+
+            new_merkle.push(fc::sha256::hash(concat));
+        }
+        if ( merkle.size() == 1) {
+            new_merkle.push(merkle.front());
+            merkle.pop();
+        }
+
+        j =  merkle.size();
+
+        merkle = new_merkle;
+    }
+
+    return merkle.front();
+
+    return "";
+}
+
+
 
 /*
 void displayBlock(leveldb::DB *db, int32_t blockNum) {
@@ -126,3 +191,4 @@ void displayDiagnostics(leveldb::DB *db) {
     delete it;
 }
 */
+}

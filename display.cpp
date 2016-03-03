@@ -4,6 +4,8 @@
 
 using namespace std;
 
+namespace fantasybit {
+
 Display::Display(QObject *parent) : QObject(parent)
 {
     bc.SeekToFirst();
@@ -60,4 +62,5 @@ QString Display::getTransactionsString() {
     }
 
     return QString::fromStdString(trans);
+}
 }

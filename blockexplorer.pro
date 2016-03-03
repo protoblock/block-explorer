@@ -25,7 +25,8 @@ SOURCES += main.cpp \
     blockchain.cpp \
     actions.cpp \
     display.cpp \
-    modelclass.cpp
+    modelclass.cpp \
+    createmeta.cpp
 
 OTHER_FILES += main.qml \
     content/Blocks.qml \
@@ -89,7 +90,8 @@ HEADERS += \
     blockchain.h \
     actions.h \
     display.h \
-    modelclass.h
+    modelclass.h \
+    createmeta.h
 
 DISTFILES += \
     content/Labeltext.qml

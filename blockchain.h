@@ -13,6 +13,8 @@
 
 using namespace std;
 
+namespace fantasybit {
+
 class Blockchain
 {
 protected:
@@ -50,4 +52,5 @@ public:
     */
 };
 
+}
 #endif // BLOCKCHAIN_H

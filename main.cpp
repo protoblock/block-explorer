@@ -5,8 +5,9 @@
 
 #include <display.h>
 #include <modelclass.h>
-
+#include <actions.h>
 #include <string>
+#include <createmeta.h>
 using namespace std;
 
 /*
@@ -18,6 +19,7 @@ Command
 Action
  */
 
+using namespace fantasybit;
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -31,21 +33,87 @@ int main(int argc, char *argv[])
 
 
     //QStringList qstrl;
+    LdbWriter ld;
+    ld.init();
+    auto bmstrid = ld.read("blockhead");
 
-    /*
+    string prev = bmstrid;
+
+    do {
+        auto bmstr = ld.read(prev);
+        BlockMeta bm{};
+        bm.ParseFromString(bmstr);
+        qDebug() << bm.DebugString().data();
+
+        auto tr = ld.read(bm.trmetaid());
+        //auto tr = ld.read(trsid);
+        TrMeta trm{};
+        trm.ParseFromString(tr);
+        qDebug() << trm.DebugString().data();
+
+        MerkleTree mt;
+        tr = ld.read(trm.gamemetaroot());
+        mt.ParseFromString(tr);
+        qDebug() << mt.DebugString().data();
+        for ( auto s : mt.leaves()) {
+            GameMeta dm;
+            tr = ld.read(s);
+            dm.ParseFromString(tr);
+            qDebug() << dm.DebugString().data();
+
+        }
+
+
+        tr = ld.read(trm.datametaroot());
+        mt.ParseFromString(tr);
+        qDebug() << mt.DebugString().data();
+
+        for ( auto s : mt.leaves()) {
+            DataMeta dm;
+            tr = ld.read(s);
+            dm.ParseFromString(tr);
+            if ( dm.data().type() != Data::MESSAGE)
+                qDebug() << dm.DebugString().data();
+
+        }
+
+        tr = ld.read(bm.txmetaroot());
+        mt.ParseFromString(tr);
+        //qDebug() << mt.DebugString().data();
+
+        for ( auto s : mt.leaves()) {
+            TxMeta txmr{};
+            tr = ld.read(s);
+            txmr.ParseFromString(tr);
+            qDebug() << txmr.DebugString().data();
+        }
+
+        prev = bm.prev();
+    } while ( prev != "");
+    return 0;
+    CreateMeta cm(ld);
+
     {
     Blockchain bc{};
     bc.init();
-    bc.GetBlock(10);
-    bc.SeekToLast();
+    //bc.GetBlock(10);
+    //bc.SeekToLast();
+    bc.SeekToFirst();
+    string prev = "";
     while (bc.Valid()) {
-       string ss{ bc.GetCurrentBlock().signedhead().DebugString().data() };
+
+       //string ss{ bc.GetCurrentBlock().signedhead().DebugString().data() };
        //qstrl.append(ss);
-       bc.Prev();
+       auto mr = Actions::CreateMerkle(bc.GetCurrentBlock());
+
+       prev = cm.DoMeta(bc.GetCurrentBlock(),prev);
+       bc.Next();
     };
+    ld.write("blockhead",prev);
+    return 0;
     //mc.setStringList(qstrl);
     }
-    */
+
 
     //bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole)
 

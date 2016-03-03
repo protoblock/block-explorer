@@ -5,6 +5,7 @@
 
 using namespace std;
 
+namespace fantasybit {
 ModelClass::ModelClass()
 {
 
@@ -71,4 +72,5 @@ QHash<int, QByteArray> ModelClass::roleNames() const {
     roles[BlockNum] = "blocknum";
     roles[CreationTime] = "time";
     return roles;
+}
 }

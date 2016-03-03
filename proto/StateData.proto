@@ -2,14 +2,101 @@ package fantasybit;
 import "ProtoData.proto";
 import "NameData.proto";
 
-message Tx {
-	optional int32 blocknum = 10;
-	optional string fantasy_name = 40; 
-	optional Transaction trans = 50;     
+//"blockhead"->blockmetaid
+//blockmetaid->BlockMeta
+//txmetaroot->MerkleTree<TxMetaId>
+//txmetaid->TxMeta
+//trmetaid->TrMeta
+message BlockMeta {
+    optional int32 blocknum = 40;
+    optional bytes trmetaid = 50;
+    optional bytes txmetaroot = 10;
+    optional bytes prev = 20;
+    optional bytes next = 30;
 }
+
+message TxMeta {
+    optional int32 blocknum = 10;
+    optional int32 txnum = 20;
+    optional SignedTransaction st = 30;
+}
+
+//gamemetaroot->MerkleTree<gamemetaid>
+//datametaroot->MerkleTree<datametaid>
+message TrMeta {
+    optional int32 blocknum = 10;
+    optional string type = 40;
+    optional uint32 season = 50;
+    optional uint32 week = 60;
+    optional bytes gamemetaroot = 70;
+    optional bytes datametaroot = 80;
+    optional bytes txmetaid = 100;
+}
+
+message GameMeta {
+    optional bytes txmetaid = 10;
+    optional GameData gamedata = 20;
+}
+
+message DataMeta {
+    optional bytes txmetaid = 10;
+    optional Data data = 20;
+}
+
+//fnbalmetaroot -> MerkleTree<fnbalmetaid>
+message LeaderBoardMeta {
+    //optional GlobalState global = 10;
+    optional uint32 week = 10;
+    optional bytes fnbalmetaroot = 20;
+    optional bytes prev = 20;
+    optional bytes next = 30;
+}
+
+//gameresultmetaroot -> MerkleTree<gameresultmetaid>
+//gameresultmetaid -> GameResultsMeta
+//gameprojmetaroot -> MerkleTree<gameprojmetaid>
+//gameprojmetaid -> GameProjMeta
+message WeekGameStatusMeta {
+    optional uint32 week = 10;
+    optional bytes gameresultmetaroot = 20;
+    optional bytes gameprojmetaroot = 30;
+    optional bytes prev = 20;
+    optional bytes next = 30;
+}
+
+//message FantasyNameMetaRoot
+message FantasyNameBalMeta {
+    optional bytes txmetaid = 10;
+    optional bytes trmetaid = 20;
+    optional FantasyNameBal fnamebal = 30;
+    optional bytes awardmetaroot = 50;
+    optional bytes pnlmetaroot = 60;
+    optional bytes prev = 70;
+    optional bytes next = 80;
+}
+
+//gamestatusmetaid -> gamestatusmeta
+message GameResultsMeta {
+    //optional uint32 week = 10;
+    optional string gameid = 20;
+    optional bytes gamestatusmetaid = 40;
+    optional GameResult gameresult = 30;
+    optional bytes datametaid = 50; //DataMeta (ResultData)
+}
+
+//gamestatusmetaid -> gamestatusmeta
+message GameProjMeta {
+    //optional uint32 week = 10;
+    optional string gameid = 20;
+    optional bytes gamestatusmetaid = 40;
+    optional GameFantasyBitProj gameproj = 30;
+}
+
+
+//message BlockTxId {} -> MerkleTree { leaves -> txids }
 			
 message TxTree {
-	repeated Tx tx = 20;
+        //repeated Tx tx = 20;
 }
 
 message BlockState {
@@ -48,3 +135,14 @@ message MerkleTree {
 	optional bytes root = 10;
 	repeated bytes leaves = 20;
 }
+
+message EndState {
+        optional bytes statedataid = 10;
+        repeated bytes stateroot = 20;
+}
+
+message StateRoot {
+    optional bytes left = 10;
+    optional bytes right = 20;
+}
+

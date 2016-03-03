@@ -7,6 +7,7 @@
 
 #include <blockchain.h>
 
+namespace fantasybit {
 //class ModelClass : public QStringListModel
 class ModelClass : public QAbstractListModel
 {
@@ -35,5 +36,5 @@ public:
 
     QHash<int, QByteArray> roleNames() const;
 };
-
+}
 #endif // MODELCLASS_H

@@ -1,6 +1,8 @@
 #include "blockchain.h"
 #include <QDebug>
 
+namespace fantasybit {
+
 Blockchain::Blockchain() {}
 
 void Blockchain::init() {
@@ -226,3 +228,4 @@ void blockchain::verify_blocks(leveldb::DB *db) {
     delete it;
 }
 */
+}

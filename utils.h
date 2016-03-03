@@ -5,8 +5,11 @@
 #include <leveldb/db.h>
 #include <leveldb/comparator.h>
 #include <proto/ProtoData.pb.h>
+#include <proto/StateData.pb.h>
+#include <fc/crypto/sha256.hpp>
 
 using namespace std;
+namespace fantasybit {
 
 class Int32Comparator : public leveldb::Comparator {
  public:
@@ -17,6 +20,16 @@ class Int32Comparator : public leveldb::Comparator {
   void FindShortestSeparator(std::string*, const leveldb::Slice&) const;
   void FindShortSuccessor(std::string*) const;
 };
+
+
+std::string makeMerkleRoot(decltype(fantasybit::MerkleTree::default_instance().leaves()) &in);
+
+
+}
+
+//decltype(MerkleTree:: ::default_instance().data()) in,
+
+
 
 /*
 void displayBlock(leveldb::DB *db, int32_t blockNum);

@@ -8,7 +8,7 @@
 
 #include <blockchain.h>
 
-#include <queue>
+#include "proto/StateData.pb.h"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ class Actions
 public:
     Actions();
 
-    static fc::sha256 CreateMerkle(fantasybit::Block block);
+    static fantasybit::MerkleTree CreateMerkle(fantasybit::Block &block);
 
     static void Test();
 };
