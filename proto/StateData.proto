@@ -1,6 +1,9 @@
 package fantasybit;
 import "ProtoData.proto";
 import "NameData.proto";
+import "StateData.proto";
+import "StaticData.proto";
+import "StatusData.proto";
 
 //"blockhead"->blockmetaid
 //blockmetaid->BlockMeta
@@ -48,23 +51,12 @@ message LeaderBoardMeta {
     //optional GlobalState global = 10;
     optional uint32 week = 10;
     optional bytes fnbalmetaroot = 20;
-    optional bytes prev = 20;
-    optional bytes next = 30;
+    optional bytes prev = 30;
+    optional bytes next = 40;
 }
 
-//gameresultmetaroot -> MerkleTree<gameresultmetaid>
-//gameresultmetaid -> GameResultsMeta
-//gameprojmetaroot -> MerkleTree<gameprojmetaid>
-//gameprojmetaid -> GameProjMeta
-message WeekGameStatusMeta {
-    optional uint32 week = 10;
-    optional bytes gameresultmetaroot = 20;
-    optional bytes gameprojmetaroot = 30;
-    optional bytes prev = 20;
-    optional bytes next = 30;
-}
-
-//message FantasyNameMetaRoot
+//awardmetaroot ->  MerkleTree<awardmetaid> - many players 1 fname
+//pnlmetaroot -> MerkleTree<pnlmetaroot> - many players 1 fname
 message FantasyNameBalMeta {
     optional bytes txmetaid = 10;
     optional bytes trmetaid = 20;
@@ -75,13 +67,139 @@ message FantasyNameBalMeta {
     optional bytes next = 80;
 }
 
+
+//gameresultmetaroot -> MerkleTree<gameresultmetaid>
+//gameresultmetaid -> GameResultsMeta
+//ingameprojmetaroot -> MerkleTree<InGameProjMetaroot>
+//gameprojmetaid -> GameProjMeta
+message WeekGameStatusMeta {
+    optional uint32 week = 10;
+    optional bytes gameresultmetaroot = 20;
+    optional bytes ingameprojmetaroot = 30;
+    optional bytes prev = 40;
+    optional bytes next = 50;
+}
+
 //gamestatusmetaid -> gamestatusmeta
+//homeresultmeta -> teamresultmetaid
+//awayresultmeta -> teamresultmetaid
+message InGameProjMeta {
+    //optional uint32 week = 10;
+    optional string gameid = 20;
+    optional bytes gamestatusmetaid = 40;
+    optional bytes homeprojmeta = 60;
+    optional bytes awayprojmeta = 70;
+    optional bytes gamedatametaid = 50; //GateData (INGAME)
+}
+
+
+//gamestatusmetaid -> gamestatusmeta
+//homeresultmeta -> teamresultmetaid
+//awayresultmeta -> teamresultmetaid
 message GameResultsMeta {
     //optional uint32 week = 10;
     optional string gameid = 20;
     optional bytes gamestatusmetaid = 40;
-    optional GameResult gameresult = 30;
-    optional bytes datametaid = 50; //DataMeta (ResultData)
+    optional bytes homeresultmeta = 60;
+    optional bytes awayresultmeta = 70;
+    optional bytes resultdatametaid = 50; //DataMeta (ResultData)
+}
+
+//gamemetaid->GameMeta
+//datametaid->DataMeta
+message GameStatusMeta {
+    optional GameInfo gameinfo = 10;
+    optional GameStatus gamesatus = 20;
+    optional bytes gamemetaid = 30;
+    optional bytes datametaid = 40;
+    optional bytes prev = 50;
+    optional bytes next = 60;
+}
+
+//playerprojmetaroot -> MerkleTree<PlayerResultMetaId>
+message TeamProjMeta {
+    optional string gameid = 20;
+    optional string team = 30;
+    optional uint32 kickofftime = 40;
+    optional uint32 week = 50;
+    optional bytes playerprojmetaroot = 60;
+    optional bytes gamedatametaid = 70;
+}
+
+//playerresultmetaroot -> MerkleTree<PlayerResultMetaId>
+message TeamResultMeta {
+    optional string gameid = 20;
+    optional string team = 30;
+    optional uint32 kickofftime = 40;
+    optional uint32 week = 50;
+    optional bytes playerresultmetaroot = 60;
+    optional bytes resultdatametaid = 70;
+}
+
+//gamestatusmetaid -> gamestatusmeta
+//projmetaplayerroot -> MerkleTree<projmetaplayer> - 1 player many fnames
+//posmetaplayerroot -> MerkleTree<posmetaplayer> - 1 player many fnames
+message PlayerProjMeta {
+    optional string playerid = 20;
+    optional bytes gamestatusmetaid = 30;
+    optional bytes projmetaplayerroot = 60;
+    optional bytes posmetaplayerroot = 70;
+    optional bytes gamedatametaid = 80;
+}
+
+//fantasybitprojmetaid -> FantasyBitProjMeta
+message ProjMeta {
+    optional FantasyBitProj fantaybitproj = 10;
+    optional bytes txmetaid = 20;
+}
+
+//gamestatusmetaid -> gamestatusmeta
+//awardmetaplayerroot -> MerkleTree<AwardMetaId> - 1 player many fnames
+//pnlmetaplayerroot -> MerkleTree<PnlMetaId> - 1 player many fnames
+message PlayerResultMeta {
+    optional string playerid = 20;
+    optional bytes gamestatusmetaid = 30;
+    optional float result = 40;
+    optional Stats stats = 50;
+    optional bytes awardmetaplayerroot = 60;
+    optional bytes pnlmetaplayerroot = 70;
+    optional bytes resultdatametaid = 80;
+}
+
+//projmetaid -> FantasyBitProjMeta
+message AwardMeta {
+    optional FantasyBitAward fantaybitaward = 20;
+    optional bytes projmetaid = 30;
+    optional bytes resultdatametaid = 40;
+}
+
+message PnlMeta {
+}
+
+message PlayerFnameMeta {
+    optional string playerid = 10;
+    optional bytes fnameid = 20;
+    optional uint32 week = 30;
+}
+
+message PlayerWeek {
+    optional string playerid = 10;
+    optional uint32 week = 30;
+}
+
+message FnameWeek {
+    optional bytes fnameid = 10;
+    optional uint32 week = 30;
+}
+
+
+//txmetaid -> TxMeta
+message FantasyBitProjMeta {
+    optional FantasyBitProj fantasybitproj = 10;
+    optional bytes txmetaid = 20;
+    optional uint32 week = 30;
+    optional bytes prev = 40;
+    optional bytes next = 50;
 }
 
 //gamestatusmetaid -> gamestatusmeta
@@ -91,6 +209,7 @@ message GameProjMeta {
     optional bytes gamestatusmetaid = 40;
     optional GameFantasyBitProj gameproj = 30;
 }
+
 
 
 //message BlockTxId {} -> MerkleTree { leaves -> txids }
