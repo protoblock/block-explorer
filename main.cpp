@@ -8,6 +8,8 @@
 #include <actions.h>
 #include <string>
 #include <createmeta.h>
+
+#include "currentheaderblock.h"
 using namespace std;
 
 /*
@@ -18,6 +20,34 @@ Operator
 Command
 Action
  */
+
+
+
+
+
+static QObject *currentHeaderBlockSingle(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
+
+    CurrentHeaderBlock *example = new CurrentHeaderBlock();
+    return example;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 using namespace fantasybit;
 int main(int argc, char *argv[])
@@ -31,7 +61,7 @@ int main(int argc, char *argv[])
     //engine.rootContext()->setContextProperty("Display", &dsply);
 
 
-
+/*
     //QStringList qstrl;
     LdbWriter ld;
     ld.init();
@@ -114,7 +144,7 @@ int main(int argc, char *argv[])
     //mc.setStringList(qstrl);
     }
 
-
+*/
     //bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole)
 
     ModelClass mc{};
@@ -138,6 +168,10 @@ int main(int argc, char *argv[])
 
     // 2016-02-18 - RTR commented out this line because I don't think it's needed
     qmlRegisterUncreatableType<ModelClass>("satoshifantasy.com",1,1,"ModelClass","modelclass singleton");
+
+    qmlRegisterSingletonType<CurrentHeaderBlock>("BlockExplorer",1,0,"CurrentFocusedBlock", currentHeaderBlockSingle);
+
+
 
     engine.load(QUrl(QStringLiteral("main.qml")));
 

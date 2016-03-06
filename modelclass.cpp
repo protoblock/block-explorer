@@ -60,6 +60,12 @@ QVariant ModelClass::data(const QModelIndex & index, int role) const {
                 //qInfo() << " CreationTime " << bc.GetCurrentBlock().DebugString().data();
 
                 return QVariant(bc.GetCurrentBlock().signedhead().head().timestamp());
+
+
+
+//            bc.GetCurrentBlock().signedhead().head().
+
+
             }
         }
     }

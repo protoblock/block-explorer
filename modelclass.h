@@ -22,7 +22,7 @@ protected:
     int first;
 public:
     ModelClass();
-    qint32 blockheight();
+    Q_INVOKABLE qint32 blockheight();
     qint32 firstblock();
 
     void init();

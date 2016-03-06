@@ -26,7 +26,8 @@ SOURCES += main.cpp \
     actions.cpp \
     display.cpp \
     modelclass.cpp \
-    createmeta.cpp
+    createmeta.cpp \
+    currentheaderblock.cpp
 
 OTHER_FILES += main.qml \
     content/Blocks.qml \
@@ -91,10 +92,13 @@ HEADERS += \
     actions.h \
     display.h \
     modelclass.h \
-    createmeta.h
+    createmeta.h \
+    currentheaderblock.h
 
 DISTFILES += \
-    content/Labeltext.qml
+    content/Labeltext.qml \
+    NewMain.qml \
+    NodeHash.qml
 
 
 PROTOS = proto/*.proto
