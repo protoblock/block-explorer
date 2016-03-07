@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.2
 import QtQuick.Dialogs 1.2
 
 import "content"
+import BlockExplorer 1.0
 
 Rectangle {
     visible: true
@@ -12,7 +13,7 @@ Rectangle {
 
     width: 800//mainLayout.implicitWidth + 2 * margin
     height: 600//mainLayout.implicitHeight + 2 * margin
-//    minimumWidth: mainLayout.Layout.minimumWidth + 2 * margin
+//    minimumWidth`: mainLayout.Layout.minimumWidth + 2 * margin
 //    minimumHeight: mainLayout.Layout.minimumHeight + 2 * margin
 
     ColumnLayout {
@@ -144,6 +145,7 @@ Rectangle {
                     list.focus = true;
                     Keys.forwardTo = list  ;
                     CurrentFocusedBlock.num = blocknum
+
                     mainLoader.source = "NodeHash.qml"
                     //list.highlightItem = list.currentItem;
                 }

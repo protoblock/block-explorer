@@ -25,19 +25,6 @@ Action
 
 
 
-static QObject *currentHeaderBlockSingle(QQmlEngine *engine, QJSEngine *scriptEngine)
-{
-    Q_UNUSED(engine)
-    Q_UNUSED(scriptEngine)
-
-    CurrentHeaderBlock *example = new CurrentHeaderBlock();
-    return example;
-}
-
-
-
-
-
 
 
 
@@ -89,7 +76,7 @@ int main(int argc, char *argv[])
             GameMeta dm;
             tr = ld.read(s);
             dm.ParseFromString(tr);
-            qDebug() << dm.DebugString().data();
+            qDebug() << dm.DebugString().data();  
 
         }
 
