@@ -4,6 +4,11 @@ import "NameData.proto";
 import "StateData.proto";
 import "StaticData.proto";
 import "StatusData.proto";
+import "ExData.proto";
+
+
+
+
 
 //"blockhead"->blockmetaid
 //blockmetaid->BlockMeta
@@ -14,6 +19,7 @@ message BlockMeta {
     optional int32 blocknum = 40;
     optional bytes trmetaid = 50;
     optional bytes txmetaroot = 10;
+    optional bytes pbstateid = 60;
     optional bytes prev = 20;
     optional bytes next = 30;
 }
@@ -46,6 +52,8 @@ message DataMeta {
     optional Data data = 20;
 }
 
+//LeaderBoardMeta - State of all players and balances
+//LeaderBoardMetaId -> LeaderBoardMeta
 //fnbalmetaroot -> MerkleTree<fnbalmetaid>
 message LeaderBoardMeta {
     //optional GlobalState global = 10;
@@ -55,6 +63,8 @@ message LeaderBoardMeta {
     optional bytes next = 40;
 }
 
+// FantasyNameBalMeta -> current balance as of trmetaid
+//      list of all awards and pnl from this trmetaid / txmetaid
 //awardmetaroot ->  MerkleTree<awardmetaid> - many players 1 fname
 //pnlmetaroot -> MerkleTree<pnlmetaroot> - many players 1 fname
 message FantasyNameBalMeta {
@@ -66,6 +76,25 @@ message FantasyNameBalMeta {
     optional bytes prev = 70;
     optional bytes next = 80;
 }
+
+//FantasyNameState - state of Fname
+//  positions - open positions
+//  orders - openorders
+//  proj - ope projections
+message FantasyNameState {
+    optional bytes fantasynamebalmetaid = 10;
+    optional bytes posmetaroot = 20;
+    optional bytes ordersmetaroot = 30;
+    optional bytes projmetaroot = 40;
+    optional bytes prev = 70;
+    optional bytes next = 80;
+    optional bytes txmetaid = 50;
+}
+
+
+ //   optional bytes projmetaroot = 31;
+ //   optional bytes ingame = 32;
+
 
 
 //gameresultmetaroot -> MerkleTree<gameresultmetaid>
@@ -116,13 +145,13 @@ message GameStatusMeta {
     optional bytes next = 60;
 }
 
-//playerprojmetaroot -> MerkleTree<PlayerResultMetaId>
+//playerprojmetaroot -> MerkleTree<GamePlayerProjMeta>
 message TeamProjMeta {
     optional string gameid = 20;
     optional string team = 30;
     optional uint32 kickofftime = 40;
     optional uint32 week = 50;
-    optional bytes playerprojmetaroot = 60;
+    optional bytes gameplayerprojmetaroot = 60;
     optional bytes gamedatametaid = 70;
 }
 
@@ -139,7 +168,7 @@ message TeamResultMeta {
 //gamestatusmetaid -> gamestatusmeta
 //projmetaplayerroot -> MerkleTree<projmetaplayer> - 1 player many fnames
 //posmetaplayerroot -> MerkleTree<posmetaplayer> - 1 player many fnames
-message PlayerProjMeta {
+message GamePlayerProjMeta {
     optional string playerid = 20;
     optional bytes gamestatusmetaid = 30;
     optional bytes projmetaplayerroot = 60;
@@ -147,9 +176,19 @@ message PlayerProjMeta {
     optional bytes gamedatametaid = 80;
 }
 
-//fantasybitprojmetaid -> FantasyBitProjMeta
+//fnprojmetaroot -> MerkleRoot<ProjMetaId> // all open projections for fname
+//playerprojmetaroot -> MerkleRoot<ProjMetaId> // all open projections for playerid
+
+
+//projmetaid -> ProjMeta
 message ProjMeta {
     optional FantasyBitProj fantaybitproj = 10;
+    optional bytes txmetaid = 20;
+}
+
+//fantasybitposmetaid -> FantasyBitPosMeta
+message PosMeta {
+    optional BookPos settlepos = 10;
     optional bytes txmetaid = 20;
 }
 
@@ -174,7 +213,68 @@ message AwardMeta {
 }
 
 message PnlMeta {
+    optional FantasyBitPnl fantaybitpnl = 20;
+    optional bytes projmetaid = 30;
+    optional bytes resultdatametaid = 40;
 }
+
+message PlayerMarketState {
+    optional bytes limitbookmetaid = 10;
+    optional string playerid = 20;
+    optional bytes marketticmetaid = 30;
+    optional bytes prev = 40;
+    optional bytes next = 50;
+}
+
+message LimitBookMeta {
+    optional int32 bid = 10;
+    optional int32 bidsize = 20;
+    optional int32 asksize = 30;
+    optional int32 ask = 40;
+    optional bytes insidebookmetaroot = 50;
+}
+
+message InsideBookMeta {
+    optional int32 totsize = 10;
+    optional bytes orderidroot = 20;
+}
+
+message MarketTicMeta {
+    optional int32 price = 20;
+    optional int32 size  = 30;
+    optional bytes orderfillroot = 40;
+}
+
+message OrderMeta {
+    optional string fname = 10;
+    optional string playerid = 20;
+    optional Order  order = 30;
+    optional bytes txmetaid = 40;
+}
+
+//======================================
+message GlobalStateMeta {
+    optional GlobalState globalstate = 10;
+    optional bytes trmetaid = 20;
+    optional bytes prev = 30;
+    optional bytes next = 40;
+}
+
+message ScheduleStateId {
+    optional bytes weekgamestatusmetaroot = 10;
+}
+
+//WeekGameStatusMeta
+
+message pbstate {
+    optional bytes schedulestateid = 10; //WeekGameStatusMetaRoot
+    optional bytes leaderboardstateid = 20;
+    optional bytes projstateid = 30; //ProjMetaroot
+    optional bytes marketstateid = 40; //
+    optional bytes globalstateid = 50;
+}
+
+//======================================
 
 message PlayerFnameMeta {
     optional string playerid = 10;
@@ -240,10 +340,10 @@ message PlayerDataId {
 	optional bytes prev = 10; 
 }
 
-message FantasyNameState {
-	optional FantasyNameBal fname_bal = 10; 
-	optional bytes fnamehead = 20;
-}
+//message FantasyNameState {
+//	optional FantasyNameBal fname_bal = 10;
+//	optional bytes fnamehead = 20;
+//}
 
 message FantasyNameChain {
 	optional bytes prev = 10; 

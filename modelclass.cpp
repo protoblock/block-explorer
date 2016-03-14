@@ -1,4 +1,5 @@
 #include "modelclass.h"
+#include "google/protobuf/descriptor.pb.h"
 
 #include <string.h>
 #include <qdebug>
@@ -12,6 +13,13 @@ ModelClass::ModelClass()
 }
 
 void ModelClass::init() {
+    qDebug() << BlockMeta::descriptor()->file()->DebugString().data();
+    google::protobuf::FileDescriptorProto fdp;
+    BlockMeta::descriptor()->file()->CopyTo(&fdp);
+    for ( auto db : fdp.message_type()) {
+        qDebug() << db.DebugString().data();
+    }
+
     bc.init();
     if ( !bc.Valid() )
         qDebug() << "invalid";
