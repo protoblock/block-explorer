@@ -2,6 +2,7 @@
 #define CREATESTATE_H
 #include <string>
 #include "proto/StateData.pb.h"
+#include <fc/crypto/sha256.hpp>
 
 namespace fantasybit {
 
@@ -16,7 +17,13 @@ public:
     void init() {}
 
     std::string getState(const fantasybit::BlockMeta &bm ) {
-        return "";
+        pbstate pbs{};
+
+
+        auto pbstatestr =  pbs.SerializeAsString();
+        auto pbstateid = fc::sha256::hash(pbstatestr).str();
+
+        return pbstateid;
     }
 };
 }
