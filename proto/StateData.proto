@@ -105,8 +105,9 @@ message WeekGameStatusMeta {
     optional uint32 week = 10;
     optional bytes gameresultmetaroot = 20;
     optional bytes ingameprojmetaroot = 30;
-    optional bytes prev = 40;
-    optional bytes next = 50;
+    optional bytes opengamestatusroot = 40;
+    optional bytes prev = 50;
+    optional bytes next = 60;
 }
 
 //gamestatusmetaid -> gamestatusmeta
@@ -184,12 +185,14 @@ message GamePlayerProjMeta {
 message ProjMeta {
     optional FantasyBitProj fantaybitproj = 10;
     optional bytes txmetaid = 20;
+    optional bytes prev = 30;
 }
 
 //fantasybitposmetaid -> FantasyBitPosMeta
 message PosMeta {
     optional BookPos settlepos = 10;
     optional bytes txmetaid = 20;
+    optional bytes prev = 30;
 }
 
 //gamestatusmetaid -> gamestatusmeta
@@ -250,6 +253,16 @@ message OrderMeta {
     optional string playerid = 20;
     optional Order  order = 30;
     optional bytes txmetaid = 40;
+    optional bytes orderfillmetaroot = 50;
+    optional bytes prev = 60;
+}
+
+message OrderFillMeta {
+    optional int32 fillprice = 20;
+    optional int32 fillsize = 30;
+    optional int32 timestamp = 40;
+    optional bytes txmetaid = 60;
+    optional bytes prev = 70;
 }
 
 //======================================
@@ -268,14 +281,16 @@ message ScheduleStateId {
 
 message pbstate {
     optional bytes schedulestateid = 10; //WeekGameStatusMetaRoot
-    optional bytes leaderboardstateid = 20;
+    optional bytes leaderboardstateid = 20; //LeaderBoardMetaId
     optional bytes projstateid = 30; //ProjMetaroot
-    optional bytes marketstateid = 40; //
-    optional bytes globalstateid = 50;
+    optional bytes orderstateid = 40; //OrderMetaRoot
+    optional bytes marketstateid = 50; //PlayerMarketStateRoot
+    optional bytes globalstateid = 60; //GlobalStateMetaId
 }
 
 //======================================
 
+/*
 message PlayerFnameMeta {
     optional string playerid = 10;
     optional bytes fnameid = 20;
@@ -349,12 +364,6 @@ message FantasyNameChain {
 	optional bytes prev = 10; 
 }
 
-
-message MerkleTree {
-	optional bytes root = 10;
-	repeated bytes leaves = 20;
-}
-
 message EndState {
         optional bytes statedataid = 10;
         repeated bytes stateroot = 20;
@@ -363,5 +372,13 @@ message EndState {
 message StateRoot {
     optional bytes left = 10;
     optional bytes right = 20;
+}
+
+*/
+
+
+message MerkleTree {
+        optional bytes root = 10;
+        repeated bytes leaves = 20;
 }
 

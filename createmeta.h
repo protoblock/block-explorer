@@ -7,6 +7,8 @@
 #include <qdebug>
 #include <leveldb/db.h>
 #include <iostream>
+#include "google/protobuf/descriptor.pb.h"
+#include "createstate.h"
 
 namespace fantasybit {
 
@@ -19,6 +21,18 @@ class LdbWriter {
 public:
 
     void LdbWriter::init() {
+        /*qDebug() << BlockMeta::descriptor()->file()->DebugString().data();
+        //qDebug() << BlockMeta::descriptor()->DebugString().data();
+
+
+        google::protobuf::FileDescriptorProto fdp;
+        BlockMeta::descriptor()->file()->CopyTo(&fdp);
+        for ( auto db : fdp.message_type()) {
+            qDebug() << db.DebugString().data();
+        }
+        */
+
+        //for(auto fd : BlockMeta::descriptor()->DebugString().data())
         write_sync.sync = true;
 
         leveldb::Options opt;
@@ -65,8 +79,11 @@ public:
 class CreateMeta
 {
     LdbWriter &writer;
+    CreateState bState;
 public:
-    CreateMeta(LdbWriter &idb) : writer(idb) {}
+    CreateMeta(LdbWriter &idb) : writer(idb), bState(idb) {
+        bState.init();
+    }
 
     string DoMeta(const Block &,const string &);
     TxMeta CreateMeta::createTxMeta(int32_t bnum, int32_t tnum, const SignedTransaction &st);

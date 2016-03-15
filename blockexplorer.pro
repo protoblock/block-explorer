@@ -27,7 +27,8 @@ SOURCES += main.cpp \
     display.cpp \
     modelclass.cpp \
     createmeta.cpp \
-    currentheaderblock.cpp
+    currentheaderblock.cpp \
+    createstate.cpp
 
 OTHER_FILES += main.qml \
     content/Blocks.qml \
@@ -93,7 +94,8 @@ HEADERS += \
     display.h \
     modelclass.h \
     createmeta.h \
-    currentheaderblock.h
+    currentheaderblock.h \
+    createstate.h
 
 DISTFILES += \
     content/Labeltext.qml \

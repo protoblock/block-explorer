@@ -14,9 +14,12 @@ string CreateMeta::DoMeta(const Block &b, const string &prev) {
         bm.set_txmetaroot(DoMetaTx(bnum,b));
     }
 
+    bm.set_pbstateid(bState.getState(bm));
+
     auto bms = bm.SerializeAsString();
     auto bmsid = fc::sha256::hash(bms).str();
     writer.write(bmsid,bms);
+
     return bmsid;
 }
 
@@ -32,6 +35,7 @@ string CreateMeta::DoMetaTx(int32_t bnum, const Block &b) {
     }
     mt.set_root(makeMerkleRoot(mt.leaves()));
     writer.write(mt.root(),mt.SerializeAsString());
+
 
     return mt.root();
 
