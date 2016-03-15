@@ -7,8 +7,9 @@
 #include <proto/ProtoData.pb.h>
 #include <proto/StateData.pb.h>
 #include <fc/crypto/sha256.hpp>
+#include <string>
 
-using namespace std;
+//using namespace std;
 namespace fantasybit {
 
 class Int32Comparator : public leveldb::Comparator {
@@ -23,6 +24,7 @@ class Int32Comparator : public leveldb::Comparator {
 
 
 std::string makeMerkleRoot(decltype(fantasybit::MerkleTree::default_instance().leaves()) &in);
+std::string hashit(const std::string &in);
 
 
 }

@@ -2,8 +2,13 @@
 #include <fc/crypto/sha256.hpp>
 #include <queue>
 
-
+using namespace std;
 namespace fantasybit {
+
+std::string hashit(const std::string &in) {
+    return fc::sha256::hash(in).str();
+}
+
 
 // Three-way comparison function:
 //   if a < b: negative result
@@ -25,7 +30,7 @@ void Int32Comparator::FindShortestSeparator(std::string*, const leveldb::Slice&)
 void Int32Comparator::FindShortSuccessor(std::string*) const { }
 
 std::string makeMerkleRoot(decltype(fantasybit::MerkleTree::default_instance().leaves()) &in) {
-    queue<fc::sha256> merkle;
+    std::queue<fc::sha256> merkle;
 
     for (const auto elem : in ) {
         fc::sha256 digest = fc::sha256::hash(elem);

@@ -1,5 +1,8 @@
 #include "createmeta.h"
 #include "utils.h"
+#include "createstate.h"
+using namespace std;
+
 namespace fantasybit {
 
 string CreateMeta::DoMeta(const Block &b, const string &prev) {
@@ -14,7 +17,7 @@ string CreateMeta::DoMeta(const Block &b, const string &prev) {
         bm.set_txmetaroot(DoMetaTx(bnum,b));
     }
 
-    bm.set_pbstateid(bState.getState(bm));
+    bm.set_pbstateid(bState.createState(bm));
 
     auto bms = bm.SerializeAsString();
     auto bmsid = fc::sha256::hash(bms).str();

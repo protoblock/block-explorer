@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     modelclass.cpp \
     createmeta.cpp \
     currentheaderblock.cpp \
-    createstate.cpp
+    createstate.cpp \
+    ldbwriter.cpp
 
 OTHER_FILES += main.qml \
     content/Blocks.qml \
@@ -95,7 +96,8 @@ HEADERS += \
     modelclass.h \
     createmeta.h \
     currentheaderblock.h \
-    createstate.h
+    createstate.h \
+    ldbwriter.h
 
 DISTFILES += \
     content/Labeltext.qml \

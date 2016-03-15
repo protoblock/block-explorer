@@ -9,72 +9,12 @@
 #include <iostream>
 #include "google/protobuf/descriptor.pb.h"
 #include "createstate.h"
+#include <ldbwriter.h>
 
 namespace fantasybit {
 
-using namespace std;
+//using namespace std;
 
-class LdbWriter {
-    leveldb::DB *db;
-    leveldb::WriteOptions write_sync{};
-
-public:
-
-    void LdbWriter::init() {
-        /*qDebug() << BlockMeta::descriptor()->file()->DebugString().data();
-        //qDebug() << BlockMeta::descriptor()->DebugString().data();
-
-
-        google::protobuf::FileDescriptorProto fdp;
-        BlockMeta::descriptor()->file()->CopyTo(&fdp);
-        for ( auto db : fdp.message_type()) {
-            qDebug() << db.DebugString().data();
-        }
-        */
-
-        //for(auto fd : BlockMeta::descriptor()->DebugString().data())
-        write_sync.sync = true;
-
-        leveldb::Options opt;
-        opt.create_if_missing = true;
-        opt.error_if_exists = false;
-
-        leveldb::Status status;
-
-        leveldb::DB *db;
-        status = leveldb::DB::Open(opt, "./block/meta", &db);
-        if (!status.ok()) {
-            cout << "!!! error opening db block/meta" << endl;
-            cout << "!!! " << status.ToString() << endl;
-            exit(1);
-        }
-
-        this->db = db;
-    }
-
-
-    void write(const string &key, const string &val) {
-        //qDebug() << key.data() << val.data();
-        db->Put(write_sync,key,val);
-    }
-    void write(const string &val) {
-        write(fc::sha256::hash(val).str(),val);
-    }
-
-    void write(const google::protobuf::Message &msg) {
-        write(msg.SerializeAsString());
-    }
-
-    string read(const string &id) {
-        string value;
-        db->Get(leveldb::ReadOptions(),id,&value);
-        return value;
-    }
-
-    ~LdbWriter() {
-        if ( db ) delete db;
-    }
-};
 
 class CreateMeta
 {
@@ -85,10 +25,10 @@ public:
         bState.init();
     }
 
-    string DoMeta(const Block &,const string &);
+    std::string DoMeta(const Block &,const std::string &);
     TxMeta CreateMeta::createTxMeta(int32_t bnum, int32_t tnum, const SignedTransaction &st);
-    string CreateMeta::DoMetaTr(int32_t bnum, const SignedTransaction &st);
-    string CreateMeta::DoMetaTx(int32_t bnum, const Block &b);
+    std::string CreateMeta::DoMetaTr(int32_t bnum, const SignedTransaction &st);
+    std::string CreateMeta::DoMetaTx(int32_t bnum, const Block &b);
 
 
 };
