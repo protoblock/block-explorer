@@ -29,7 +29,8 @@ SOURCES += main.cpp \
     createmeta.cpp \
     currentheaderblock.cpp \
     createstate.cpp \
-    ldbwriter.cpp
+    ldbwriter.cpp \
+    datastores.cpp
 
 OTHER_FILES += main.qml \
     content/Blocks.qml \
@@ -97,7 +98,8 @@ HEADERS += \
     createmeta.h \
     currentheaderblock.h \
     createstate.h \
-    ldbwriter.h
+    ldbwriter.h \
+    datastores.h
 
 DISTFILES += \
     content/Labeltext.qml \

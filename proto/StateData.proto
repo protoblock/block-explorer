@@ -86,6 +86,7 @@ message FantasyNameBalMeta {
 //  orders - openorders
 //  proj - ope projections
 message FantasyNameState {
+    optional string name = 1;
     optional bytes fantasynamebalmetaid = 10;
     optional bytes posmetaroot = 20;
     optional bytes ordersmetaroot = 30;
@@ -191,9 +192,11 @@ message GamePlayerProjMeta {
 
 //projmetaid -> ProjMeta
 message ProjMeta {
-    optional FantasyBitProj fantaybitproj = 10;
-    optional bytes txmetaid = 20;
-    optional bytes prev = 30;
+    optional string name = 10;
+    optional int32 proj = 20;
+    optional string playerid = 30;
+    optional bytes txmetaid = 40;
+    optional bytes prev = 50;
 }
 
 //fantasybitposmetaid -> FantasyBitPosMeta
@@ -313,6 +316,7 @@ message pbstate {
     optional bytes marketstateid = 50; //PlayerMarketStateRoot
     optional bytes globalstateid = 60; //GlobalStateMetaId
     optional bytes teamstatemid = 70; //teammetaroot
+    optional bytes fantasynamestateid = 80; //FantasyNameState
 }
 
 //======================================

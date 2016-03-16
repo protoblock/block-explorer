@@ -36,16 +36,19 @@ public:
     }
 
 
-    void write(const std::string &key, const std::string &val) {
+    std::string write(const std::string &key, const std::string &val) {
         //qDebug() << key.data() << val.data();
         db->Put(write_sync,key,val);
+        return key;
     }
-    void write(const std::string &val) {
-        write(fc::sha256::hash(val).str(),val);
+    std::string write(const std::string &val) {
+        auto ret = fc::sha256::hash(val).str();
+        write(ret,val);
+        return ret;
     }
 
-    void write(const google::protobuf::Message &msg) {
-        write(msg.SerializeAsString());
+    std::string write(const google::protobuf::Message &msg) {
+        return write(msg.SerializeAsString());
     }
 
     std::string read(const std::string &id) ;

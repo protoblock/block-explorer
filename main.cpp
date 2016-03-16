@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     LdbWriter ldb;
     ldb.init();
 
-    /*
+
     CreateMeta cm(ldb);
 
     Blockchain bc{};
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
         prev = cm.DoMeta(b,prev);
     }
 
-
+/*
     auto headid = ldb.read("blockhead");
     auto head = ldb.read(headid);//"3208de3df09c9617afd259fe283c9ff0166c8f54c05defc08661b1a62e43cac5");
     BlockMeta bm;
