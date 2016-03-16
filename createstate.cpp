@@ -10,16 +10,17 @@ std::string CreateState::createState(const BlockMeta &bm) {
         loadSubStates();
     }
 
-    if ( bm.pbstateid() != m_pbstateid ) {
-        return "error"; //ToDo:
-    }
+//    if ( bm.pbstateid() != m_pbstateid ) {
+//        return "error"; //ToDo:
+//    }
 
     process(bm);
-    pbstate pbs{};
 
-    auto pbstatestr =  pbs.SerializeAsString();
+
+    auto pbstatestr =  m_pbstate.SerializeAsString();
     auto pbstateid = fc::sha256::hash(pbstatestr).str();
 
+    m_pbstateid = pbstateid;
     return pbstateid;
 }
 
@@ -291,7 +292,7 @@ void CreateState::createNameTxState() {
 void CreateState::createProjState() {
     if ( m_projstore.dirtyplayerfname.size() == 0) return;
 
-    m_projmetatree.clear_leaves();
+    //m_projmetatree.clear_leaves();
     for ( int i =0; i < m_projmetatree.leaves_size(); i++) {
         const ProjMeta &pm = m_projmetamap[m_projmetatree.leaves(i)];
         std::string id = ProjStore::makeid(pm.playerid(),pm.name());
@@ -309,6 +310,7 @@ void CreateState::createProjState() {
     ldb.write(m_projmetatree.root(),m_projmetatree.SerializeAsString());
     m_pbstate.set_projstateid(m_projmetatree.root());
     m_projstore.newprojmeta.clear();
+    m_projmetamap.clear();
     this->loadMerkleMap(m_pbstate.projstateid(),
                         m_projmetatree,
                         m_projmetamap);
