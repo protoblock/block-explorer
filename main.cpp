@@ -8,10 +8,11 @@
 #include <actions.h>
 #include <string>
 #include <createmeta.h>
+#include <ldbwriter.h>
 
 #include "currentheaderblock.h"
-using namespace std;
 
+using namespace std;
 using namespace fantasybit;
 int main(int argc, char *argv[])
 {

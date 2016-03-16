@@ -95,11 +95,16 @@ string CreateMeta::DoMetaTr(int32_t bnum, const SignedTransaction &st) {
     return trid;
 }
 
-TxMeta CreateMeta::createTxMeta(int32_t bnum, int32_t tnum, const SignedTransaction &st) {
+TxMeta CreateMeta::createTxMeta(int32_t bnum, int32_t tnum,
+                                const SignedTransaction &st) {
     TxMeta txm{};
     txm.set_blocknum(bnum);
     txm.set_txnum(tnum);
-    txm.mutable_st()->CopyFrom(st);
+    txm.mutable_tx()->CopyFrom(st.trans());
+    txm.set_txtype(st.trans().type());
+    txm.set_fantasy_name(st.fantasy_name());
+    txm.set_id(st.id());
+
     return txm;
 }
 

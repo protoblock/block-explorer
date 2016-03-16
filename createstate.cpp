@@ -49,6 +49,24 @@ std::string fantasybit::CreateState::loadStateId(const std::string &blockmetaid)
 
     ldb.read(m_pbstate.globalstateid(),m_globalstatemeta);
 
+    this->loadMerkleMap(m_pbstate.teamstatemid(),
+                  m_teamstatetree,
+                  m_teamstatemap);
+
+
+
+    for ( auto team : m_teamstatemap)  {
+        MerkleTree mtree;
+        //s_PlayerStore.pre_init(
+        this->loadMerkleMap(
+                    team.second.playermetaidroot(),
+                    mtree,
+                    m_playerstore.m_playerstatemap);
+    }
+
+
+    m_playerstore.init();
+
     return hashit(pbstatemetastr);
 }
 
@@ -63,4 +81,39 @@ std::string fantasybit::CreateState::getStateId(const std::string &blockmetaid) 
     return ret;
 }
 
+decltype(CreateState::GENESIS_NFL_TEAMS) CreateState::GENESIS_NFL_TEAMS {
+    "ARI" ,
+    "ATL" ,
+    "BAL" ,
+    "BUF" ,
+    "CAR" ,
+    "CHI" ,
+    "CIN" ,
+    "CLE" ,
+    "DAL" ,
+    "DEN" ,
+    "DET" ,
+    "GB" ,
+    "HOU" ,
+    "IND" ,
+    "JAC" ,
+    "KC" ,
+    "MIA" ,
+    "MIN" ,
+    "NE" ,
+    "NO" ,
+    "NYG" ,
+    "NYJ" ,
+    "OAK" ,
+    "PHI" ,
+    "PIT" ,
+    "SD" ,
+    "SEA" ,
+    "SF" ,
+    "STL" ,
+    "TB" ,
+    "TEN" ,
+    "WAS",
+    "FA"
+};
 }

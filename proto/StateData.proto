@@ -27,7 +27,11 @@ message BlockMeta {
 message TxMeta {
     optional int32 blocknum = 10;
     optional int32 txnum = 20;
-    optional SignedTransaction st = 30;
+    optional TransType txtype = 40;
+    optional Transaction tx = 50;
+    optional string fantasy_name = 60;
+    optional bytes id = 70;
+    //optional SignedTransaction st = 30;
 }
 
 //gamemetaroot->MerkleTree<gamemetaid>
@@ -101,6 +105,8 @@ message FantasyNameState {
 //gameresultmetaid -> GameResultsMeta
 //ingameprojmetaroot -> MerkleTree<InGameProjMetaroot>
 //gameprojmetaid -> GameProjMeta
+//opengamestatusroot -> MerkleTree<GameStatusMeta>
+//
 message WeekGameStatusMeta {
     optional uint32 week = 10;
     optional bytes gameresultmetaroot = 20;
@@ -138,6 +144,8 @@ message GameResultsMeta {
 //gamemetaid->GameMeta
 //datametaid->DataMeta
 message GameStatusMeta {
+    optional string id = 1;
+    optional int32 week = 2;
     optional GameInfo gameinfo = 10;
     optional GameStatus gamesatus = 20;
     optional bytes gamemetaid = 30;
@@ -277,8 +285,26 @@ message ScheduleStateId {
     optional bytes weekgamestatusmetaroot = 10;
 }
 
-//WeekGameStatusMeta
+//playermetaid -> playermeta
+//playermetaidroot -> MerkleTree<playermetaid>
+message PlayerMeta {
+    optional string playerid = 10;
+    optional PlayerBase player_base = 20;
+    optional PlayerStatus player_status = 30;
+    optional bytes datametaid = 40;
+    optional bytes prev = 50;
+}
 
+//teammetaid -> teammeta
+//teammetaidroot -> MerkleTree<teammetaid>
+//playermetaidroot -> MerkleTree<playermetaid>
+message TeamMeta {
+    optional string teamid = 10;
+    optional bytes playermetaidroot = 20;
+    optional bytes prev = 30;
+}
+
+//WeekGameStatusMeta
 message pbstate {
     optional bytes schedulestateid = 10; //WeekGameStatusMetaRoot
     optional bytes leaderboardstateid = 20; //LeaderBoardMetaId
@@ -286,6 +312,7 @@ message pbstate {
     optional bytes orderstateid = 40; //OrderMetaRoot
     optional bytes marketstateid = 50; //PlayerMarketStateRoot
     optional bytes globalstateid = 60; //GlobalStateMetaId
+    optional bytes teamstatemid = 70; //teammetaroot
 }
 
 //======================================
