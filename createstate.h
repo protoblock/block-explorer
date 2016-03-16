@@ -131,6 +131,7 @@ public:
 
     void init() {}
 
+    void dump(const std::string &pbstateid) ;
     /**
      * @brief createState create pbstate and add to BlockMeta
      * @param bm
@@ -198,7 +199,70 @@ public:
      */
     void createTrPlayerDataState();
 
-    void processTr(const TrMeta &trmeta) {}
+    void processTr(const TrMeta &trmeta, const std::string &trid) {
+        GlobalState gs;
+        switch(trmeta.type()) {
+        case TrType::WEEKOVER:
+            if ( trmeta.week()+1 > 16 ) {
+                gs.set_week(0);
+                gs.set_season(trmeta.season()+1);
+                gs.set_state(GlobalState_State_OFFSEASON);
+            }
+            gs.set_week(trmeta.week()+1);
+            m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+            m_globalstatemeta.set_trmetaid(trid);
+            m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
+            m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+
+            break;
+        case TrType::GAMESTART:
+
+            m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+            m_globalstatemeta.set_trmetaid(trid);
+            m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
+            m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+
+            break;
+        case TrType::SEASONEND:
+            gs.set_state(GlobalState_State_OFFSEASON);
+            gs.set_season(trmeta.season()+1);
+            m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+            m_globalstatemeta.set_trmetaid(trid);
+            m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
+            m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+
+            break;
+        case TrType::TRADESESSIONSTART:
+            m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+            m_globalstatemeta.set_trmetaid(trid);
+            m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+
+            break;
+        case TrType::SEASONSTART:
+            gs.set_state(GlobalState_State_INSEASON);
+            gs.set_season(trmeta.season());
+            gs.set_week(trmeta.week());
+            m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
+            m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+            m_globalstatemeta.set_trmetaid(trid);
+            m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+            break;
+        case TrType::HEARTBEAT:
+            if ( !m_globalstatemeta.has_globalstate() ) {
+                gs.set_state(GlobalState_State_INSEASON);
+                gs.set_season(trmeta.season());
+                gs.set_week(trmeta.week());
+                m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
+                m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+                m_globalstatemeta.set_trmetaid(trid);
+                m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+
+            }
+        default:
+            break;
+
+        }
+    }
 
     void processTx(const std::string &txmetaid);
 
@@ -232,11 +296,20 @@ public:
         return mtree.root();
     }
 
+    template<class T>
+    void dumpMerkleMap(std::unordered_map<std::string,typename T> &mapt) {
+
+        for(auto p: mapt) {
+            qDebug() << p.first.data();
+            qDebug() << p.second.DebugString().data();
+        }
+    }
+
     PlayerStore m_playerstore;
     GameStatusStore m_gamestatustore;
     FantasyNameStore m_fantasynamestore;
     ProjStore m_projstore;
-
+    std::string loadDefaultStates();
     static std::vector<std::string> GENESIS_NFL_TEAMS;
 
 };

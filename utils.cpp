@@ -9,6 +9,10 @@ std::string hashit(const std::string &in) {
     return fc::sha256::hash(in).str();
 }
 
+std::string hashit(const google::protobuf::Message  &in) {
+    return fc::sha256::hash(in.SerializeAsString()).str();
+}
+
 
 // Three-way comparison function:
 //   if a < b: negative result

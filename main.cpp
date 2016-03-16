@@ -68,6 +68,7 @@ int main(int argc, char *argv[])
     }
 */
 
+    /*
     auto blockmetaid = ldb.read("blockhead");
     //auto prev = ldb.read(headid);
     do {
@@ -80,7 +81,7 @@ int main(int argc, char *argv[])
         TrMeta tr;
         tr.ParseFromString(trstr);
     } while ( blockmetaid != "");
-
+*/
 
     qmlRegisterUncreatableType<ModelClass>("satoshifantasy.com",1,1,"ModelClass","modelclass singleton");
 

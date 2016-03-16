@@ -39,16 +39,14 @@ string CreateMeta::DoMetaTx(int32_t bnum, const Block &b) {
     mt.set_root(makeMerkleRoot(mt.leaves()));
     writer.write(mt.root(),mt.SerializeAsString());
 
-
     return mt.root();
-
 }
 
 string CreateMeta::DoMetaTr(int32_t bnum, const SignedTransaction &st) {
     auto &dt = st.trans().GetExtension(DataTransition::data_trans);
     TrMeta tr{};
     tr.set_blocknum(bnum);
-    tr.set_type(DataTransition::Type_Name(dt.type()));
+    tr.set_type(dt.type());
     tr.set_season(dt.season());
     tr.set_week(dt.week());
 

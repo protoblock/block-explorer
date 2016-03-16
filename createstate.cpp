@@ -3,10 +3,21 @@
 
 namespace fantasybit {
 
+void CreateState::dump(const std::string &pbstateid) {
+    //m_pbstateid = loadStateId(pbstateid);
+
+    qDebug() << "test" << m_pbstate.DebugString().data();
+    dumpMerkleMap(m_weekgamestatusmetamap);
+}
+
 std::string CreateState::createState(const BlockMeta &bm) {
 
-    if ( getStateId(bm.prev()) != m_pbstateid) {
-        m_pbstateid = loadStateId(bm.prev());
+    std::string pbstatemetaid = getStateId(bm.prev());
+
+    if ( pbstatemetaid == "")
+        loadDefaultStates();
+    else if ( pbstatemetaid != m_pbstateid) {
+        m_pbstateid = loadStateId(pbstatemetaid);
         loadSubStates();
     }
 
@@ -14,8 +25,9 @@ std::string CreateState::createState(const BlockMeta &bm) {
 //        return "error"; //ToDo:
 //    }
 
+    dump("");
     process(bm);
-
+    dump("");
 
     auto pbstatestr =  m_pbstate.SerializeAsString();
     auto pbstateid = fc::sha256::hash(pbstatestr).str();
@@ -24,8 +36,7 @@ std::string CreateState::createState(const BlockMeta &bm) {
     return pbstateid;
 }
 
-std::string fantasybit::CreateState::loadStateId(const std::string &blockmetaid) {
-    std::string pbstatemetaid = getStateId(blockmetaid);
+std::string fantasybit::CreateState::loadStateId(const std::string &pbstatemetaid) {
 
     auto pbstatemetastr = ldb.read(pbstatemetaid);
     if ( !m_pbstate.ParseFromString(pbstatemetastr) )
@@ -60,6 +71,29 @@ std::string fantasybit::CreateState::loadStateId(const std::string &blockmetaid)
                   m_fantasynamestatemap);
 
     return hashit(pbstatemetastr);
+}
+
+std::string fantasybit::CreateState::loadDefaultStates() {
+
+    TeamMeta tm;
+    for( auto d : CreateState::GENESIS_NFL_TEAMS) {
+        tm.set_teamid(d);
+        auto htm = hashit(tm);
+        m_teamstatetree.add_leaves(htm);
+        m_teamstatemap[htm] = tm;
+    }
+    m_teamstatetree.set_root(makeMerkleRoot(m_teamstatetree.leaves()));
+    m_pbstate.set_teamstatemid(m_teamstatetree.root());
+
+//    GlobalState gs;
+//    gs.set_week(1);
+//    gs.set_season(2015);
+//    m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
+//    m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+
+    m_pbstateid = hashit(m_pbstate);
+
+    return m_pbstateid;
 }
 
 
@@ -140,7 +174,7 @@ void CreateState::process(const BlockMeta &bm) {
     createTrDataState();
     processTx(bm.txmetaroot());
     createTxState();
-    processTr(trm);
+    processTr(trm,bm.trmetaid());
 }
 
 void CreateState::processTrData(const std::string &datametaroot) {
@@ -148,6 +182,7 @@ void CreateState::processTrData(const std::string &datametaroot) {
     std::unordered_map<std::string, DataMeta> datametamap;
     loadMerkleMap(datametaroot,datametatree,datametamap);
 
+    //dumpMerkleMap(datametamap);
     std::string id;
     ResultData rd;
     for(auto datap : datametamap) {
@@ -161,6 +196,10 @@ void CreateState::processTrData(const std::string &datametaroot) {
         case Data_Type_SCHEDULE:
             m_gamestatustore.process(datap.first,
                                      datap.second.data().GetExtension(ScheduleData::schedule_data));
+
+            for (auto mid : m_gamestatustore.m_gamestatsstatemap) {
+                ldb.write(mid.first,mid.second.SerializeAsString());
+            }
             break;
 
         case Data_Type_GAME:
@@ -223,6 +262,7 @@ void CreateState::processTx(const std::string &txmetaid) {
 }
 
 void CreateState::processNameTx(std::unordered_map<std::string, TxMeta> &tmap) {
+    dumpMerkleMap(tmap);
     std::string id;
     for ( auto nt : tmap ) {
         if ( nt.second.txtype() != TransType::NAME)

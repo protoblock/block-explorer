@@ -24,6 +24,7 @@ message BlockMeta {
     optional bytes next = 30;
 }
 
+
 message TxMeta {
     optional int32 blocknum = 10;
     optional int32 txnum = 20;
@@ -34,11 +35,12 @@ message TxMeta {
     //optional SignedTransaction st = 30;
 }
 
+
 //gamemetaroot->MerkleTree<gamemetaid>
 //datametaroot->MerkleTree<datametaid>
 message TrMeta {
     optional int32 blocknum = 10;
-    optional string type = 40;
+    optional TrType type = 40;
     optional uint32 season = 50;
     optional uint32 week = 60;
     optional bytes gamemetaroot = 70;

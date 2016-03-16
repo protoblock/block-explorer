@@ -286,23 +286,23 @@ message ScheduleData {
     optional WeeklySchedule weekly = 10;
 }
 
+enum TrType {
+    SEASONSTART=2; // before week1 - week1 projection can start
+    SEASONEND=3; //after last week of season
+    HEARTBEAT=5; //anytime
+    GAMESTART=6; //list of teamids to cut off projections for week
+    WEEKOVER=7; //clear all projections
+    TRADESESSIONSTART=8;
+    TRADESESSIONCLOSEANDPREOPEN=9;
+}
 
 message DataTransition {
     extend Transaction {
         optional DataTransition data_trans = 203;
     }
 
-    enum Type {
-        SEASONSTART=2; // before week1 - week1 projection can start
-        SEASONEND=3; //after last week of season
-        HEARTBEAT=5; //anytime
-        GAMESTART=6; //list of teamids to cut off projections for week
-        WEEKOVER=7; //clear all projections
-        TRADESESSIONSTART=8;
-        TRADESESSIONCLOSEANDPREOPEN=9;
-    }
 
-    optional Type type =1;
+    optional TrType type =1;
     optional uint32 season =10;
     optional uint32 week = 20;
     repeated GameData gamedata = 30;

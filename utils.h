@@ -25,6 +25,7 @@ class Int32Comparator : public leveldb::Comparator {
 
 std::string makeMerkleRoot(decltype(fantasybit::MerkleTree::default_instance().leaves()) &in);
 std::string hashit(const std::string &in);
+std::string hashit(const google::protobuf::Message  &in);
 
 
 }
