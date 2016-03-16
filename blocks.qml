@@ -46,26 +46,18 @@ Item {
         id: gridComp
         Row {
             Text {
-                text: blocknum + " "
+                text: display.blockNumber + " "
 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         list.currentIndex = index;
-
-                        /*
-                        var component = Qt.createComponent("qrc:/detail.qml")
-                        var window    = component.createObject(mainWindow)
-                        window.show()
-                        mainWindow.hide()
-                        */
-
                         ld.setSource("detail.qml")
                     }
                 }
             }
             Text {
-                text: time + " "
+                text: display.time + " "
             }
         }
     }

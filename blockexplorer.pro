@@ -12,8 +12,8 @@ include(deployment.pri)
 TARGET = blockexplorer
 CONFIG += console
 CONFIG -= app_bundle
-CONFIG += c++11
--stdlib=libc++
+CONFIG += c++11 \
+        -stdlib=libc++
 
 TEMPLATE = app
 
@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     blockchain.cpp \
     actions.cpp \
     display.cpp \
-    modelclass.cpp
+    modelclass.cpp \
+    blockdisplay.cpp
 
 unix:macx {
     LIBS +=  -L$$PWD/libs \
@@ -86,4 +87,5 @@ HEADERS += \
     blockchain.h \
     actions.h \
     display.h \
-    modelclass.h
+    modelclass.h \
+    blockdisplay.h

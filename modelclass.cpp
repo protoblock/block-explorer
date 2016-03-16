@@ -3,6 +3,8 @@
 #include <string.h>
 #include <qdebug>
 
+#include "blockdisplay.h"
+
 using namespace std;
 
 ModelClass::ModelClass()
@@ -44,26 +46,16 @@ QVariant ModelClass::data(const QModelIndex & index, int role) const {
         bc.Seek(row);
 
         if (bc.Valid()) {
+            if (role == Qt::DisplayRole) {
+                int blocknum = bc.GetCurrentBlock().signedhead().head().num();
+                long timestamp = bc.GetCurrentBlock().signedhead().head().timestamp();
 
-            if (role == BlockNum) {
-                qInfo() << " BlockNum " << bc.GetCurrentBlock().DebugString().data();
-
-                return QVariant(bc.GetCurrentBlock().signedhead().head().num());
-            }
-            else if (role == CreationTime) {
-                qInfo() << " CreationTime " << bc.GetCurrentBlock().DebugString().data();
-
-                return QVariant(bc.GetCurrentBlock().signedhead().head().timestamp());
+                BlockDisplay dsply{blocknum, timestamp};
+                QVariant var = QVariant::fromValue(dsply);
+                return var;
             }
         }
     }
 
     return QVariant();
-}
-
-QHash<int, QByteArray> ModelClass::roleNames() const {
-    QHash<int, QByteArray> roles;
-    roles[BlockNum] = "blocknum";
-    roles[CreationTime] = "time";
-    return roles;
 }

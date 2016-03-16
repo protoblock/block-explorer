@@ -5,6 +5,7 @@
 
 #include <display.h>
 #include <modelclass.h>
+#include <blockdisplay.h>
 
 #include <string>
 using namespace std;
@@ -23,6 +24,9 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+
+    //qRegisterMetaType<BlockDisplay>();
 
     //Display dsply;
 
