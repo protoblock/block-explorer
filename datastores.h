@@ -37,7 +37,7 @@ public:
 };
 
 /**
- * @brief The GameStatusStore class stored gamestatusmeta state data
+ * @brief The FantasyNameStore class stored gamestatusmeta state data
  */
 class FantasyNameStore {
 public:
@@ -63,17 +63,23 @@ public:
  */
 class GameStatusStore {
 public:
-
-    std::unordered_map<std::string,GameStatusMeta>
+    std::unordered_map<std::string, GameStatusMeta>
             m_gamestatsstatemap;
 
-    std::unordered_map<std::string,std::string>
+    std::unordered_map<std::string, std::string>
             m_gameid2metaid;
 
-    std::map<std::string,int>
+    std::map<std::string, int>
             m_gameid2week;
 
     std::unordered_map<int, bool> dirtyweek;
+
+    std::unordered_map<int, std::string>
+            m_week2ingameprojmeta;
+
+    GameStatusMeta getGameStatusMeta(const std::string &gameid) {
+        return m_gamestatsstatemap[m_gameid2metaid[gameid]];
+    }
 
     void init();
 
@@ -87,6 +93,14 @@ public:
 
     std::string close(const std::string &dataid,
                         const std::string &id);
+
+    std::unordered_map<int, std::string> createGameStatusmetaidroots();
+
+    std::string start(const std::string &gmid, const GameMeta &gm);
+
+    void clean();
+
+    void addInGameProjMeta(int week,const std::string &);
 
 };
 
@@ -104,6 +118,7 @@ public:
     std::unordered_map<std::string, bool> dirtyplayerfname;
 
     std::vector<std::string> newprojmeta;
+
     void init();
 
     static std::string makeid(const std::string &pid, const std::string &fn) {
@@ -119,6 +134,8 @@ public:
                         const std::string &fname);
 
     std::string update(const ProjMeta &pm, const std::string &pf);
+
+    bool dirty;
 };
 
 }

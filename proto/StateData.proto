@@ -188,9 +188,24 @@ message GamePlayerProjMeta {
     optional bytes gamedatametaid = 80;
 }
 
-//fnprojmetaroot -> MerkleRoot<ProjMetaId> // all open projections for fname
-//playerprojmetaroot -> MerkleRoot<ProjMetaId> // all open projections for playerid
+////fnprojmetaroot -> MerkleRoot<ProjMetaId> // all open projections for fname
+////playerprojmetaroot -> MerkleRoot<ProjMetaId> // all open projections for playerid
+//message ProjStateMeta {
+//    optional bytes fnprojposmetaroot = 10;
+//    optional bytes playerprojposmetaroot = 20;
+//}
 
+////store by position
+//message ProjPosMeta {
+//    optional string pos = 10;
+//    optional bytes projmetaroot = 20;
+//}
+
+////store ProjPos by fname
+//message FnProjPosMeta {
+//    optional string fname = 10;
+//    optional bytes projposmetaroot = 20;
+//}
 
 //projmetaid -> ProjMeta
 message ProjMeta {

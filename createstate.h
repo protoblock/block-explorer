@@ -192,6 +192,7 @@ public:
      */
     void createTrDataState() {
         createTrPlayerDataState();
+        createTrGameDataState();
     }
 
     /**
@@ -199,76 +200,20 @@ public:
      */
     void createTrPlayerDataState();
 
-    void processTr(const TrMeta &trmeta, const std::string &trid) {
-        GlobalState gs;
-        switch(trmeta.type()) {
-        case TrType::WEEKOVER:
-            if ( trmeta.week()+1 > 16 ) {
-                gs.set_week(0);
-                gs.set_season(trmeta.season()+1);
-                gs.set_state(GlobalState_State_OFFSEASON);
-            }
-            gs.set_week(trmeta.week()+1);
-            m_globalstatemeta.set_prev(m_pbstate.globalstateid());
-            m_globalstatemeta.set_trmetaid(trid);
-            m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
-            m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+    /**
+     * @brief createTrGameDataState write and update latest game/schedule/result states
+     */
+    void createTrGameDataState();
 
-            break;
-        case TrType::GAMESTART:
-
-            m_globalstatemeta.set_prev(m_pbstate.globalstateid());
-            m_globalstatemeta.set_trmetaid(trid);
-            m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
-            m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
-
-            break;
-        case TrType::SEASONEND:
-            gs.set_state(GlobalState_State_OFFSEASON);
-            gs.set_season(trmeta.season()+1);
-            m_globalstatemeta.set_prev(m_pbstate.globalstateid());
-            m_globalstatemeta.set_trmetaid(trid);
-            m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
-            m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
-
-            break;
-        case TrType::TRADESESSIONSTART:
-            m_globalstatemeta.set_prev(m_pbstate.globalstateid());
-            m_globalstatemeta.set_trmetaid(trid);
-            m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
-
-            break;
-        case TrType::SEASONSTART:
-            gs.set_state(GlobalState_State_INSEASON);
-            gs.set_season(trmeta.season());
-            gs.set_week(trmeta.week());
-            m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
-            m_globalstatemeta.set_prev(m_pbstate.globalstateid());
-            m_globalstatemeta.set_trmetaid(trid);
-            m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
-            break;
-        case TrType::HEARTBEAT:
-            if ( !m_globalstatemeta.has_globalstate() ) {
-                gs.set_state(GlobalState_State_INSEASON);
-                gs.set_season(trmeta.season());
-                gs.set_week(trmeta.week());
-                m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
-                m_globalstatemeta.set_prev(m_pbstate.globalstateid());
-                m_globalstatemeta.set_trmetaid(trid);
-                m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
-
-            }
-        default:
-            break;
-
-        }
-    }
+    void processTr(const TrMeta &trmeta, const std::string &trid);
 
     void processTx(const std::string &txmetaid);
 
     void processNameTx(std::unordered_map<std::string, TxMeta> &tmap);
 
     void processRegTx(std::unordered_map<std::string, TxMeta> &tmap);
+
+    void processGameStart(const std::string &gmid,const GameMeta &gmeta,const std::string &trid);
 
     /**
      * @brief createTxState write new state data post tx processing
@@ -297,6 +242,20 @@ public:
     }
 
     template<class T>
+    std::string loadMerkleMap(const std::string &in,std::vector<typename T> &vect) {
+
+        MerkleTree mtree;
+        ldb.read(in,mtree);
+        for ( auto nodestr : mtree.leaves()) {
+            typename T nodet;
+            ldb.read(nodestr,nodet);
+            vect.push_back(nodet);
+        }
+
+        return mtree.root();
+    }
+
+    template<class T>
     void dumpMerkleMap(std::unordered_map<std::string,typename T> &mapt) {
 
         for(auto p: mapt) {
@@ -305,6 +264,12 @@ public:
         }
     }
 
+    std::string setWriteMerkle(MerkleTree &tree) {
+        tree.set_root(makeMerkleRoot(tree.leaves()));
+        return ldb.write(tree.root(),tree.SerializeAsString());
+    }
+
+
     PlayerStore m_playerstore;
     GameStatusStore m_gamestatustore;
     FantasyNameStore m_fantasynamestore;
@@ -312,6 +277,7 @@ public:
     std::string loadDefaultStates();
     static std::vector<std::string> GENESIS_NFL_TEAMS;
 
+    std::string processTeamGameStart(const std::string &pidroot,const std::string &,const std::string &);
 };
 
 

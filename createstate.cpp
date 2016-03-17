@@ -1,6 +1,7 @@
 #include "createstate.h"
 #include "datastores.h"
 
+using namespace std;
 namespace fantasybit {
 
 void CreateState::dump(const std::string &pbstateid) {
@@ -221,37 +222,179 @@ void CreateState::processTrData(const std::string &datametaroot) {
             break;
         }
     }
-
 }
 
-void CreateState::createTrPlayerDataState() {
-    auto tmr = m_playerstore.createPlayermetaidroots();
-    if ( tmr.size() == 0 ) return;
+void CreateState::processTr(const TrMeta &trmeta, const std::string &trid) {
+    GlobalState gs;
+    switch(trmeta.type()) {
+    case TrType::WEEKOVER:
+        if ( trmeta.week()+1 > 16 ) {
+            gs.set_week(0);
+            gs.set_season(trmeta.season()+1);
+            gs.set_state(GlobalState_State_OFFSEASON);
+        }
+        gs.set_week(trmeta.week()+1);
+        m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+        m_globalstatemeta.set_trmetaid(trid);
+        m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
+        m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
 
-    for(int i = 0; i < m_teamstatetree.leaves_size(); i++) {
-        std::string id = m_teamstatetree.leaves(i);
+        break;
+    case TrType::GAMESTART: {
+        m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+        m_globalstatemeta.set_trmetaid(trid);
+        m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
+        m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+        MerkleTree gamemetatree;
+        std::unordered_map<std::string, GameMeta> gamemetamap;
+        loadMerkleMap(trmeta.gamemetaroot(),gamemetatree,gamemetamap);
+        for (auto gmid : gamemetatree.leaves() )
+            processGameStart(gmid,gamemetamap[gmid],trid);
+        break;
+    }
+    case TrType::SEASONEND:
+        gs.set_state(GlobalState_State_OFFSEASON);
+        gs.set_season(trmeta.season()+1);
+        m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+        m_globalstatemeta.set_trmetaid(trid);
+        m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
+        m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
 
-        auto teamid = m_teamstatemap[id].teamid();
-        if ( tmr.find(teamid) != tmr.end() ) {
-            TeamMeta &tm = m_teamstatemap[id];
-            tm.set_playermetaidroot(tmr[teamid]);
-            tm.set_prev(id);
-            auto ts = tm.SerializeAsString();
-            auto th = hashit(ts);
-            m_teamstatetree.set_leaves(i,th);
-            ldb.write(th,ts);
+        break;
+    case TrType::TRADESESSIONSTART:
+        m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+        m_globalstatemeta.set_trmetaid(trid);
+        m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+
+        break;
+    case TrType::SEASONSTART:
+        gs.set_state(GlobalState_State_INSEASON);
+        gs.set_season(trmeta.season());
+        gs.set_week(trmeta.week());
+        m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
+        m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+        m_globalstatemeta.set_trmetaid(trid);
+        m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+        break;
+    case TrType::HEARTBEAT:
+        if ( !m_globalstatemeta.has_globalstate() ) {
+            gs.set_state(GlobalState_State_INSEASON);
+            gs.set_season(trmeta.season());
+            gs.set_week(trmeta.week());
+            m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
+            m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+            m_globalstatemeta.set_trmetaid(trid);
+            m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+
+        }
+    default:
+        break;
+
+    }
+}
+
+/**
+ * @brief CreateState::processGameStart process GAMESTART transition
+ * @param gmid gamemetaid
+ * @param gmeta gamemeta
+ * @param trid transitionid
+ */
+void CreateState::processGameStart(const string &gmid,const GameMeta &gmeta,const string &trid) {
+    string id = m_gamestatustore.start(gmid,gmeta);
+    if ( id != "")
+        ldb.write(id,m_gamestatustore.m_gamestatsstatemap[id].SerializeAsString());
+
+    GameStatusMeta gsm = m_gamestatustore.getGameStatusMeta(gmeta.gamedata().gameid());
+    const GameInfo &gi = gsm.gameinfo();
+    bool home = false;
+    bool away = false;
+    TeamProjMeta tpm;
+    tpm.set_gameid(gmeta.gamedata().gameid());
+    tpm.set_gamedatametaid(gmid);
+    tpm.set_week(gsm.week());
+    InGameProjMeta igpm;
+    igpm.set_gameid(gmeta.gamedata().gameid());
+    igpm.set_gamestatusmetaid(id);
+    igpm.set_gamedatametaid(gmid);
+    for ( auto ts : m_teamstatemap) {
+        if ( ts.second.teamid() == gi.home() ) {
+            home = true;
+            tpm.set_team(gi.home());
+            tpm.set_gameplayerprojmetaroot(
+                        processTeamGameStart(ts.second.playermetaidroot(),gmid,id));
+            igpm.set_homeprojmeta(ldb.write(tpm));
+        }
+        else if ( ts.second.teamid() == gi.away() ) {
+            away = true;
+            tpm.set_team(gi.away());
+            tpm.set_gameplayerprojmetaroot(
+                        processTeamGameStart(ts.second.playermetaidroot(),gmid,id));
+            igpm.set_awayprojmeta(ldb.write(tpm));
+        }
+        if ( away && home ) {
+            m_gamestatustore.addInGameProjMeta(gsm.week(),ldb.write(igpm));
+            break;
         }
     }
 
-    m_teamstatetree.set_root(makeMerkleRoot(m_teamstatetree.leaves()));
-    ldb.write(m_teamstatetree.root(),m_teamstatetree.SerializeAsString());
-    this->loadMerkleMap(m_teamstatetree.root(),
-                        m_teamstatetree,
-                        m_teamstatemap);
-    m_playerstore.clean();
-    m_pbstate.set_teamstatemid(m_teamstatetree.root());
+
+
+
+    //get home and away team
+    //get players
+    //remove proj
+    //set game proj
+    //clear orders
+    //set settlepos
+    //update WeekGameStatusMeta
+    //  ingameprojmetaroot
+    //  opengamestatusroot
+    //auto teamid = m_teamstatemap[id].teamid();
+
 }
 
+string CreateState::processTeamGameStart(const string &pidroot,
+                                       const string &gdataid,
+                                       const string &gstatusid) {
+    vector<PlayerMeta> vecp;
+    this->loadMerkleMap(pidroot,vecp);
+
+    vector<string> pids(vecp.size());
+    std::transform(vecp.begin(), vecp.end(), pids.begin(),
+                   [](PlayerMeta &pm) { return pm.playerid(); });
+
+    std::sort(pids.begin(),pids.end());
+
+    std::unordered_map<string,MerkleTree> projplayermap;
+    for( auto it = m_projstore.m_projstatemap.begin(); it!=m_projstore.m_projstatemap.end();) {
+        if ( find(pids.begin(),pids.end(),it->second.playerid()) == pids.end()) {
+            it++;
+            continue;
+        }
+
+        projplayermap[it->second.playerid()].add_leaves(it->first);
+        it = m_projstore.m_projstatemap.erase(it);
+    }
+
+    MerkleTree gameplayerprojmetatree;
+    for ( auto pidm : projplayermap) {
+        GamePlayerProjMeta gpm;
+        gpm.set_playerid(pidm.first);
+        gpm.set_gamedatametaid(gdataid);
+        gpm.set_gamestatusmetaid(gstatusid);
+        gpm.set_posmetaplayerroot(setWriteMerkle(pidm.second));
+        gameplayerprojmetatree.add_leaves(ldb.write(gpm));
+    }
+
+    m_projstore.dirty = true;
+
+    return setWriteMerkle(gameplayerprojmetatree);
+}
+
+/**
+ * @brief CreateState::processTx process transactions
+ * @param txmetaid
+ */
 void CreateState::processTx(const std::string &txmetaid) {
     MerkleTree txtree;
     std::unordered_map<std::string, TxMeta> txtreemap;
@@ -261,6 +404,10 @@ void CreateState::processTx(const std::string &txmetaid) {
     processRegTx(txtreemap);
 }
 
+/**
+ * @brief CreateState::processNameTx process name transactions (first)
+ * @param tmap list of transaction in this block
+ */
 void CreateState::processNameTx(std::unordered_map<std::string, TxMeta> &tmap) {
     dumpMerkleMap(tmap);
     std::string id;
@@ -275,6 +422,10 @@ void CreateState::processNameTx(std::unordered_map<std::string, TxMeta> &tmap) {
     }
 }
 
+/**
+ * @brief CreateState::processRegTx process other (non-name) transactions
+ * @param tmap list of transaction in this block
+ */
 void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
     std::string id;
     for ( auto nt : tmap ) {
@@ -304,12 +455,85 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
     }
 }
 
+
+void CreateState::createTrPlayerDataState() {
+    auto tmr = m_playerstore.createPlayermetaidroots();
+    if ( tmr.size() == 0 ) return;
+
+    for(int i = 0; i < m_teamstatetree.leaves_size(); i++) {
+        std::string id = m_teamstatetree.leaves(i);
+
+        auto teamid = m_teamstatemap[id].teamid();
+        if ( tmr.find(teamid) != tmr.end() ) {
+            TeamMeta &tm = m_teamstatemap[id];
+            tm.set_playermetaidroot(tmr[teamid]);
+            tm.set_prev(id);
+            auto ts = tm.SerializeAsString();
+            auto th = hashit(ts);
+            m_teamstatetree.set_leaves(i,th);
+            ldb.write(th,ts);
+        }
+    }
+
+    m_teamstatetree.set_root(makeMerkleRoot(m_teamstatetree.leaves()));
+    ldb.write(m_teamstatetree.root(),m_teamstatetree.SerializeAsString());
+    this->loadMerkleMap(m_teamstatetree.root(),
+                        m_teamstatetree,
+                        m_teamstatemap);
+    m_playerstore.clean();
+    m_pbstate.set_teamstatemid(m_teamstatetree.root());
+}
+
+/**
+ * @brief CreateState::createTrGameDataState set the new Game status meta state
+ *          this is done after processing GameData and updating GameStatusStore
+ *          m_pbstate.set_schedulestateid(m_weekgamestatusmetatree.root());
+
+ */
+void CreateState::createTrGameDataState() {
+    auto tmr = m_gamestatustore.createGameStatusmetaidroots();
+    if ( tmr.size() == 0 ) return;
+
+    for(int i = 0; i < m_weekgamestatusmetatree.leaves_size(); i++) {
+        std::string id = m_weekgamestatusmetatree.leaves(i);
+
+        int week = m_weekgamestatusmetamap[id].week();
+        if ( tmr.find(week) != tmr.end() ) {
+            WeekGameStatusMeta &tm = m_weekgamestatusmetamap[id];
+            tm.set_opengamestatusroot(tmr[week]);
+//ToDo            optional bytes gameresultmetaroot = 20;
+//ToDo            optional bytes ingameprojmetaroot = 30;
+
+            tm.set_prev(id);
+            auto ts = tm.SerializeAsString();
+            auto th = hashit(ts);
+            m_weekgamestatusmetatree.set_leaves(i,th);
+            ldb.write(th,ts);
+        }
+    }
+
+    m_weekgamestatusmetatree.set_root(makeMerkleRoot(m_weekgamestatusmetatree.leaves()));
+    ldb.write(m_weekgamestatusmetatree.root(),m_weekgamestatusmetatree.SerializeAsString());
+    this->loadMerkleMap(m_weekgamestatusmetatree.root(),
+                        m_weekgamestatusmetatree,
+                        m_weekgamestatusmetamap);
+    m_gamestatustore.clean();
+    m_pbstate.set_schedulestateid(m_weekgamestatusmetatree.root());
+}
+
+/**
+ * @brief CreateState::createTxState create new states after processing transactions
+ */
 void CreateState::createTxState() {
     createNameTxState();
     createProjState();
-
 }
 
+/**
+ * @brief CreateState::createNameTxState create leaderboard state and store it in
+ *     m_pbstate.set_leaderboardstateid(ldb.write(m_leaderboardmeta));
+
+ */
 void CreateState::createNameTxState() {
     if ( m_fantasynamestore.dirty.size() == 0) return;
 
@@ -329,6 +553,10 @@ void CreateState::createNameTxState() {
 
 }
 
+/**
+ * @brief CreateState::createProjState create proj state store it
+    m_pbstate.set_projstateid(m_projmetatree.root());
+ */
 void CreateState::createProjState() {
     if ( m_projstore.dirtyplayerfname.size() == 0) return;
 
