@@ -278,6 +278,7 @@ public:
     static std::vector<std::string> GENESIS_NFL_TEAMS;
 
     std::string processTeamGameStart(const std::string &pidroot,const std::string &,const std::string &);
+    void createTrState();
 };
 
 

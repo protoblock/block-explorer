@@ -120,6 +120,7 @@ void GameStatusStore::init() {
         m_gameid2week[gmp.second.id()] = gmp.second.week();
         if ( dirtyweek.find(gmp.second.week()) == dirtyweek.end())
             dirtyweek[gmp.second.week()] = false;
+
     }
 }
 
@@ -196,12 +197,17 @@ std::string GameStatusStore::start(const std::string &gmid, const GameMeta &gm) 
     return update(gsm);
 }
 
-std::unordered_map<int, std::string> GameStatusStore::createGameStatusmetaidroots() {
-    std::unordered_map<int,std::string> ret;
+std::unordered_map<int, WeekGameStatusMeta> GameStatusStore::createGameStatusmetaidroots() {
+    std::unordered_map<int,WeekGameStatusMeta> ret;
     std::unordered_map<int,MerkleTree> mtrees;
+    std::unordered_map<int,MerkleTree> mtrees_ingame;
+
     for ( auto d : dirtyweek ) {
-        if ( d.second )
+        if ( d.second ) {
             mtrees[d.first] = MerkleTree::default_instance();
+            mtrees_ingame[d.first] = MerkleTree::default_instance();
+            ret[d.first] = WeekGameStatusMeta::default_instance();
+        }
     }
 
     for ( auto pt : m_gameid2week) {
@@ -212,12 +218,22 @@ std::unordered_map<int, std::string> GameStatusStore::createGameStatusmetaidroot
             if ( gsm.gamesatus().status() == GameStatus::SCHEDULED ) {
                 mtrees[pt.second].add_leaves(id);
             }
+            if ( gsm.gamesatus().status() == GameStatus::INGAME ) {
+                std::string &iid = m_id2ingameprojmeta[pt.first];
+                mtrees_ingame[pt.second].add_leaves(iid);
+            }
         }
     }
 
+
     for ( auto tmt : mtrees) {
-        ret[tmt.first] = makeMerkleRoot(tmt.second.leaves());
+        ret[tmt.first].set_opengamestatusroot(makeMerkleRoot(tmt.second.leaves()));
     }
+
+    for ( auto tmt : mtrees_ingame) {
+        ret[tmt.first].set_opengamestatusroot(makeMerkleRoot(tmt.second.leaves()));
+    }
+
 
     return ret;
 }
@@ -280,8 +296,8 @@ std::string ProjStore::update(const ProjMeta &pm, const std::string &pf) {
     return newid;
 }
 
-void GameStatusStore::addInGameProjMeta(int week, const std::string &ingameprojid) {
-    m_week2ingameprojmeta[week] = ingameprojid;
+void GameStatusStore::addInGameProjMeta(const std::string &gameid, int week, const std::string &ingameprojid) {
+    m_id2ingameprojmeta[gameid] = ingameprojid;
     dirtyweek[week] = true;
 }
 

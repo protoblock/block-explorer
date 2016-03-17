@@ -74,8 +74,8 @@ public:
 
     std::unordered_map<int, bool> dirtyweek;
 
-    std::unordered_map<int, std::string>
-            m_week2ingameprojmeta;
+    std::unordered_map<std::string,std::string>
+            m_id2ingameprojmeta;
 
     GameStatusMeta getGameStatusMeta(const std::string &gameid) {
         return m_gamestatsstatemap[m_gameid2metaid[gameid]];
@@ -94,14 +94,14 @@ public:
     std::string close(const std::string &dataid,
                         const std::string &id);
 
-    std::unordered_map<int, std::string> createGameStatusmetaidroots();
+    std::unordered_map<int, WeekGameStatusMeta>
+                        createGameStatusmetaidroots();
 
     std::string start(const std::string &gmid, const GameMeta &gm);
 
     void clean();
 
-    void addInGameProjMeta(int week,const std::string &);
-
+    void addInGameProjMeta(const std::string &gameid, int week, const std::string &ingameprojid);
 };
 
 /**

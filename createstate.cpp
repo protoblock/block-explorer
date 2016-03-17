@@ -138,6 +138,7 @@ void CreateState::loadGameState() {
         for(auto igp : ingameprojmap) {
             gsm.ParseFromString(ldb.read(igp.second.gamestatusmetaid()));
             m_gamestatustore.m_gamestatsstatemap[igp.second.gamestatusmetaid()] = gsm;
+            m_gamestatustore.m_id2ingameprojmeta[gsm.gameinfo().id()] = igp.first;
         }
 
         std::unordered_map<std::string,GameResultsMeta> gameresmap;
@@ -176,6 +177,7 @@ void CreateState::process(const BlockMeta &bm) {
     processTx(bm.txmetaroot());
     createTxState();
     processTr(trm,bm.trmetaid());
+    createTrState();
 }
 
 void CreateState::processTrData(const std::string &datametaroot) {
@@ -332,7 +334,7 @@ void CreateState::processGameStart(const string &gmid,const GameMeta &gmeta,cons
             igpm.set_awayprojmeta(ldb.write(tpm));
         }
         if ( away && home ) {
-            m_gamestatustore.addInGameProjMeta(gsm.week(),ldb.write(igpm));
+            m_gamestatustore.addInGameProjMeta(gmeta.gamedata().gameid(),gsm.week(),ldb.write(igpm));
             break;
         }
     }
@@ -500,7 +502,7 @@ void CreateState::createTrGameDataState() {
         int week = m_weekgamestatusmetamap[id].week();
         if ( tmr.find(week) != tmr.end() ) {
             WeekGameStatusMeta &tm = m_weekgamestatusmetamap[id];
-            tm.set_opengamestatusroot(tmr[week]);
+            tm.set_opengamestatusroot(tmr[week].opengamestatusroot());
 //ToDo            optional bytes gameresultmetaroot = 20;
 //ToDo            optional bytes ingameprojmetaroot = 30;
 
@@ -519,6 +521,10 @@ void CreateState::createTrGameDataState() {
                         m_weekgamestatusmetamap);
     m_gamestatustore.clean();
     m_pbstate.set_schedulestateid(m_weekgamestatusmetatree.root());
+}
+
+void CreateState::createTrState() {
+
 }
 
 /**
