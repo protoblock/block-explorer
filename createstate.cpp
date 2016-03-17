@@ -26,13 +26,14 @@ std::string CreateState::createState(const BlockMeta &bm) {
 //        return "error"; //ToDo:
 //    }
 
-    dump("");
+    //dump("");
     process(bm);
-    dump("");
+    //dump("");
 
     auto pbstatestr =  m_pbstate.SerializeAsString();
     auto pbstateid = fc::sha256::hash(pbstatestr).str();
 
+    ldb.write(m_pbstate);
     m_pbstateid = pbstateid;
     return pbstateid;
 }
@@ -355,9 +356,11 @@ void CreateState::processGameStart(const string &gmid,const GameMeta &gmeta,cons
 
 }
 
-string CreateState::processTeamGameStart(const string &pidroot,
-                                       const string &gdataid,
-                                       const string &gstatusid) {
+string CreateState::processTeamGameStart(
+                                const string &pidroot,
+                                const string &gdataid,
+                                const string &gstatusid) {
+
     vector<PlayerMeta> vecp;
     this->loadMerkleMap(pidroot,vecp);
 
@@ -503,9 +506,8 @@ void CreateState::createTrGameDataState() {
         if ( tmr.find(week) != tmr.end() ) {
             WeekGameStatusMeta &tm = m_weekgamestatusmetamap[id];
             tm.set_opengamestatusroot(tmr[week].opengamestatusroot());
-//ToDo            optional bytes gameresultmetaroot = 20;
-//ToDo            optional bytes ingameprojmetaroot = 30;
-
+            tm.set_ingameprojmetaroot(tmr[week].ingameprojmetaroot());
+            tm.set_gameresultmetaroot(tmr[week].gameresultmetaroot());
             tm.set_prev(id);
             auto ts = tm.SerializeAsString();
             auto th = hashit(ts);
@@ -524,7 +526,7 @@ void CreateState::createTrGameDataState() {
 }
 
 void CreateState::createTrState() {
-
+    createTrGameDataState();
 }
 
 /**
@@ -564,7 +566,13 @@ void CreateState::createNameTxState() {
     m_pbstate.set_projstateid(m_projmetatree.root());
  */
 void CreateState::createProjState() {
-    if ( m_projstore.dirtyplayerfname.size() == 0) return;
+    if (m_projstore.dirty) {
+
+    }
+
+    else if ( m_projstore.dirtyplayerfname.size() == 0) return;
+
+    //else {
 
     //m_projmetatree.clear_leaves();
     for ( int i =0; i < m_projmetatree.leaves_size(); i++) {
@@ -589,6 +597,7 @@ void CreateState::createProjState() {
                         m_projmetatree,
                         m_projmetamap);
 
+    //}
 }
 
 decltype(CreateState::GENESIS_NFL_TEAMS) CreateState::GENESIS_NFL_TEAMS {

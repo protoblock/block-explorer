@@ -231,7 +231,7 @@ std::unordered_map<int, WeekGameStatusMeta> GameStatusStore::createGameStatusmet
     }
 
     for ( auto tmt : mtrees_ingame) {
-        ret[tmt.first].set_opengamestatusroot(makeMerkleRoot(tmt.second.leaves()));
+        ret[tmt.first].set_ingameprojmetaroot(makeMerkleRoot(tmt.second.leaves()));
     }
 
 

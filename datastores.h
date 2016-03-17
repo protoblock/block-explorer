@@ -135,7 +135,7 @@ public:
 
     std::string update(const ProjMeta &pm, const std::string &pf);
 
-    bool dirty;
+    bool dirty = false;
 };
 
 }
