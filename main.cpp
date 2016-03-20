@@ -29,12 +29,19 @@ int main(int argc, char *argv[])
 
     Blockchain bc{};
     bc.init();
-    auto bh = bc.GetBlockHeight();
-    string prev = "";
-    for ( int i = 1 ; i < bh; i++) {
+    //auto start = 0;
+    BlockMeta bm{};
+    auto headid = ldb.read("blockhead");
+    ldb.read(headid,bm);
+    auto start= bm.blocknum();
+    auto bh = 50;//bc.GetBlockHeight();
+    string prev = headid;
+    for ( int i = start+1 ; i < bh; i++) {
         Block b = bc.GetBlock(i);
         prev = cm.DoMeta(b,prev);
     }
+    ldb.write("blockhead",prev);
+    return 0;
 
 /*
     auto headid = ldb.read("blockhead");

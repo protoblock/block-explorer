@@ -156,12 +156,7 @@ public:
     /**
      * @brief loadSubStates load all state data pointed to by pbstate
      */
-    void loadSubStates() {
-        loadPlayerState();
-        loadGameState();
-        loadFantasyNameBalState();
-        loadProjState();
-    }
+    void loadSubStates();
 
     void loadPlayerState();
 
@@ -238,6 +233,17 @@ public:
             mapt[nodestr] = nodet;
         }
 
+        return mtree.root();
+    }
+
+    template<class T>
+    std::string setNewMerkelTree(const std::unordered_map<std::string,typename T> &mapt,
+                                 MerkleTree &mtree) {
+        for ( auto &leaf : mapt) {
+            mtree.add_leaves(leaf.first);
+        }
+        mtree.set_root(makeMerkleRoot(mtree.leaves()));
+        ldb.write(mtree.root(),mtree.SerializeAsString());
         return mtree.root();
     }
 

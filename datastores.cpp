@@ -60,7 +60,7 @@ std::string PlayerStore::update(const PlayerMeta &pm, const std::string &prevtea
     return newid;
 }
 
-std::unordered_map<std::string, std::string> PlayerStore::createPlayermetaidroots() {
+std::unordered_map<std::string, MerkleTree> PlayerStore::createPlayermetaidroots() {
     std::unordered_map<std::string,std::string> ret;
     std::unordered_map<std::string,MerkleTree> mtrees;
     for ( auto d : dirtyeteam ) {
@@ -71,11 +71,11 @@ std::unordered_map<std::string, std::string> PlayerStore::createPlayermetaidroot
         if ( dirtyeteam[pt.second] )
             mtrees[pt.second].add_leaves(m_playerid2metaid[pt.first]);
     }
-    for ( auto tmt : mtrees) {
-        ret[tmt.first] = makeMerkleRoot(tmt.second.leaves());
+    for ( auto &tmt : mtrees) {
+        tmt.second.set_root(makeMerkleRoot(tmt.second.leaves()));
     }
 
-    return ret;
+    return mtrees;
 }
 
 
@@ -115,6 +115,7 @@ std::string FantasyNameStore::update(const FantasyNameBalMeta &gm) {
 }
 
 void GameStatusStore::init() {
+    dirty = false;
     for ( auto gmp : m_gamestatsstatemap) {
         m_gameid2metaid[gmp.second.id()] = gmp.first;
         m_gameid2week[gmp.second.id()] = gmp.second.week();
@@ -197,8 +198,8 @@ std::string GameStatusStore::start(const std::string &gmid, const GameMeta &gm) 
     return update(gsm);
 }
 
-std::unordered_map<int, WeekGameStatusMeta> GameStatusStore::createGameStatusmetaidroots() {
-    std::unordered_map<int,WeekGameStatusMeta> ret;
+std::unordered_map<int, std::vector<MerkleTree> > GameStatusStore::createGameStatusmetaidroots() {
+    std::unordered_map<int,std::vector<MerkleTree>> ret;
     std::unordered_map<int,MerkleTree> mtrees;
     std::unordered_map<int,MerkleTree> mtrees_ingame;
 
@@ -206,7 +207,8 @@ std::unordered_map<int, WeekGameStatusMeta> GameStatusStore::createGameStatusmet
         if ( d.second ) {
             mtrees[d.first] = MerkleTree::default_instance();
             mtrees_ingame[d.first] = MerkleTree::default_instance();
-            ret[d.first] = WeekGameStatusMeta::default_instance();
+            ret[d.first] = std::vector<MerkleTree>(3);
+            //ret[d.first].set_week(d.first);
         }
     }
 
@@ -216,29 +218,30 @@ std::unordered_map<int, WeekGameStatusMeta> GameStatusStore::createGameStatusmet
             GameStatusMeta &gsm = m_gamestatsstatemap[id];
             //ToDo:: other status
             if ( gsm.gamesatus().status() == GameStatus::SCHEDULED ) {
-                mtrees[pt.second].add_leaves(id);
+                ret[pt.second][0].add_leaves(id);
             }
             if ( gsm.gamesatus().status() == GameStatus::INGAME ) {
                 std::string &iid = m_id2ingameprojmeta[pt.first];
-                mtrees_ingame[pt.second].add_leaves(iid);
+                ret[pt.second][1].add_leaves(iid);
             }
         }
     }
 
 
-    for ( auto tmt : mtrees) {
-        ret[tmt.first].set_opengamestatusroot(makeMerkleRoot(tmt.second.leaves()));
+    for ( auto &tmt : ret) {
+        for ( auto &v : tmt.second)
+            v.set_root(makeMerkleRoot(v.leaves()));
     }
 
-    for ( auto tmt : mtrees_ingame) {
-        ret[tmt.first].set_ingameprojmetaroot(makeMerkleRoot(tmt.second.leaves()));
-    }
-
+//    for ( auto tmt : mtrees_ingame) {
+//        ret[tmt.first].set_ingameprojmetaroot(makeMerkleRoot(tmt.second.leaves()));
+//    }
 
     return ret;
 }
 
 void GameStatusStore::clean() {
+    dirty = false;
     for( auto d : dirtyweek) {
         dirtyweek[d.first] = false;
     }
@@ -248,8 +251,9 @@ void ProjStore::init() {
     for ( auto pmp : m_projstatemap) {
         auto id = makeid(pmp.second.playerid(),pmp.second.name());
         m_projid2metaid[id] = pmp.first;
-        dirtyplayerfname[id] = false;
+        //dirtyplayerfname[id] = false;
     }
+    dirtyplayerfname.clear();
 }
 
 std::string ProjStore::process(const std::string &txid, const ProjectionTrans &pj, const std::string &fname) {

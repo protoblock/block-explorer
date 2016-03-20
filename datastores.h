@@ -31,7 +31,8 @@ public:
 
     std::string update(const PlayerMeta &pm, const std::string &prevteam);
 
-    std::unordered_map<std::string,std::string> createPlayermetaidroots();
+    std::unordered_map<std::string,
+                       fantasybit::MerkleTree> createPlayermetaidroots();
 
     void clean();
 };
@@ -74,6 +75,8 @@ public:
 
     std::unordered_map<int, bool> dirtyweek;
 
+    bool dirty = false;
+
     std::unordered_map<std::string,std::string>
             m_id2ingameprojmeta;
 
@@ -94,7 +97,7 @@ public:
     std::string close(const std::string &dataid,
                         const std::string &id);
 
-    std::unordered_map<int, WeekGameStatusMeta>
+    std::unordered_map<int, std::vector<MerkleTree>>
                         createGameStatusmetaidroots();
 
     std::string start(const std::string &gmid, const GameMeta &gm);

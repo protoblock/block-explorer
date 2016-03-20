@@ -7,7 +7,7 @@ namespace fantasybit {
 void CreateState::dump(const std::string &pbstateid) {
     //m_pbstateid = loadStateId(pbstateid);
 
-    qDebug() << "test" << m_pbstate.DebugString().data();
+    //qDebug() << "test" << m_pbstate.DebugString().data();
     dumpMerkleMap(m_weekgamestatusmetamap);
 }
 
@@ -15,7 +15,7 @@ std::string CreateState::createState(const BlockMeta &bm) {
 
     std::string pbstatemetaid = getStateId(bm.prev());
 
-    if ( pbstatemetaid == "")
+      if ( pbstatemetaid == "")
         loadDefaultStates();
     else if ( pbstatemetaid != m_pbstateid) {
         m_pbstateid = loadStateId(pbstatemetaid);
@@ -108,6 +108,13 @@ std::string fantasybit::CreateState::getStateId(const std::string &blockmetaid) 
         ret = bm.pbstateid();
 
     return ret;
+}
+
+void CreateState::loadSubStates() {
+    loadPlayerState();
+    loadGameState();
+    loadFantasyNameBalState();
+    loadProjState();
 }
 
 void CreateState::loadPlayerState() {
@@ -204,6 +211,7 @@ void CreateState::processTrData(const std::string &datametaroot) {
             for (auto mid : m_gamestatustore.m_gamestatsstatemap) {
                 ldb.write(mid.first,mid.second.SerializeAsString());
             }
+            m_gamestatustore.dirty = true;
             break;
 
         case Data_Type_GAME:
@@ -236,7 +244,10 @@ void CreateState::processTr(const TrMeta &trmeta, const std::string &trid) {
             gs.set_season(trmeta.season()+1);
             gs.set_state(GlobalState_State_OFFSEASON);
         }
-        gs.set_week(trmeta.week()+1);
+        else {
+            gs.set_week(trmeta.week()+1);
+            gs.set_season(trmeta.season());
+        }
         m_globalstatemeta.set_prev(m_pbstate.globalstateid());
         m_globalstatemeta.set_trmetaid(trid);
         m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
@@ -414,7 +425,7 @@ void CreateState::processTx(const std::string &txmetaid) {
  * @param tmap list of transaction in this block
  */
 void CreateState::processNameTx(std::unordered_map<std::string, TxMeta> &tmap) {
-    dumpMerkleMap(tmap);
+    //dumpMerkleMap(tmap);
     std::string id;
     for ( auto nt : tmap ) {
         if ( nt.second.txtype() != TransType::NAME)
@@ -471,8 +482,10 @@ void CreateState::createTrPlayerDataState() {
         auto teamid = m_teamstatemap[id].teamid();
         if ( tmr.find(teamid) != tmr.end() ) {
             TeamMeta &tm = m_teamstatemap[id];
-            tm.set_playermetaidroot(tmr[teamid]);
+            auto &pmerkle = tmr[teamid];
+            tm.set_playermetaidroot(pmerkle.root());
             tm.set_prev(id);
+            ldb.write(pmerkle.root(),pmerkle.SerializeAsString());
             auto ts = tm.SerializeAsString();
             auto th = hashit(ts);
             m_teamstatetree.set_leaves(i,th);
@@ -499,30 +512,55 @@ void CreateState::createTrGameDataState() {
     auto tmr = m_gamestatustore.createGameStatusmetaidroots();
     if ( tmr.size() == 0 ) return;
 
-    for(int i = 0; i < m_weekgamestatusmetatree.leaves_size(); i++) {
-        std::string id = m_weekgamestatusmetatree.leaves(i);
-
-        int week = m_weekgamestatusmetamap[id].week();
-        if ( tmr.find(week) != tmr.end() ) {
-            WeekGameStatusMeta &tm = m_weekgamestatusmetamap[id];
-            tm.set_opengamestatusroot(tmr[week].opengamestatusroot());
-            tm.set_ingameprojmetaroot(tmr[week].ingameprojmetaroot());
-            tm.set_gameresultmetaroot(tmr[week].gameresultmetaroot());
-            tm.set_prev(id);
-            auto ts = tm.SerializeAsString();
-            auto th = hashit(ts);
-            m_weekgamestatusmetatree.set_leaves(i,th);
-            ldb.write(th,ts);
+    if ( m_gamestatustore.dirty == true) {
+        m_weekgamestatusmetatree.clear_leaves();
+        m_weekgamestatusmetamap.clear();
+        for ( auto &trees : tmr) {
+            WeekGameStatusMeta wgsm;
+            wgsm.set_week(trees.first);
+            ldb.write(trees.second[0].root(),trees.second[0].SerializeAsString());
+            wgsm.set_opengamestatusroot(trees.second[0].root());
+            ldb.write(trees.second[1].root(),trees.second[1].SerializeAsString());
+            wgsm.set_ingameprojmetaroot(trees.second[1].root());
+            ldb.write(trees.second[2].root(),trees.second[2].SerializeAsString());
+            wgsm.set_ingameprojmetaroot(trees.second[2].root());
+            auto id = ldb.write(wgsm);
+            m_weekgamestatusmetamap[id] = wgsm;
+            m_weekgamestatusmetatree.add_leaves(id);
         }
-    }
 
-    m_weekgamestatusmetatree.set_root(makeMerkleRoot(m_weekgamestatusmetatree.leaves()));
-    ldb.write(m_weekgamestatusmetatree.root(),m_weekgamestatusmetatree.SerializeAsString());
-    this->loadMerkleMap(m_weekgamestatusmetatree.root(),
-                        m_weekgamestatusmetatree,
-                        m_weekgamestatusmetamap);
-    m_gamestatustore.clean();
-    m_pbstate.set_schedulestateid(m_weekgamestatusmetatree.root());
+        m_weekgamestatusmetatree.set_root(makeMerkleRoot(m_weekgamestatusmetatree.leaves()));
+        ldb.write(m_weekgamestatusmetatree.root(),m_weekgamestatusmetatree.SerializeAsString());
+        m_pbstate.set_schedulestateid(m_weekgamestatusmetatree.root());
+        m_gamestatustore.clean();
+    }
+    else {
+        for(int i = 0; i < m_weekgamestatusmetatree.leaves_size(); i++) {
+            std::string id = m_weekgamestatusmetatree.leaves(i);
+
+            int week = m_weekgamestatusmetamap[id].week();
+            if ( tmr.find(week) != tmr.end() ) {
+                WeekGameStatusMeta &tm = m_weekgamestatusmetamap[id];
+                tm.set_opengamestatusroot(tmr[week][0].root());
+                tm.set_ingameprojmetaroot(tmr[week][1].root());
+                tm.set_gameresultmetaroot(tmr[week][2].root());
+                tm.set_prev(id);
+                auto ts = tm.SerializeAsString();
+                auto th = hashit(ts);
+                m_weekgamestatusmetatree.set_leaves(i,th);
+                ldb.write(th,ts);
+                m_gamestatustore.dirtyweek[week] = false;
+            }
+        }
+
+        m_weekgamestatusmetatree.set_root(makeMerkleRoot(m_weekgamestatusmetatree.leaves()));
+        ldb.write(m_weekgamestatusmetatree.root(),m_weekgamestatusmetatree.SerializeAsString());
+        this->loadMerkleMap(m_weekgamestatusmetatree.root(),
+                            m_weekgamestatusmetatree,
+                            m_weekgamestatusmetamap);
+        m_gamestatustore.clean();
+        m_pbstate.set_schedulestateid(m_weekgamestatusmetatree.root());
+    }
 }
 
 void CreateState::createTrState() {
@@ -550,7 +588,7 @@ void CreateState::createNameTxState() {
         mtree.add_leaves(nmid.second);
     }
 
-    auto tmr = m_playerstore.createPlayermetaidroots();
+//    auto tmr = m_playerstore.createPlayermetaidroots();
 
     mtree.set_root(makeMerkleRoot(mtree.leaves()));
     ldb.write(mtree.root(),mtree.SerializeAsString());
@@ -566,38 +604,59 @@ void CreateState::createNameTxState() {
     m_pbstate.set_projstateid(m_projmetatree.root());
  */
 void CreateState::createProjState() {
+//    if ( m_projstore.dirtyplayerfname.size() > 0 && !m_projstore.dirty) return;
+
     if (m_projstore.dirty) {
-
+        m_projstore.init();
+        m_projmetamap.clear();
+        m_projmetatree.clear_leaves();
+        m_projmetamap = m_projstore.m_projstatemap;
+        setNewMerkelTree(m_projmetamap,m_projmetatree);
+        m_pbstate.set_projstateid(m_projmetatree.root());
     }
+    else if ( m_projstore.dirtyplayerfname.size() > 0 ||
+              m_projstore.newprojmeta.size() > 0) {
 
-    else if ( m_projstore.dirtyplayerfname.size() == 0) return;
+        if ( m_projstore.newprojmeta.size()  > 0) {
+            for ( auto np : m_projstore.newprojmeta) {
+                auto newstateid = m_projstore.m_projid2metaid[np];
+                m_projmetatree.add_leaves(newstateid);
+                m_projmetamap.insert(*m_projstore.m_projstatemap.find(newstateid));
+                m_projstore.dirtyplayerfname.erase(np);
+            }
 
-    //else {
-
-    //m_projmetatree.clear_leaves();
-    for ( int i =0; i < m_projmetatree.leaves_size(); i++) {
-        const ProjMeta &pm = m_projmetamap[m_projmetatree.leaves(i)];
-        std::string id = ProjStore::makeid(pm.playerid(),pm.name());
-        if ( m_projstore.dirtyplayerfname[id]) {
-            m_projmetatree.set_leaves(i,m_projstore.m_projid2metaid[id]);
-            m_projstore.dirtyplayerfname[id] = false;
+            m_projstore.newprojmeta.clear();
         }
+
+        if ( m_projstore.dirtyplayerfname.size() > 0 ) {
+            for ( int i =0; i < m_projmetatree.leaves_size(); i++) {
+                const ProjMeta &pm = m_projmetamap[m_projmetatree.leaves(i)];
+                std::string id = ProjStore::makeid(pm.playerid(),pm.name());
+                if ( m_projstore.dirtyplayerfname.find(id) !=
+                     m_projstore.dirtyplayerfname.end()) {
+                    m_projmetamap.erase(m_projmetatree.leaves(i));
+                    auto newstateid = m_projstore.m_projid2metaid[id];
+                    m_projmetatree.set_leaves(i,newstateid);
+                    m_projmetamap.insert(*m_projstore.m_projstatemap.find(newstateid));
+                    //m_projstore.dirtyplayerfname[id] = false;
+                }
+            }
+
+            m_projstore.dirtyplayerfname.clear();
+        }
+
+
+        m_projmetatree.set_root(makeMerkleRoot(m_projmetatree.leaves()));
+        ldb.write(m_projmetatree.root(),m_projmetatree.SerializeAsString());
+        m_pbstate.set_projstateid(m_projmetatree.root());
     }
 
-    for ( auto np : m_projstore.newprojmeta) {
-        m_projmetatree.add_leaves(m_projstore.m_projid2metaid[np]);
-    }
 
-    m_projmetatree.set_root(makeMerkleRoot(m_projmetatree.leaves()));
-    ldb.write(m_projmetatree.root(),m_projmetatree.SerializeAsString());
-    m_pbstate.set_projstateid(m_projmetatree.root());
-    m_projstore.newprojmeta.clear();
-    m_projmetamap.clear();
-    this->loadMerkleMap(m_pbstate.projstateid(),
-                        m_projmetatree,
-                        m_projmetamap);
+//        m_projmetamap.clear();
+//        this->loadMerkleMap(m_pbstate.projstateid(),
+//                            m_projmetatree,
+//                            m_projmetamap);
 
-    //}
 }
 
 decltype(CreateState::GENESIS_NFL_TEAMS) CreateState::GENESIS_NFL_TEAMS {
