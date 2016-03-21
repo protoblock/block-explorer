@@ -254,6 +254,7 @@ void ProjStore::init() {
         //dirtyplayerfname[id] = false;
     }
     dirtyplayerfname.clear();
+    dirty = false;
 }
 
 std::string ProjStore::process(const std::string &txid, const ProjectionTrans &pj, const std::string &fname) {

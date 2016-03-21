@@ -132,11 +132,12 @@ void CreateState::loadPlayerState() {
 
 void CreateState::loadGameState() {
     for(auto wgs : m_weekgamestatusmetamap ) {
-        MerkleTree mtree;
+        MerkleTree mtree{};
         this->loadMerkleMap(wgs.second.opengamestatusroot(),
                             mtree,
                             m_gamestatustore.m_gamestatsstatemap);
 
+        mtree.clear_leaves();
         std::unordered_map<std::string,InGameProjMeta> ingameprojmap;
         this->loadMerkleMap(wgs.second.ingameprojmetaroot(),
                             mtree,
@@ -149,6 +150,7 @@ void CreateState::loadGameState() {
             m_gamestatustore.m_id2ingameprojmeta[gsm.gameinfo().id()] = igp.first;
         }
 
+        mtree.clear_leaves();
         std::unordered_map<std::string,GameResultsMeta> gameresmap;
         this->loadMerkleMap(wgs.second.gameresultmetaroot(),
                             mtree,
@@ -221,6 +223,7 @@ void CreateState::processTrData(const std::string &datametaroot) {
                 ldb.write(id,m_gamestatustore.m_gamestatsstatemap[id].SerializeAsString());
 
             break;
+
         case Data_Type_RESULT:
             rd = datap.second.data().GetExtension(ResultData::result_data);
             id = m_gamestatustore.close(datap.first,rd.game_result().gameid());
@@ -255,10 +258,10 @@ void CreateState::processTr(const TrMeta &trmeta, const std::string &trid) {
 
         break;
     case TrType::GAMESTART: {
-        m_globalstatemeta.set_prev(m_pbstate.globalstateid());
-        m_globalstatemeta.set_trmetaid(trid);
-        m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
-        m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+//        m_globalstatemeta.set_prev(m_pbstate.globalstateid());
+//        m_globalstatemeta.set_trmetaid(trid);
+//        m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
+//        m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
         MerkleTree gamemetatree;
         std::unordered_map<std::string, GameMeta> gamemetamap;
         loadMerkleMap(trmeta.gamemetaroot(),gamemetatree,gamemetamap);
@@ -398,7 +401,7 @@ string CreateState::processTeamGameStart(
         gpm.set_playerid(pidm.first);
         gpm.set_gamedatametaid(gdataid);
         gpm.set_gamestatusmetaid(gstatusid);
-        gpm.set_posmetaplayerroot(setWriteMerkle(pidm.second));
+        gpm.set_projmetaplayerroot(setWriteMerkle(pidm.second));
         gameplayerprojmetatree.add_leaves(ldb.write(gpm));
     }
 
@@ -471,7 +474,6 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
     }
 }
 
-
 void CreateState::createTrPlayerDataState() {
     auto tmr = m_playerstore.createPlayermetaidroots();
     if ( tmr.size() == 0 ) return;
@@ -540,14 +542,19 @@ void CreateState::createTrGameDataState() {
 
             int week = m_weekgamestatusmetamap[id].week();
             if ( tmr.find(week) != tmr.end() ) {
-                WeekGameStatusMeta &tm = m_weekgamestatusmetamap[id];
+                WeekGameStatusMeta tm = m_weekgamestatusmetamap[id];
                 tm.set_opengamestatusroot(tmr[week][0].root());
+                ldb.write(tmr[week][0].root(),tmr[week][0].SerializeAsString());
                 tm.set_ingameprojmetaroot(tmr[week][1].root());
+                ldb.write(tmr[week][1].root(),tmr[week][1].SerializeAsString());
                 tm.set_gameresultmetaroot(tmr[week][2].root());
+                ldb.write(tmr[week][2].root(),tmr[week][2].SerializeAsString());
                 tm.set_prev(id);
                 auto ts = tm.SerializeAsString();
                 auto th = hashit(ts);
                 m_weekgamestatusmetatree.set_leaves(i,th);
+                m_weekgamestatusmetamap.erase(id);
+                m_weekgamestatusmetamap.insert({th,tm});
                 ldb.write(th,ts);
                 m_gamestatustore.dirtyweek[week] = false;
             }
@@ -565,6 +572,7 @@ void CreateState::createTrGameDataState() {
 
 void CreateState::createTrState() {
     createTrGameDataState();
+    createProjState();
 }
 
 /**
@@ -634,7 +642,9 @@ void CreateState::createProjState() {
                 std::string id = ProjStore::makeid(pm.playerid(),pm.name());
                 if ( m_projstore.dirtyplayerfname.find(id) !=
                      m_projstore.dirtyplayerfname.end()) {
-                    m_projmetamap.erase(m_projmetatree.leaves(i));
+                    auto &eid = m_projmetatree.leaves(i);
+                    m_projmetamap.erase(eid);
+                    m_projstore.m_projstatemap.erase(eid);
                     auto newstateid = m_projstore.m_projid2metaid[id];
                     m_projmetatree.set_leaves(i,newstateid);
                     m_projmetamap.insert(*m_projstore.m_projstatemap.find(newstateid));
