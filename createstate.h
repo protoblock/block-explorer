@@ -166,6 +166,8 @@ public:
 
     void loadProjState();
 
+    void loadOrderState();
+
     /**
      * @brief process blockmeta in order
      *      1. transition data
@@ -261,6 +263,8 @@ public:
         return mtree.root();
     }
 
+
+
     template<class T>
     void dumpMerkleMap(std::unordered_map<std::string,typename T> &mapt) {
 
@@ -280,11 +284,14 @@ public:
     GameStatusStore m_gamestatustore;
     FantasyNameStore m_fantasynamestore;
     ProjStore m_projstore;
+    OrderStore m_orderstore;
+    MarketStore m_marketstore;
     std::string loadDefaultStates();
     static std::vector<std::string> GENESIS_NFL_TEAMS;
 
     std::string processTeamGameStart(const std::string &pidroot,const std::string &,const std::string &);
     void createTrState();
+    void ProcessInsideStamped(const SignedTransaction &inst, int32_t seqnum);
 };
 
 

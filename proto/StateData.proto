@@ -218,9 +218,12 @@ message ProjMeta {
 
 //fantasybitposmetaid -> FantasyBitPosMeta
 message PosMeta {
-    optional BookPos settlepos = 10;
-    optional bytes txmetaid = 20;
-    optional bytes prev = 30;
+    optional string name = 10;
+    optional int32 qty = 20;
+    optional int32 price = 30;
+    optional string playerid = 40;
+    optional bytes txmetaid = 50;
+    optional bytes prev = 60;
 }
 
 //gamestatusmetaid -> gamestatusmeta
@@ -262,7 +265,8 @@ message LimitBookMeta {
     optional int32 bidsize = 20;
     optional int32 asksize = 30;
     optional int32 ask = 40;
-    optional bytes insidebookmetaroot = 50;
+    optional bytes insidebookmetabid = 50;
+    optional bytes insidebookmetaask = 60;
 }
 
 message InsideBookMeta {
@@ -277,12 +281,15 @@ message MarketTicMeta {
 }
 
 message OrderMeta {
+    optional int32 refnum = 1;
     optional string fname = 10;
     optional string playerid = 20;
-    optional Order  order = 30;
-    optional bytes txmetaid = 40;
-    optional bytes orderfillmetaroot = 50;
-    optional bytes prev = 60;
+    optional bool buyside = 30;
+    optional int32 size = 40;
+    optional int32 price = 50;
+    optional bytes txmetaid = 60;
+    optional bytes orderfillmetaroot = 70;
+    optional bytes prev = 80;
 }
 
 message OrderFillMeta {

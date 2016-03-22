@@ -141,6 +141,113 @@ public:
     bool dirty = false;
 };
 
+/**
+ * @brief The ProjStore class stores projmeta state data
+ */
+class OrderStore {
+public:
+    std::unordered_map<std::string,OrderMeta>
+            m_ordermetamap;
+
+    std::unordered_map<int32_t,std::string>
+            m_refnum2orderid;
+
+    std::vector<int32_t> m_neworders;
+//    std::unordered_map<std::string, bool> dirtyplayerfname;
+
+//    std::vector<std::string> newprojmeta;
+
+    void init() {
+        for ( auto om : m_ordermetamap) {
+            m_refnum2orderid[om.second.refnum()] = om.first;
+        }
+    }
+
+    std::string process_new(const std::string &txid,
+                            const ExchangeOrder &eo,
+                            const std::string &fname,
+                            int32_t refnum) {
+        OrderMeta om{};
+        om.set_refnum(refnum);
+        om.set_buyside(eo.core().buyside());
+        om.set_fname(fname);
+        om.set_playerid(eo.playerid());
+        om.set_size(eo.core().size());
+        om.set_price(eo.core().price());
+        om.set_txmetaid(txid);
+
+        auto oid = hashit(om.SerializeAsString());
+        m_ordermetamap[oid] = om;
+        m_refnum2orderid[refnum] = oid;
+        m_neworders.push_back(refnum);
+        return oid;
+    }
+//        optional int32 refnum = 1;
+//        optional string fname = 10;
+//        optional string playerid = 20;
+//        optional bool buyside = 30;
+//        optional int32 size = 40;
+//        optional int32 price = 50;
+//        optional bytes txmetaid = 60;
+//        optional bytes orderfillmetaroot = 70;
+//        optional bytes prev = 80;
+
+//    std::string process(const std::string &txid,
+//                        const PlayerPoints &pj,
+//                        const std::string &fname);
+
+//    std::string update(const ProjMeta &pm, const std::string &pf);
+
+//    bool dirty = false;
+};
+
+class MarketStore {
+public:
+    std::unordered_map<std::string,PlayerMarketState>
+        m_marketmetamap;
+
+    std::unordered_map<std::string,std::string>
+        m_pid2marketid;
+
+//    std::unordered_map<std::string, std::string[40]>
+    std::unordered_map<std::string, MerkleTree>
+        m_pid2limitbookid;
+
+    std::unordered_map<std::string,LimitBookMeta>
+        m_limitbookidmap;
+
+    std::unordered_map<std::string,InsideBookMeta>
+        m_insidemetamap;
+
+    std::unordered_map<std::string,std::pair<std::string,std::string>>
+        m_limitid2insideidpair;
+
+    std::unordered_map<std::string,MerkleTree>
+        m_inside2ordertree;
+
+    std::unordered_map<std::string,std::list<std::string>>
+        m_inside2orderlist; //ToDo
+
+    void init() {
+        for ( auto mm : m_marketmetamap) {
+            m_pid2marketid[mm.second.playerid()] = mm.first;
+        }
+
+        for ( auto io : m_inside2ordertree) {
+            std::list<std::string> olist;
+            for (int i = 0;i < io.second.leaves_size();i++) {
+                olist.push_back(io.second.leaves(i));
+            }
+            if ( olist.size() > 0) {
+                m_inside2orderlist[io.first] = olist;
+                olist.clear();
+            }
+        }
+
+    }
+
+};
+
 }
 
 #endif // DATASTORES_H

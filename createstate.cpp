@@ -115,6 +115,55 @@ void CreateState::loadSubStates() {
     loadGameState();
     loadFantasyNameBalState();
     loadProjState();
+    loadOrderState();
+}
+
+void CreateState::loadOrderState() {
+    m_orderstore.m_ordermetamap.insert(m_ordermetamap.begin(),
+                                       m_ordermetamap.end());
+
+    m_orderstore.init();
+
+    m_marketstore.m_marketmetamap.insert(m_playermarketstatemap.begin(),
+                                  m_playermarketstatemap.end());
+
+    m_marketstore.init();
+
+    for ( auto &pms : m_playermarketstatemap) {
+        MerkleTree mtree{};
+        ldb.read(pms.second.limitbookmetaid(),mtree);
+        this->loadMerkleMap(pms.second.limitbookmetaid(),
+                            mtree,
+                            m_marketstore.m_limitbookidmap);
+
+        m_marketstore.m_pid2limitbookid[pms.second.playerid()] =
+                mtree;
+
+        for ( auto &lbid : mtree.leaves()) {
+            LimitBookMeta &lbm = m_marketstore.m_limitbookidmap[lbid];
+            InsideBookMeta ibmb{};
+            ldb.read(lbm.insidebookmetabid(),ibmb);
+            m_marketstore.m_insidemetamap
+                    [lbm.insidebookmetabid()] = ibmb;
+
+            InsideBookMeta ibma{};
+            ldb.read(lbm.insidebookmetaask(),ibma);
+            m_marketstore.m_insidemetamap
+                    [lbm.insidebookmetaask()] = ibma;
+
+            m_marketstore.m_limitid2insideidpair[lbid] =
+                make_pair(lbm.insidebookmetabid(),lbm.insidebookmetaask());
+
+            MerkleTree imtree{};
+            ldb.read(ibmb.orderidroot(),imtree);
+            m_marketstore.m_inside2ordertree[lbm.insidebookmetabid()] = imtree;
+
+            imtree.Clear();
+            ldb.read(ibma.orderidroot(),imtree);
+            m_marketstore.m_inside2ordertree[lbm.insidebookmetaask()] = imtree;
+
+        }
+    }
 }
 
 void CreateState::loadPlayerState() {
@@ -468,10 +517,64 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
 
             break;
         }
+        case TransType::STAMPED: {
+            auto & stamped = nt.second.tx().GetExtension(StampedTrans::stamped_trans);
+            qDebug() << "new StampedTrans " << stamped.timestamp() << stamped.seqnum();
+            const Transaction &t = stamped.signed_orig().trans();
+            if (t.type() != TransType::EXCHANGE)
+                break;
+
+            auto emdg = t.GetExtension(ExchangeOrder::exchange_order);
+
+            //else
+            if ( emdg.type() == ExchangeOrder::NEW) {
+                auto id = m_orderstore.process_new(nt.first,emdg,
+                                         stamped.signed_orig().fantasy_name(),
+                                         stamped.seqnum());
+                if ( id != "" )
+                    ldb.write(id,m_orderstore.m_ordermetamap[id].SerializeAsString());
+            }
+
+            qDebug() << "new ExchangeOrder " << emdg.DebugString().data();
+//            auto name = inst.fantasy_name();
+            //bool subscribe = mNameData.IsSubscribed(fn->FantasyName.alias());
+            //m_marketstore.process(emdg,seqnum,fn);
+
+
+            break;
+        }
+
         default:
             break;
         }
     }
+}
+
+void CreateState::ProcessInsideStamped(const SignedTransaction &inst,int32_t seqnum) {
+//    auto fn = BlockProcessor::getFNverifySt(inst);
+//    if ( !fn ) {
+//        qWarning() << "invalid tx inside stamped" << inst.trans().type();
+//        return;
+//    }
+
+    const Transaction &t = inst.trans();
+    switch (t.type()) {
+        case TransType::EXCHANGE:
+        {
+//#ifndef TRADE_FEATURE
+//            break;
+//#endif
+            auto emdg = t.GetExtension(ExchangeOrder::exchange_order);
+            qDebug() << "new ExchangeOrder " << emdg.DebugString().data();
+            auto name = inst.fantasy_name();
+            //bool subscribe = mNameData.IsSubscribed(fn->FantasyName.alias());
+            //m_marketstore.process(emdg,seqnum,fn);
+            break;
+        }
+        default:
+            break;
+    }
+
 }
 
 void CreateState::createTrPlayerDataState() {
