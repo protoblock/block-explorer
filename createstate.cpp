@@ -534,6 +534,7 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
                 if ( id != "" )
                     ldb.write(id,m_orderstore.m_ordermetamap[id].SerializeAsString());
             }
+            //else todo: cancel
 
             qDebug() << "new ExchangeOrder " << emdg.DebugString().data();
 //            auto name = inst.fantasy_name();
@@ -550,32 +551,6 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
     }
 }
 
-void CreateState::ProcessInsideStamped(const SignedTransaction &inst,int32_t seqnum) {
-//    auto fn = BlockProcessor::getFNverifySt(inst);
-//    if ( !fn ) {
-//        qWarning() << "invalid tx inside stamped" << inst.trans().type();
-//        return;
-//    }
-
-    const Transaction &t = inst.trans();
-    switch (t.type()) {
-        case TransType::EXCHANGE:
-        {
-//#ifndef TRADE_FEATURE
-//            break;
-//#endif
-            auto emdg = t.GetExtension(ExchangeOrder::exchange_order);
-            qDebug() << "new ExchangeOrder " << emdg.DebugString().data();
-            auto name = inst.fantasy_name();
-            //bool subscribe = mNameData.IsSubscribed(fn->FantasyName.alias());
-            //m_marketstore.process(emdg,seqnum,fn);
-            break;
-        }
-        default:
-            break;
-    }
-
-}
 
 void CreateState::createTrPlayerDataState() {
     auto tmr = m_playerstore.createPlayermetaidroots();
@@ -684,6 +659,26 @@ void CreateState::createTrState() {
 void CreateState::createTxState() {
     createNameTxState();
     createProjState();
+    createMarketOrderState();
+    createPosState();
+}
+
+void CreateState::createMarketOrderState() {
+
+    for ( auto oref : m_orderstore.m_neworders) {
+        OrderMeta &order = m_orderstore.m_ordermetamap[m_orderstore.m_refnum2orderid[oref]];
+
+        m_marketstore.process(m_orderstore,oref);
+    }
+
+    for ( auto fl : m_orderstore.m_newfills) {
+        auto &filldata = m_orderstore.m_orderfillmetamap[fl];
+
+        auto id = m_posstore.process(filldata);
+        if ( id != "")
+            ldb.write(id,m_posstore.m_posstatemap[id].SerializeAsString());
+    }
+
 }
 
 /**
@@ -726,7 +721,7 @@ void CreateState::createProjState() {
         m_pbstate.set_projstateid(m_projmetatree.root());
     }
     else if ( m_projstore.dirtyplayerfname.size() > 0 ||
-              m_projstore.newprojmeta.size() > 0) {
+                        m_projstore.newprojmeta.size() > 0) {
 
         if ( m_projstore.newprojmeta.size()  > 0) {
             for ( auto np : m_projstore.newprojmeta) {
@@ -744,7 +739,7 @@ void CreateState::createProjState() {
                 const ProjMeta &pm = m_projmetamap[m_projmetatree.leaves(i)];
                 std::string id = ProjStore::makeid(pm.playerid(),pm.name());
                 if ( m_projstore.dirtyplayerfname.find(id) !=
-                     m_projstore.dirtyplayerfname.end()) {
+                                 m_projstore.dirtyplayerfname.end()) {
                     auto &eid = m_projmetatree.leaves(i);
                     m_projmetamap.erase(eid);
                     m_projstore.m_projstatemap.erase(eid);
@@ -771,6 +766,59 @@ void CreateState::createProjState() {
 //                            m_projmetamap);
 
 }
+
+/**
+ * @brief CreateState::createPosState create pos state
+ */
+void CreateState::createPosState() {
+    if (m_posstore.dirty) {
+        m_posstore.init();
+        m_posmetamap.clear();
+        m_posmetatree.clear_leaves();
+        m_posmetamap = m_posstore.m_posstatemap;
+        setNewMerkelTree(m_posmetamap,m_posmetatree);
+        m_pbstate.set_posstateid(m_posmetatree.root());
+    }
+    else if ( m_posstore.dirtyplayerfname.size() > 0 ||
+          m_posstore.newposmeta.size() > 0) {
+
+        if ( m_posstore.newposmeta.size()  > 0) {
+            for ( auto np : m_posstore.newposmeta) {
+                auto newstateid = m_posstore.m_posid2metaid[np];
+                m_posmetatree.add_leaves(newstateid);
+                m_posmetamap.insert(*m_posstore.m_posstatemap.find(newstateid));
+                m_posstore.dirtyplayerfname.erase(np);
+            }
+
+            m_posstore.newposmeta.clear();
+        }
+
+        if ( m_posstore.dirtyplayerfname.size() > 0 ) {
+            for ( int i =0; i < m_posmetatree.leaves_size(); i++) {
+                const PosMeta &pm = m_posmetamap[m_posmetatree.leaves(i)];
+                std::string id = PosStore::makeid(pm.playerid(),pm.name());
+                if ( m_posstore.dirtyplayerfname.find(id) !=
+                     m_posstore.dirtyplayerfname.end()) {
+                    auto &eid = m_posmetatree.leaves(i);
+                    m_posmetamap.erase(eid);
+                    m_posstore.m_posstatemap.erase(eid);
+                    auto newstateid = m_posstore.m_posid2metaid[id];
+                    m_posmetatree.set_leaves(i,newstateid);
+                    m_posmetamap.insert(*m_posstore.m_posstatemap.find(newstateid));
+                    //m_projstore.dirtyplayerfname[id] = false;
+                }
+            }
+
+            m_posstore.dirtyplayerfname.clear();
+        }
+
+        m_posmetatree.set_root(makeMerkleRoot(m_posmetatree.leaves()));
+        ldb.write(m_posmetatree.root(),m_posmetatree.SerializeAsString());
+        m_pbstate.set_posstateid(m_posmetatree.root());
+    }
+}
+
+
 
 decltype(CreateState::GENESIS_NFL_TEAMS) CreateState::GENESIS_NFL_TEAMS {
     "ARI" ,

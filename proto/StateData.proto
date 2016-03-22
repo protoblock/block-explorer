@@ -277,7 +277,8 @@ message InsideBookMeta {
 message MarketTicMeta {
     optional int32 price = 20;
     optional int32 size  = 30;
-    optional bytes orderfillroot = 40;
+    optional bytes orderfillhead = 40;
+    optional bytes prev = 50;
 }
 
 message OrderMeta {
@@ -288,13 +289,17 @@ message OrderMeta {
     optional int32 size = 40;
     optional int32 price = 50;
     optional bytes txmetaid = 60;
-    optional bytes orderfillmetaroot = 70;
+    optional bytes orderfillmetaid = 70;
     optional bytes prev = 80;
 }
 
 message OrderFillMeta {
+    optional int32 refnum = 1;
+    optional string fname = 10;
+    optional string playerid = 15;
     optional int32 fillprice = 20;
     optional int32 fillsize = 30;
+    optional bool buyside = 35;
     optional int32 timestamp = 40;
     optional bytes txmetaid = 60;
     optional bytes prev = 70;
@@ -336,6 +341,7 @@ message pbstate {
     optional bytes schedulestateid = 10; //WeekGameStatusMetaRoot
     optional bytes leaderboardstateid = 20; //LeaderBoardMetaId
     optional bytes projstateid = 30; //ProjMetaroot
+    optional bytes posstateid = 35; //ProjMetaroot
     optional bytes orderstateid = 40; //OrderMetaRoot
     optional bytes marketstateid = 50; //PlayerMarketStateRoot
     optional bytes globalstateid = 60; //GlobalStateMetaId

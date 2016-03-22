@@ -142,6 +142,74 @@ public:
 };
 
 /**
+ * @brief The PosStore class stores positions form trading
+ */
+class PosStore {
+public:
+    std::unordered_map<std::string,PosMeta>
+            m_posstatemap;
+
+    std::unordered_map<std::string,std::string>
+            m_posid2metaid;
+
+    std::unordered_map<std::string, bool> dirtyplayerfname;
+
+    std::vector<std::string> newposmeta;
+
+    void init() {
+        for ( auto pmp : m_posstatemap) {
+            auto id = makeid(pmp.second.playerid(),pmp.second.name());
+            m_posid2metaid[id] = pmp.first;
+            //dirtyplayerfname[id] = false;
+        }
+        dirtyplayerfname.clear();
+        dirty = false;
+    }
+
+    static std::string makeid(const std::string &pid, const std::string &fn) {
+        return pid + ":" + fn;
+    }
+
+//    std::string process(const std::string &txid,
+//                        const ProjectionTrans &pj,
+//                        const std::string &fname);
+
+    std::string process(const OrderFillMeta &ofm) {
+        PosMeta pm;
+
+        uint32_t fillqty = ofm.fillsize() * ofm.buyside() ? 1 : -1;
+        uint32_t fillpos = ofm.fillprice() * -fillqty;
+        auto pf = makeid(ofm.playerid(),ofm.fname());
+        auto it = m_posid2metaid.find(pf);
+        if ( it != m_posid2metaid.end()) {
+            pm.CopyFrom(m_posstatemap[it->first]);
+            pm.set_prev(it->second);
+            pm.set_qty(pm.qty() + fillqty);
+            pm.set_price(pm.price() + fillpos);
+            dirtyplayerfname[pf] = true;
+        }
+        else  {
+            pm.set_qty(fillqty);
+            pm.set_price(fillpos);
+        }
+
+        pm.set_name(ofm.fname());
+
+        return update(pm,pf);
+    }
+
+    std::string update(const PosMeta &pm, const std::string &pf) {
+        auto newid = hashit(pm.SerializeAsString());
+        m_posstatemap[newid] = pm;
+        m_posid2metaid[pf] = newid;
+
+        return newid;
+    }
+
+    bool dirty = false;
+};
+
+/**
  * @brief The ProjStore class stores projmeta state data
  */
 class OrderStore {
@@ -152,7 +220,14 @@ public:
     std::unordered_map<int32_t,std::string>
             m_refnum2orderid;
 
+    std::unordered_map<std::string,OrderFillMeta>
+            m_orderfillmetamap;
+
     std::vector<int32_t> m_neworders;
+
+    std::vector<int32_t> m_dirtyorders;
+
+    std::vector<std::string> m_newfills;
 //    std::unordered_map<std::string, bool> dirtyplayerfname;
 
 //    std::vector<std::string> newprojmeta;
@@ -162,6 +237,15 @@ public:
             m_refnum2orderid[om.second.refnum()] = om.first;
         }
     }
+
+    std::string ref2id(int32_t iref)  {
+        return m_refnum2orderid.at(iref);
+    }
+
+    OrderMeta &ref2OrderMeta(int32_t iref)  {
+        return   m_ordermetamap[this->ref2id(iref)] ;
+    }
+
 
     std::string process_new(const std::string &txid,
                             const ExchangeOrder &eo,
@@ -209,7 +293,6 @@ public:
     std::unordered_map<std::string,std::string>
         m_pid2marketid;
 
-//    std::unordered_map<std::string, std::string[40]>
     std::unordered_map<std::string, MerkleTree>
         m_pid2limitbookid;
 
@@ -227,6 +310,19 @@ public:
 
     std::unordered_map<std::string,std::list<std::string>>
         m_inside2orderlist; //ToDo
+
+
+    std::unordered_map<std::string,MarketTicMeta>
+        m_marketticmeta;
+
+    std::unordered_map<std::string,std::string>
+        m_pid2marketticid;
+
+
+    std::vector<std::string> dirtyinsideid;
+    std::vector<std::string> dirtypidlimitbook;
+    std::vector<std::string> insideordernew;
+    std::vector<std::string> dirtypid;
 
     void init() {
         for ( auto mm : m_marketmetamap) {
@@ -246,6 +342,259 @@ public:
 
     }
 
+    std::string process(OrderStore &orderstore,  int32_t oref ) {
+        auto ometaid = orderstore.ref2id(oref);
+        auto &ometa = orderstore.m_ordermetamap[ometaid];
+        auto pid = ometa.playerid();
+
+        auto &tree = m_pid2limitbookid[ometa.playerid()];
+        int newaggsize = ometa.size();
+
+        for ( auto l : tree.leaves() ) {
+            LimitBookMeta & lbm = m_limitbookidmap[l];
+            auto &bapair = m_limitid2insideidpair[l];
+
+            auto price = ometa.buyside() ? lbm.ask() : lbm.bid();
+
+            if ( ometa.buyside() && ometa.price() < lbm.ask() ||
+                 !ometa.buyside() && ometa.price() > lbm.bid()) {
+                //dopassive
+
+                insideordernew.push_back(ometaid);
+                break;
+            }
+
+            else {
+                //while(true) {
+                auto ibmid = ometa.buyside() ? bapair.second : bapair.first;
+                InsideBookMeta &ibm = m_insidemetamap[ibmid];
+                int newtotal = ibm.totsize();
+                std::list<std::string> &olist = m_inside2orderlist[ibm.orderidroot()];
+                for (auto it = olist.begin(); it != olist.end();) {
+                    auto iordid = *it;
+                    OrderMeta &order = orderstore.m_ordermetamap[iordid];
+                    int newpasssize = order.size();
+                    int maxfills = std::min(newpasssize,newtotal);
+                    if (  maxfills >= newpasssize ) {
+                        //DoFill(order,iordid,order.size());
+                        newtotal -= newpasssize;
+                        newaggsize -= newpasssize;
+                        newpasssize = 0;
+                    }
+                    else {
+                        newpasssize -= maxfills;
+                        newtotal -= maxfills;
+                        //DoFill(order,iordid,newsize);
+                        newaggsize -= maxfills;
+                    }
+                    int numfills = (order.size() - newpasssize);
+
+
+                    if (numfills <= 0 ) {
+                        //qDebug() << "unexpected numfilles = 0 ";
+                        continue;
+                    }
+
+                    //DoFill  numfiils  order omet
+                    if ( newpasssize == 0 ) olist.erase(it);
+                    else it++;
+
+                    DoFill(orderstore,order,numfills,price,iordid);
+
+                    dirtyinsideid.push_back(ibmid);
+
+                    if ( newtotal == 0) break;
+                }
+
+                lbm.set_bidsize(newtotal);
+                dirtypidlimitbook.push_back(pid);
+                DoFill(orderstore,ometa,ometa.size() - newaggsize,price,ometaid);
+            }
+        }
+
+        if ( newaggsize > 0 ) {
+            ometa.set_size(newaggsize);
+            insideordernew.push_back(ometaid);
+        }
+
+        return "";
+    }
+
+    void DoFill(OrderStore &orderstore,const OrderMeta &om, int32_t qty,
+                int32_t price,std::string oid) {
+        OrderFillMeta ofm{};
+        ofm.set_refnum(om.refnum());
+        ofm.set_fname(om.fname());
+        ofm.set_playerid(om.playerid());
+        ofm.set_fillprice(price);
+        ofm.set_fillsize(qty);
+        ofm.set_timestamp(-1);
+        ofm.set_txmetaid("txid here");
+        ofm.set_buyside(om.buyside());
+
+        MarketTicMeta mtm{} ;
+        auto it = m_pid2marketticid.find(om.playerid());
+        if ( it != m_pid2marketticid.end() ) {
+            MarketTicMeta &prevmtm = m_marketticmeta[it->first];
+            ofm.set_prev(prevmtm.orderfillhead());
+            mtm.set_prev(it->second);
+        }
+
+        auto orfillmetaid = ofm.SerializeAsString();
+        mtm.set_price(price);
+        mtm.set_size(qty);
+        mtm.set_orderfillhead(orfillmetaid);
+        auto hmtms = hashit(mtm.SerializeAsString());
+        m_marketticmeta[hmtms] = mtm;
+        m_pid2marketticid[om.playerid()] = hmtms;
+        dirtypid.push_back(om.playerid());
+
+        orderstore.m_newfills.push_back(orfillmetaid);
+        orderstore.m_orderfillmetamap[orfillmetaid] = ofm;
+
+        OrderMeta omn;
+        omn.CopyFrom(om);
+        omn.set_prev(oid);
+        omn.set_orderfillmetaid(orfillmetaid);
+        omn.set_size(om.size() - qty);
+        omn.set_price(price);
+        omn.set_prev(oid);
+
+        auto newid = hashit(omn.SerializeAsString());
+        orderstore.m_ordermetamap[newid] = omn;
+        orderstore.m_refnum2orderid[om.refnum()] = newid;
+        orderstore.m_dirtyorders.push_back(om.refnum());
+        //ofm.set_prev();
+
+        PlayerMarketState pmm{};
+        auto pit = m_pid2marketid.find(om.playerid());
+        if ( pit != m_pid2marketid.end()) {
+            pmm.CopyFrom(m_marketmetamap[pit->second]);
+            pmm.set_prev(pit->second);
+        }
+//        pmm.set_limitbookmetaid();
+        pmm.set_playerid(om.playerid());
+        pmm.set_marketticmetaid(hmtms);
+        pmm.set_limitbookmetaid(m_pid2limitbookid[om.playerid()].root());
+        auto pmmid = hashit(pmm.SerializeAsString());
+        m_marketmetamap[pmmid] = pmm;
+        m_pid2marketid[om.playerid()] = pmmid;
+    }
+
+    void update(OrderStore &orderstore) {
+        //std::map<std::string,std::vector<LimitBookMeta>> newlimitsmap;
+        for ( auto &newoid : insideordernew ) {
+            OrderMeta &ordernew = orderstore.m_ordermetamap[newoid];
+            auto &tree = m_pid2limitbookid[ordernew.playerid()];
+
+            bool workingask = false;
+            bool workingbid = false;
+
+            LimitBookMeta lbm2;
+            std::vector<LimitBookMeta> newlimit;// = newlimitsmap[ordernew.playerid()];
+
+//            if ( newlimits.size() == 0) {
+//                for ( int i=0; i < tree.leaves().size(); i++) {
+//                    newlimits.push_back(m_limitbookidmap[tree.leaves(i)]);
+//                }
+//            }
+//            if ( ordernew.buyside()) {
+//                LimitBookMeta &lbm = newlimits[40-ordernew.price()-1];
+//                lbm.set_bidsize(lbm.bidsize() + dordernew.size());
+//                lbm.set_bid(ordernew.price());
+//            }
+//            if ( !ordernew.buyside()) {
+//                LimitBookMeta &lbm = newlimits[40-ordernew.price()];
+//                lbm.set_askize(lbm.asksize() + dordernew.size());
+//                lbm.set_ask(ordernew.price());
+//            }
+
+
+            for ( int i = 0; i < tree.leaves_size(); i++) {
+                LimitBookMeta lbm = m_limitbookidmap[tree.leaves(i)];
+                //if ( ordernew.buyside() ) {
+                    if ( workingask ) {
+                        lbm2.set_ask(lbm.ask());
+                        lbm2.set_asksize(lbm.asksize());
+                        newlimit.push_back(lbm2);
+                        lbm2.Clear();
+                        if (lbm.bidsize() != 0) {
+                            lbm2.set_bid(lbm.bid());
+                            lbm2.set_bidsize(lbm.bidsize());
+                            workingbid = true;
+                            continue;
+                        }
+                        //workingask = false;
+                        //if (!workingbid) break;
+                    }
+                    else if ( workingbid ) {
+                        lbm2.set_bid(lbm.bid());
+                        lbm2.set_bidsize(lbm.bidsize());
+                        newlimit.push_back(lbm2);
+                        lbm2.Clear();
+                        if (lbm.asksize() != 0) {
+                            lbm2.set_ask(lbm.ask());
+                            lbm2.set_asksize(lbm.asksize());
+                            workingask = true;
+                            continue;
+                        }
+                        //workingbid = false;
+                        //if (!workingask) break;
+                    }
+                    else if ( ordernew.buyside() && lbm.bid() < ordernew.price()) {
+                        lbm2.set_bid(ordernew.price());
+                        lbm2.set_bidsize(ordernew.size());
+                        lbm2.set_ask(lbm.ask());
+                        lbm2.set_asksize(lbm.asksize());
+                        newlimit.push_back(lbm2);
+                        lbm2.Clear();
+                        if ( lbm.bidsize() != 0 ) {
+                            lbm2.set_bid(lbm.bid());
+                            lbm2.set_bidsize(lbm.bidsize());
+                            workingask = true;
+                        }
+                    }
+                    else if ( ordernew.buyside() && lbm.bidsize() == 0 && lbm.bid() < ordernew.price()) {
+                        lbm2.set_bid(ordernew.price());
+                        lbm2.set_bidsize(ordernew.size());
+                        lbm2.set_ask(lbm.ask());
+                        lbm2.set_asksize(lbm.asksize());
+                    }
+                    else if ( ordernew.buyside() && lbm.bidsize() > 0 && lbm.bid() == ordernew.price()) {
+                        lbm2.set_bid(ordernew.price());
+                        lbm2.set_bidsize(ordernew.size());
+                        lbm2.set_ask(lbm.ask());
+                        lbm2.set_asksize(lbm.asksize());
+                    }
+
+                    else if ( !ordernew.buyside() && lbm.ask() > ordernew.price()) {
+                        lbm2.set_ask(ordernew.price());
+                        lbm2.set_asksize(ordernew.size());
+                        lbm2.set_bid(lbm.bid());
+                        lbm2.set_bidsize(lbm.bidsize());
+                        newlimit.push_back(lbm2);
+                        lbm2.Clear();
+                        if ( lbm.asksize() != 0 ) {
+                            lbm2.set_ask(lbm.ask());
+                            lbm2.set_asksize(lbm.asksize());
+                            workingbid = true;
+                        }
+                    }
+                    else if ( ordernew.buyside() && lbm.bidsize() == 0 && lbm.bid() < ordernew.price()) {
+                        lbm2.set_bid(ordernew.price());
+                        lbm2.set_bidsize(ordernew.size());
+                        lbm2.set_ask(lbm.ask());
+                        lbm2.set_asksize(lbm.asksize());
+                    }
+
+                    else
+                        newlimit.push_back(lbm);
+                        \
+                }
+            }
+    }
+
+//    void DoFill()
 };
 
 }

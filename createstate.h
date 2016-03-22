@@ -67,6 +67,10 @@ class CreateState
 //        optional bytes prev = 30;
 //    }
 
+    MerkleTree m_posmetatree;
+    std::unordered_map<std::string,PosMeta> m_posmetamap;
+
+
     MerkleTree m_ordermetatree;
     std::unordered_map<std::string,OrderMeta> m_ordermetamap;
 //    message OrderMeta {
@@ -284,6 +288,7 @@ public:
     GameStatusStore m_gamestatustore;
     FantasyNameStore m_fantasynamestore;
     ProjStore m_projstore;
+    PosStore m_posstore;
     OrderStore m_orderstore;
     MarketStore m_marketstore;
     std::string loadDefaultStates();
@@ -292,6 +297,8 @@ public:
     std::string processTeamGameStart(const std::string &pidroot,const std::string &,const std::string &);
     void createTrState();
     void ProcessInsideStamped(const SignedTransaction &inst, int32_t seqnum);
+    void createMarketOrderState();
+    void createPosState();
 };
 
 
