@@ -278,7 +278,6 @@ void CreateState::processTrData(const std::string &datametaroot) {
             id = m_gamestatustore.close(datap.first,rd.game_result().gameid());
             if ( id != "")
                 ldb.write(id,m_gamestatustore.m_gamestatsstatemap[id].SerializeAsString());
-            //ToDo:
 
             break;
         default:
@@ -402,21 +401,6 @@ void CreateState::processGameStart(const string &gmid,const GameMeta &gmeta,cons
             break;
         }
     }
-
-
-
-
-    //get home and away team
-    //get players
-    //remove proj
-    //set game proj
-    //clear orders
-    //set settlepos
-    //update WeekGameStatusMeta
-    //  ingameprojmetaroot
-    //  opengamestatusroot
-    //auto teamid = m_teamstatemap[id].teamid();
-
 }
 
 string CreateState::processTeamGameStart(
@@ -433,28 +417,42 @@ string CreateState::processTeamGameStart(
 
     std::sort(pids.begin(),pids.end());
 
-    std::unordered_map<string,MerkleTree> projplayermap;
+    std::unordered_map<string,pair<MerkleTree,MerkleTree>> projposplayermap;
     for( auto it = m_projstore.m_projstatemap.begin(); it!=m_projstore.m_projstatemap.end();) {
         if ( find(pids.begin(),pids.end(),it->second.playerid()) == pids.end()) {
             it++;
             continue;
         }
 
-        projplayermap[it->second.playerid()].add_leaves(it->first);
+        projposplayermap[it->second.playerid()].first.add_leaves(it->first);
         it = m_projstore.m_projstatemap.erase(it);
     }
 
+    //std::unordered_map<string,MerkleTree> posplayermap;
+    for( auto it = m_posstore.m_posstatemap.begin(); it!=m_posstore.m_posstatemap.end();) {
+        if ( find(pids.begin(),pids.end(),it->second.playerid()) == pids.end()) {
+            it++;
+            continue;
+        }
+
+        projposplayermap[it->second.playerid()].second.add_leaves(it->first);
+        it = m_posstore.m_posstatemap.erase(it);
+    }
+
+
     MerkleTree gameplayerprojmetatree;
-    for ( auto pidm : projplayermap) {
+    for ( auto pidm : projposplayermap) {
         GamePlayerProjMeta gpm;
         gpm.set_playerid(pidm.first);
         gpm.set_gamedatametaid(gdataid);
         gpm.set_gamestatusmetaid(gstatusid);
-        gpm.set_projmetaplayerroot(setWriteMerkle(pidm.second));
+        gpm.set_projmetaplayerroot(setWriteMerkle(pidm.second.first));
+        gpm.set_posmetaplayerroot(setWriteMerkle(pidm.second.second));
         gameplayerprojmetatree.add_leaves(ldb.write(gpm));
     }
 
     m_projstore.dirty = true;
+    m_posstore.dirty = true;
 
     return setWriteMerkle(gameplayerprojmetatree);
 }
@@ -817,8 +815,6 @@ void CreateState::createPosState() {
         m_pbstate.set_posstateid(m_posmetatree.root());
     }
 }
-
-
 
 decltype(CreateState::GENESIS_NFL_TEAMS) CreateState::GENESIS_NFL_TEAMS {
     "ARI" ,

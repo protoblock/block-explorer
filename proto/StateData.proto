@@ -188,25 +188,6 @@ message GamePlayerProjMeta {
     optional bytes gamedatametaid = 80;
 }
 
-////fnprojmetaroot -> MerkleRoot<ProjMetaId> // all open projections for fname
-////playerprojmetaroot -> MerkleRoot<ProjMetaId> // all open projections for playerid
-//message ProjStateMeta {
-//    optional bytes fnprojposmetaroot = 10;
-//    optional bytes playerprojposmetaroot = 20;
-//}
-
-////store by position
-//message ProjPosMeta {
-//    optional string pos = 10;
-//    optional bytes projmetaroot = 20;
-//}
-
-////store ProjPos by fname
-//message FnProjPosMeta {
-//    optional string fname = 10;
-//    optional bytes projposmetaroot = 20;
-//}
-
 //projmetaid -> ProjMeta
 message ProjMeta {
     optional string name = 10;
@@ -241,9 +222,11 @@ message PlayerResultMeta {
 
 //projmetaid -> FantasyBitProjMeta
 message AwardMeta {
-    optional FantasyBitAward fantaybitaward = 20;
-    optional bytes projmetaid = 30;
-    optional bytes resultdatametaid = 40;
+    optional string name = 10;
+    optional int32 proj = 20;
+    optional uint64 award = 30;
+    optional bytes projmetaid = 40;
+    optional bytes resultdatametaid = 50;
 }
 
 message PnlMeta {
@@ -341,7 +324,7 @@ message pbstate {
     optional bytes schedulestateid = 10; //WeekGameStatusMetaRoot
     optional bytes leaderboardstateid = 20; //LeaderBoardMetaId
     optional bytes projstateid = 30; //ProjMetaroot
-    optional bytes posstateid = 35; //ProjMetaroot
+    optional bytes posstateid = 35; //ProjMetaroot      `
     optional bytes orderstateid = 40; //OrderMetaRoot
     optional bytes marketstateid = 50; //PlayerMarketStateRoot
     optional bytes globalstateid = 60; //GlobalStateMetaId

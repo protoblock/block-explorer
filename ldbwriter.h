@@ -51,6 +51,10 @@ public:
         return write(msg.SerializeAsString());
     }
 
+    std::string write(const MerkleTree &tree) {
+        return write(tree.root(),tree.SerializeAsString());
+    }
+
     std::string read(const std::string &id) ;
 
     /**
