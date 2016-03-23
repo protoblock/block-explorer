@@ -30,7 +30,8 @@ SOURCES += main.cpp \
     currentheaderblock.cpp \
     createstate.cpp \
     ldbwriter.cpp \
-    datastores.cpp
+    datastores.cpp \
+    DistributionAlgo.cpp
 
 OTHER_FILES += main.qml \
     content/Blocks.qml \
@@ -99,7 +100,9 @@ HEADERS += \
     currentheaderblock.h \
     createstate.h \
     ldbwriter.h \
-    datastores.h
+    datastores.h \
+    DistributionAlgo.h
+
 
 DISTFILES += \
     content/Labeltext.qml \
