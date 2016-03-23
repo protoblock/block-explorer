@@ -1,5 +1,6 @@
 #include "createstate.h"
 #include "datastores.h"
+#include "DistributionAlgo.h"
 
 using namespace std;
 namespace fantasybit {
@@ -273,13 +274,16 @@ void CreateState::processTrData(const std::string &datametaroot) {
 
             break;
 
-        case Data_Type_RESULT:
+        case Data_Type_RESULT: {
             rd = datap.second.data().GetExtension(ResultData::result_data);
-            id = m_gamestatustore.close(datap.first,rd.game_result().gameid());
-            if ( id != "")
-                ldb.write(id,m_gamestatustore.m_gamestatsstatemap[id].SerializeAsString());
+//            m_gamestatustore.m_id2ingameprojmeta[rd.game_result().gameid()]
+
+            InGameProjMeta igpm;
+            ldb.read(m_gamestatustore.m_id2ingameprojmeta[rd.game_result().gameid()],igpm);
+            processGameResult(rd.game_result(),igpm,datap.first);
 
             break;
+        }
         default:
             break;
         }
@@ -457,6 +461,169 @@ string CreateState::processTeamGameStart(
     return setWriteMerkle(gameplayerprojmetatree);
 }
 
+void CreateState::processGameResult(const GameResult &grslt,
+                                    const InGameProjMeta &igmeta,
+                                    const string &trid) {
+
+    auto id = m_gamestatustore.close(trid,grslt.gameid());
+    if ( id != "")
+        ldb.write(id,m_gamestatustore.m_gamestatsstatemap[id].SerializeAsString());
+
+    GameResultsMeta grm{};
+//    optional bytes homeresultmeta = 60;
+//    optional bytes awayresultmeta = 70;
+
+
+    grm.set_gameid(igmeta.gameid());
+    grm.set_gamestatusmetaid(id);
+    grm.set_resultdatametaid(trid);
+
+    TeamProjMeta homeprojmeta, awayprojmeta;
+    TeamResultMeta homeresultsmeta, awayresultsmeta;
+    ldb.read(igmeta.homeprojmeta(),homeprojmeta);
+    fromProj2Results(homeprojmeta,homeresultsmeta,id, trid);
+    ldb.read(igmeta.awayprojmeta(),awayprojmeta);
+    fromProj2Results(awayprojmeta,awayresultsmeta,id, trid);
+
+    homeresultsmeta.set_playerresultmetaroot(
+                ProcessResults(grslt.home_result(),
+                               homeprojmeta.gameplayerprojmetaroot(),
+                               id,trid));
+
+    awayresultsmeta.set_playerresultmetaroot(
+                ProcessResults(grslt.away_result(),
+                               awayprojmeta.gameplayerprojmetaroot(),
+                               id,trid));
+
+    grm.set_homeresultmeta(ldb.write(homeresultsmeta));
+    grm.set_awayresultmeta(ldb.write(awayresultsmeta));
+    m_gamestatustore.addGameResultMeta(grm.gameid(),homeprojmeta.week(),ldb.write(grm));
+
+
+}
+//    homeresultsmeta.set_playerresultmetaroot();
+//    grslt.away_result(i).
+
+
+//    optional float result = 40;
+//    optional Stats stats = 50;
+//    optional bytes awardmetaplayerroot = 60;
+//    optional bytes pnlmetaplayerroot = 70;
+
+
+//    GameStatusMeta gsm = m_gamestatustore.getGameStatusMeta(gmeta.gamedata().gameid());
+//    const GameInfo &gi = gsm.gameinfo();
+//    bool home = false;
+//    bool away = false;
+//    TeamProjMeta tpm;
+//    tpm.set_gameid(gmeta.gamedata().gameid());
+//    tpm.set_gamedatametaid(gmid);
+//    tpm.set_week(gsm.week());
+//    InGameProjMeta igpm;
+//    igpm.set_gameid(gmeta.gamedata().gameid());
+//    igpm.set_gamestatusmetaid(id);
+//    igpm.set_gamedatametaid(gmid);
+//    for ( auto ts : m_teamstatemap) {
+//        if ( ts.second.teamid() == gi.home() ) {
+//            home = true;
+//            tpm.set_team(gi.home());
+//            tpm.set_gameplayerprojmetaroot(
+//                        processTeamGameStart(ts.second.playermetaidroot(),gmid,id));
+//            igpm.set_homeprojmeta(ldb.write(tpm));
+//        }
+//        else if ( ts.second.teamid() == gi.away() ) {
+//            away = true;
+//            tpm.set_team(gi.away());
+//            tpm.set_gameplayerprojmetaroot(
+//                        processTeamGameStart(ts.second.playermetaidroot(),gmid,id));
+//            igpm.set_awayprojmeta(ldb.write(tpm));
+//        }
+//        if ( away && home ) {
+//            m_gamestatustore.addInGameProjMeta(gmeta.gamedata().gameid(),gsm.week(),ldb.write(igpm));
+//            break;
+//        }
+//    }
+//}
+
+void CreateState::fromProj2Results(const TeamProjMeta &teamproj,TeamResultMeta &teamresult,
+                                   const string &statusid, const string &trid) {
+    teamresult.set_gameid(teamproj.gameid());
+    teamresult.set_team(teamproj.team());
+    teamresult.set_kickofftime(teamproj.kickofftime());
+    teamresult.set_week(teamproj.week());
+    teamresult.set_resultdatametaid(trid);
+}
+
+/**
+ * @brief CreateState::ProcessResults
+ * @param ingr
+ * @param gameplayerprojmetaroot
+ * @param id
+ * @param trid
+ * @return TeamResultMeta
+ */
+std::string CreateState::ProcessResults(
+        decltype(GameResult::default_instance().home_result()) &ingr,
+        const std::string &gameplayerprojmetaroot,
+        const string &id,const string &trid) {
+
+    MerkleTree playerresulttree{};
+    std::unordered_map<std::string,PlayerResultMeta> pid2res;
+    PlayerResultMeta prm;
+    prm.set_gamestatusmetaid(id);
+    prm.set_resultdatametaid(trid);
+    for ( auto &pr : ingr) {
+        prm.set_playerid(pr.playerid());
+        prm.set_result(pr.result());
+        prm.mutable_stats()->CopyFrom(pr.stats());
+        pid2res[pr.playerid()] = prm;
+    }
+
+
+    MerkleTree mtree{};
+    ldb.read(gameplayerprojmetaroot,mtree);
+    for ( auto &gppmid : mtree.leaves()) {
+        GamePlayerProjMeta gppm{};
+        ldb.read(gppmid,gppm);
+        PlayerResultMeta &prm = pid2res[gppm.playerid()];
+        prm.set_playerid(gppm.playerid());
+        prm.set_gamestatusmetaid(id);
+
+        MerkleTree mtree2{};
+        ldb.read(gppm.projmetaplayerroot(),mtree2);
+        std::unordered_map<std::string,int> nameproj;
+        std::unordered_map<std::string, AwardMeta> awm{};
+        for ( auto &projmid : mtree2.leaves() ) {
+            ProjMeta pm{};
+            ldb.read(projmid,pm);
+            AwardMeta am{};
+            am.set_name(pm.name());
+            am.set_proj(pm.proj());
+            am.set_projmetaid(projmid);
+            am.set_resultdatametaid(trid);
+            awm[pm.name()] = am;
+            nameproj[pm.name()] = pm.proj();
+        }
+        DistribuePointsAvg dist(nameproj);
+        auto awards = dist.distribute(prm.result(),"FantasyAgent");
+        MerkleTree awardtree{};
+        for ( auto &r : awards ) {
+            AwardMeta &am = awm[r.first];
+            am.set_award(r.second);
+            awardtree.add_leaves(hashit(am));
+        }
+        awardtree.set_root(makeMerkleRoot(awardtree.leaves()));
+        ldb.write(awardtree);
+        prm.set_awardmetaplayerroot(awardtree.root());
+        playerresulttree.add_leaves(ldb.write(prm));
+        qDebug() << gppm.DebugString().data();
+    }
+
+    playerresulttree.set_root(makeMerkleRoot(playerresulttree.leaves()));
+    return ldb.write(playerresulttree);
+}
+
+
 /**
  * @brief CreateState::processTx process transactions
  * @param txmetaid
@@ -601,7 +768,7 @@ void CreateState::createTrGameDataState() {
             ldb.write(trees.second[1].root(),trees.second[1].SerializeAsString());
             wgsm.set_ingameprojmetaroot(trees.second[1].root());
             ldb.write(trees.second[2].root(),trees.second[2].SerializeAsString());
-            wgsm.set_ingameprojmetaroot(trees.second[2].root());
+            wgsm.set_gameresultmetaroot(trees.second[2].root());
             auto id = ldb.write(wgsm);
             m_weekgamestatusmetamap[id] = wgsm;
             m_weekgamestatusmetatree.add_leaves(id);

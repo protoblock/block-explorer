@@ -299,6 +299,10 @@ public:
     void ProcessInsideStamped(const SignedTransaction &inst, int32_t seqnum);
     void createMarketOrderState();
     void createPosState();
+    void fromProj2Results(const TeamProjMeta &teamproj, TeamResultMeta &teamresult, const std::string &statusid, const std::string &trid);
+    std::string ProcessResults(decltype(GameResult::default_instance().home_result()) &in,
+                        const std::string &, const std::string &id, const std::string &trid);
+    void processGameResult(const GameResult &grslt, const InGameProjMeta &igmeta, const std::string &trid);
 };
 
 

@@ -160,6 +160,10 @@ std::string GameStatusStore::process(const std::string &dataid, const GameData &
     return update(gm);
 }
 
+std::string GameStatusStore::process(const std::string &dataid, const ResultData &gd) {
+    return "";
+}
+
 std::string GameStatusStore::update(const GameStatusMeta &gm) {
     auto newid = hashit(gm.SerializeAsString());
     m_gamestatsstatemap[newid] = gm;
@@ -224,6 +228,11 @@ std::unordered_map<int, std::vector<MerkleTree> > GameStatusStore::createGameSta
                 std::string &iid = m_id2ingameprojmeta[pt.first];
                 ret[pt.second][1].add_leaves(iid);
             }
+            if ( gsm.gamesatus().status() == GameStatus::CLOSED ) {
+                std::string &iiid = m_id2gameresultmeta[pt.first];
+                ret[pt.second][2].add_leaves(iiid);
+            }
+
         }
     }
 
@@ -303,6 +312,11 @@ std::string ProjStore::update(const ProjMeta &pm, const std::string &pf) {
 
 void GameStatusStore::addInGameProjMeta(const std::string &gameid, int week, const std::string &ingameprojid) {
     m_id2ingameprojmeta[gameid] = ingameprojid;
+    dirtyweek[week] = true;
+}
+
+void GameStatusStore::addGameResultMeta(const std::string &gameid, int week, const std::string &resultid) {
+    m_id2gameresultmeta[gameid] = resultid;
     dirtyweek[week] = true;
 }
 

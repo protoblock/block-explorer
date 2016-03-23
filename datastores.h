@@ -80,9 +80,13 @@ public:
     std::unordered_map<std::string,std::string>
             m_id2ingameprojmeta;
 
+    std::unordered_map<std::string,std::string>
+            m_id2gameresultmeta;
+
     GameStatusMeta getGameStatusMeta(const std::string &gameid) {
         return m_gamestatsstatemap[m_gameid2metaid[gameid]];
     }
+
 
     void init();
 
@@ -91,6 +95,9 @@ public:
 
     std::string process(const std::string &dataid,
                         const GameData &gd);
+
+    std::string process(const std::string &dataid,
+                        const ResultData &gd);
 
     std::string update(const GameStatusMeta &gm);
 
@@ -105,6 +112,9 @@ public:
     void clean();
 
     void addInGameProjMeta(const std::string &gameid, int week, const std::string &ingameprojid);
+
+    void addGameResultMeta(const std::string &gameid, int week, const std::string &resultid);
+
 };
 
 /**
