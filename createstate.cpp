@@ -485,10 +485,22 @@ void CreateState::processGameResult(const GameResult &grslt,
     ldb.read(igmeta.awayprojmeta(),awayprojmeta);
     fromProj2Results(awayprojmeta,awayresultsmeta,id, trid);
 
+
+    qDebug() << " home ";
+
+    for ( auto hr : grslt.home_result())
+        qDebug() << hr.DebugString().data();
+
     homeresultsmeta.set_playerresultmetaroot(
                 ProcessResults(grslt.home_result(),
                                homeprojmeta.gameplayerprojmetaroot(),
                                id,trid));
+
+
+    qDebug() << " away ";
+
+    for ( auto hr : grslt.away_result())
+        qDebug() << hr.DebugString().data();
 
     awayresultsmeta.set_playerresultmetaroot(
                 ProcessResults(grslt.away_result(),
@@ -569,6 +581,7 @@ std::string CreateState::ProcessResults(
 
     MerkleTree playerresulttree{};
     std::unordered_map<std::string,PlayerResultMeta> pid2res;
+    {
     PlayerResultMeta prm;
     prm.set_gamestatusmetaid(id);
     prm.set_resultdatametaid(trid);
@@ -578,14 +591,18 @@ std::string CreateState::ProcessResults(
         prm.mutable_stats()->CopyFrom(pr.stats());
         pid2res[pr.playerid()] = prm;
     }
-
+    }
 
     MerkleTree mtree{};
     ldb.read(gameplayerprojmetaroot,mtree);
     for ( auto &gppmid : mtree.leaves()) {
         GamePlayerProjMeta gppm{};
         ldb.read(gppmid,gppm);
-        PlayerResultMeta &prm = pid2res[gppm.playerid()];
+        auto it = pid2res.find(gppm.playerid());
+        if ( it == pid2res.end())
+            continue;
+
+        PlayerResultMeta &prm = it->second;//pid2res[gppm.playerid()];
         prm.set_playerid(gppm.playerid());
         prm.set_gamestatusmetaid(id);
 
@@ -610,7 +627,8 @@ std::string CreateState::ProcessResults(
         for ( auto &r : awards ) {
             AwardMeta &am = awm[r.first];
             am.set_award(r.second);
-            awardtree.add_leaves(hashit(am));
+            awardtree.add_leaves(ldb.write(am));
+            m_fantasynamestore.award(am,trid);
         }
         awardtree.set_root(makeMerkleRoot(awardtree.leaves()));
         ldb.write(awardtree);
@@ -717,6 +735,12 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
 }
 
 
+void CreateState::createTrDataState() {
+    createTrPlayerDataState();
+    createTrGameDataState();
+    createTrLeaderboardState();
+}
+
 void CreateState::createTrPlayerDataState() {
     auto tmr = m_playerstore.createPlayermetaidroots();
     if ( tmr.size() == 0 ) return;
@@ -813,9 +837,32 @@ void CreateState::createTrGameDataState() {
     }
 }
 
+void CreateState::createTrLeaderboardState() {
+    for (auto newam : m_fantasynamestore.m_pendingnew ) {
+        auto &mtree = m_fantasynamestore.m_pendingawards[newam.first];
+        mtree.set_root(makeMerkleRoot(mtree.leaves()));
+        auto &fnb = m_fantasynamestore.m_pendingnew[newam.first];
+        fnb.set_awardmetaroot(ldb.write(mtree));
+//        ToDo pnl
+//        auto &mtree2 = m_fantasynamestore.m_pendingnew[newam.first];
+//        mtree.set_root(makeMerkleRoot(mtree.leaves));
+//        auto &fnb = m_fantasynamestore.m_pendingnew[newam.first];
+//        fnb.set_awardmetaroot(ldb.write(mtree));
+        auto id = m_fantasynamestore.update(fnb);
+        if ( id != "")
+            ldb.write(id,m_fantasynamestore.m_fantasynamebalmetamap[id].SerializeAsString());
+
+    }
+    m_fantasynamestore.m_pendingnew.clear();
+    m_fantasynamestore.m_pendingawards.clear();
+    //createNameTxState();
+
+}
+
 void CreateState::createTrState() {
     createTrGameDataState();
     createProjState();
+    createTrLeaderboardState();
 }
 
 /**

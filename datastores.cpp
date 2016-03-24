@@ -3,6 +3,8 @@
 
 namespace fantasybit {
 
+using namespace std;
+
 void PlayerStore::init() {
     for ( auto pmp : m_playerstatemap) {
         m_playerid2metaid[pmp.second.playerid()] = pmp.first;
@@ -114,6 +116,38 @@ std::string FantasyNameStore::update(const FantasyNameBalMeta &gm) {
     return newid;
 }
 
+std::string FantasyNameStore::award(const AwardMeta &am, const string &trid) {
+    FantasyNameBalMeta *fnbm;
+    MerkleTree *ammt;
+    auto it = m_pendingnew.find(am.name());
+    if ( it == m_pendingnew.end()) {
+        m_pendingnew[am.name()] = FantasyNameBalMeta::default_instance();
+        fnbm = &m_pendingnew[am.name()];
+        auto it2 = m_name2metaid.find(am.name());
+        if ( it2 != m_name2metaid.end()) {
+            fnbm->set_prev(it2->second);
+            fnbm->mutable_fnamebal()->
+                    CopyFrom(m_fantasynamebalmetamap[it2->second].fnamebal());
+
+        }
+        m_pendingawards[am.name()] = MerkleTree::default_instance();
+        ammt = &m_pendingawards[am.name()];
+        fnbm->set_trmetaid(trid);
+    }
+    else {
+        ammt = &m_pendingawards[am.name()];
+        fnbm = &m_pendingnew[am.name()];
+    }
+
+    ammt->add_leaves(hashit(am));
+    auto oldbal = fnbm->fnamebal();
+    fnbm->mutable_fnamebal()->set_bits(am.award() + oldbal.bits());
+    fnbm->mutable_fnamebal()->set_stake(am.award() + oldbal.stake());
+
+    return "";
+}
+
+
 void GameStatusStore::init() {
     dirty = false;
     for ( auto gmp : m_gamestatsstatemap) {
@@ -202,8 +236,8 @@ std::string GameStatusStore::start(const std::string &gmid, const GameMeta &gm) 
     return update(gsm);
 }
 
-std::unordered_map<int, std::vector<MerkleTree> > GameStatusStore::createGameStatusmetaidroots() {
-    std::unordered_map<int,std::vector<MerkleTree>> ret;
+std::map<int, std::vector<MerkleTree> > GameStatusStore::createGameStatusmetaidroots() {
+    std::map<int,std::vector<MerkleTree>> ret;
     std::unordered_map<int,MerkleTree> mtrees;
     std::unordered_map<int,MerkleTree> mtrees_ingame;
 

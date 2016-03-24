@@ -296,9 +296,9 @@ message GlobalStateMeta {
     optional bytes next = 40;
 }
 
-message ScheduleStateId {
-    optional bytes weekgamestatusmetaroot = 10;
-}
+//message ScheduleStateId {
+//    optional bytes weekgamestatusmetaroot = 10;
+//}
 
 //playermetaid -> playermeta
 //playermetaidroot -> MerkleTree<playermetaid>

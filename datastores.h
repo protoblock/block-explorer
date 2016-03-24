@@ -57,6 +57,16 @@ public:
                         const NameTrans &nt);
 
     std::string update(const FantasyNameBalMeta &gm);
+
+    std::string award(const AwardMeta &gm);
+
+    std::unordered_map<std::string,FantasyNameBalMeta>
+            m_pendingnew;
+
+    std::unordered_map<std::string,MerkleTree>
+            m_pendingawards;
+
+    std::string award(const AwardMeta &am, const std::string &trid);
 };
 
 /**
@@ -104,7 +114,7 @@ public:
     std::string close(const std::string &dataid,
                         const std::string &id);
 
-    std::unordered_map<int, std::vector<MerkleTree>>
+    std::map<int, std::vector<MerkleTree>>
                         createGameStatusmetaidroots();
 
     std::string start(const std::string &gmid, const GameMeta &gm);

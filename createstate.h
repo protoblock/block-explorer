@@ -191,10 +191,7 @@ public:
     /**
      * @brief createTrDataState write new player and game states post data processing
      */
-    void createTrDataState() {
-        createTrPlayerDataState();
-        createTrGameDataState();
-    }
+    void createTrDataState();
 
     /**
      * @brief createTrPlayerDataState write and update latest team/player states
@@ -303,6 +300,7 @@ public:
     std::string ProcessResults(decltype(GameResult::default_instance().home_result()) &in,
                         const std::string &, const std::string &id, const std::string &trid);
     void processGameResult(const GameResult &grslt, const InGameProjMeta &igmeta, const std::string &trid);
+    void createTrLeaderboardState();
 };
 
 
