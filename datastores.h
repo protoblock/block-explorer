@@ -159,6 +159,14 @@ public:
     std::string update(const ProjMeta &pm, const std::string &pf);
 
     bool dirty = false;
+
+    void clear() {
+        m_projstatemap.clear();
+        m_projid2metaid.clear();
+        dirtyplayerfname.clear();
+        newprojmeta.clear();
+        dirty = false;
+    }
 };
 
 /**
@@ -227,6 +235,15 @@ public:
     }
 
     bool dirty = false;
+
+    void clear() {
+        m_posstatemap.clear();
+        m_posid2metaid.clear();
+        dirtyplayerfname.clear();
+        newposmeta.clear();
+        dirty = false;
+    }
+
 };
 
 /**

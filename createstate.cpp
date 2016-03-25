@@ -51,6 +51,8 @@ std::string fantasybit::CreateState::loadStateId(const std::string &pbstatemetai
 
     ldb.read(m_pbstate.leaderboardstateid(),m_leaderboardmeta);
 
+    m_projmetamap.clear();
+    m_projmetatree.Clear();
     this->loadMerkleMap(m_pbstate.projstateid(),
                   m_projmetatree,
                   m_projmetamap);
@@ -81,7 +83,7 @@ std::string fantasybit::CreateState::loadDefaultStates() {
     TeamMeta tm;
     for( auto d : CreateState::GENESIS_NFL_TEAMS) {
         tm.set_teamid(d);
-        auto htm = hashit(tm);
+        auto htm = ldb.write(tm);
         m_teamstatetree.add_leaves(htm);
         m_teamstatemap[htm] = tm;
     }
@@ -307,6 +309,12 @@ void CreateState::processTr(const TrMeta &trmeta, const std::string &trid) {
         m_globalstatemeta.set_trmetaid(trid);
         m_globalstatemeta.mutable_globalstate()->CopyFrom(gs);
         m_pbstate.set_globalstateid(ldb.write(m_globalstatemeta));
+        m_projstore.clear();
+        m_posstore.clear();
+        m_projmetamap.clear();
+        m_projmetatree.Clear();
+        m_pbstate.set_projstateid("");
+        m_pbstate.set_posstateid("");
 
         break;
     case TrType::GAMESTART: {
