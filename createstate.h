@@ -301,6 +301,8 @@ public:
                         const std::string &, const std::string &id, const std::string &trid);
     void processGameResult(const GameResult &grslt, const InGameProjMeta &igmeta, const std::string &trid);
     void createTrLeaderboardState();
+    std::string processNewOrder(const std::string &txid, const ExchangeOrder &eo, const std::string &fname, int32_t refnum);
+    void processFirstOrder(const OrderMeta &ordernew, const std::string &newoid);
 };
 
 

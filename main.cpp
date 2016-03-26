@@ -31,10 +31,10 @@ int main(int argc, char *argv[])
     bc.init();
     //auto start = 0;
     BlockMeta bm{};
-    auto headid = ldb.read("blockhead");
+    auto headid = ldb.read("blocknum_2187");
     ldb.read(headid,bm);
     auto start= bm.blocknum();
-    auto bh = 142;//bc.GetBlockHeight();
+    auto bh = 4200;//bc.GetBlockHeight();
     string prev = headid;
     for ( int i = start+1 ; i < bh; i++) {
         Block b = bc.GetBlock(i);

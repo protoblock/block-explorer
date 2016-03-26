@@ -26,7 +26,6 @@
 #include <google/protobuf/unknown_field_set.h>
 #include "ProtoData.pb.h"
 #include "NameData.pb.h"
-#include "StateData.pb.h"
 #include "StaticData.pb.h"
 #include "StatusData.pb.h"
 #include "ExData.pb.h"
@@ -3248,29 +3247,29 @@ class LimitBookMeta : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 ask() const;
   inline void set_ask(::google::protobuf::int32 value);
 
-  // optional bytes insidebookmetabid = 50;
-  inline bool has_insidebookmetabid() const;
-  inline void clear_insidebookmetabid();
-  static const int kInsidebookmetabidFieldNumber = 50;
-  inline const ::std::string& insidebookmetabid() const;
-  inline void set_insidebookmetabid(const ::std::string& value);
-  inline void set_insidebookmetabid(const char* value);
-  inline void set_insidebookmetabid(const void* value, size_t size);
-  inline ::std::string* mutable_insidebookmetabid();
-  inline ::std::string* release_insidebookmetabid();
-  inline void set_allocated_insidebookmetabid(::std::string* insidebookmetabid);
+  // optional bytes bidordermetaroot = 50;
+  inline bool has_bidordermetaroot() const;
+  inline void clear_bidordermetaroot();
+  static const int kBidordermetarootFieldNumber = 50;
+  inline const ::std::string& bidordermetaroot() const;
+  inline void set_bidordermetaroot(const ::std::string& value);
+  inline void set_bidordermetaroot(const char* value);
+  inline void set_bidordermetaroot(const void* value, size_t size);
+  inline ::std::string* mutable_bidordermetaroot();
+  inline ::std::string* release_bidordermetaroot();
+  inline void set_allocated_bidordermetaroot(::std::string* bidordermetaroot);
 
-  // optional bytes insidebookmetaask = 60;
-  inline bool has_insidebookmetaask() const;
-  inline void clear_insidebookmetaask();
-  static const int kInsidebookmetaaskFieldNumber = 60;
-  inline const ::std::string& insidebookmetaask() const;
-  inline void set_insidebookmetaask(const ::std::string& value);
-  inline void set_insidebookmetaask(const char* value);
-  inline void set_insidebookmetaask(const void* value, size_t size);
-  inline ::std::string* mutable_insidebookmetaask();
-  inline ::std::string* release_insidebookmetaask();
-  inline void set_allocated_insidebookmetaask(::std::string* insidebookmetaask);
+  // optional bytes askordermetaroot = 60;
+  inline bool has_askordermetaroot() const;
+  inline void clear_askordermetaroot();
+  static const int kAskordermetarootFieldNumber = 60;
+  inline const ::std::string& askordermetaroot() const;
+  inline void set_askordermetaroot(const ::std::string& value);
+  inline void set_askordermetaroot(const char* value);
+  inline void set_askordermetaroot(const void* value, size_t size);
+  inline ::std::string* mutable_askordermetaroot();
+  inline ::std::string* release_askordermetaroot();
+  inline void set_allocated_askordermetaroot(::std::string* askordermetaroot);
 
   // @@protoc_insertion_point(class_scope:fantasybit.LimitBookMeta)
  private:
@@ -3282,10 +3281,10 @@ class LimitBookMeta : public ::google::protobuf::Message {
   inline void clear_has_asksize();
   inline void set_has_ask();
   inline void clear_has_ask();
-  inline void set_has_insidebookmetabid();
-  inline void clear_has_insidebookmetabid();
-  inline void set_has_insidebookmetaask();
-  inline void clear_has_insidebookmetaask();
+  inline void set_has_bidordermetaroot();
+  inline void clear_has_bidordermetaroot();
+  inline void set_has_askordermetaroot();
+  inline void clear_has_askordermetaroot();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -3293,8 +3292,8 @@ class LimitBookMeta : public ::google::protobuf::Message {
   ::google::protobuf::int32 bidsize_;
   ::google::protobuf::int32 asksize_;
   ::google::protobuf::int32 ask_;
-  ::std::string* insidebookmetabid_;
-  ::std::string* insidebookmetaask_;
+  ::std::string* bidordermetaroot_;
+  ::std::string* askordermetaroot_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
@@ -3657,6 +3656,13 @@ class OrderMeta : public ::google::protobuf::Message {
   inline ::std::string* release_orderfillmetaid();
   inline void set_allocated_orderfillmetaid(::std::string* orderfillmetaid);
 
+  // optional int32 timestamp = 75;
+  inline bool has_timestamp() const;
+  inline void clear_timestamp();
+  static const int kTimestampFieldNumber = 75;
+  inline ::google::protobuf::int32 timestamp() const;
+  inline void set_timestamp(::google::protobuf::int32 value);
+
   // optional bytes prev = 80;
   inline bool has_prev() const;
   inline void clear_prev();
@@ -3687,6 +3693,8 @@ class OrderMeta : public ::google::protobuf::Message {
   inline void clear_has_txmetaid();
   inline void set_has_orderfillmetaid();
   inline void clear_has_orderfillmetaid();
+  inline void set_has_timestamp();
+  inline void clear_has_timestamp();
   inline void set_has_prev();
   inline void clear_has_prev();
 
@@ -3701,9 +3709,10 @@ class OrderMeta : public ::google::protobuf::Message {
   ::std::string* txmetaid_;
   ::std::string* orderfillmetaid_;
   ::std::string* prev_;
+  ::google::protobuf::int32 timestamp_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(9 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(10 + 31) / 32];
 
   friend void  protobuf_AddDesc_StateData_2eproto();
   friend void protobuf_AssignDesc_StateData_2eproto();
@@ -11489,143 +11498,143 @@ inline void LimitBookMeta::set_ask(::google::protobuf::int32 value) {
   ask_ = value;
 }
 
-// optional bytes insidebookmetabid = 50;
-inline bool LimitBookMeta::has_insidebookmetabid() const {
+// optional bytes bidordermetaroot = 50;
+inline bool LimitBookMeta::has_bidordermetaroot() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
-inline void LimitBookMeta::set_has_insidebookmetabid() {
+inline void LimitBookMeta::set_has_bidordermetaroot() {
   _has_bits_[0] |= 0x00000010u;
 }
-inline void LimitBookMeta::clear_has_insidebookmetabid() {
+inline void LimitBookMeta::clear_has_bidordermetaroot() {
   _has_bits_[0] &= ~0x00000010u;
 }
-inline void LimitBookMeta::clear_insidebookmetabid() {
-  if (insidebookmetabid_ != &::google::protobuf::internal::kEmptyString) {
-    insidebookmetabid_->clear();
+inline void LimitBookMeta::clear_bidordermetaroot() {
+  if (bidordermetaroot_ != &::google::protobuf::internal::kEmptyString) {
+    bidordermetaroot_->clear();
   }
-  clear_has_insidebookmetabid();
+  clear_has_bidordermetaroot();
 }
-inline const ::std::string& LimitBookMeta::insidebookmetabid() const {
-  return *insidebookmetabid_;
+inline const ::std::string& LimitBookMeta::bidordermetaroot() const {
+  return *bidordermetaroot_;
 }
-inline void LimitBookMeta::set_insidebookmetabid(const ::std::string& value) {
-  set_has_insidebookmetabid();
-  if (insidebookmetabid_ == &::google::protobuf::internal::kEmptyString) {
-    insidebookmetabid_ = new ::std::string;
+inline void LimitBookMeta::set_bidordermetaroot(const ::std::string& value) {
+  set_has_bidordermetaroot();
+  if (bidordermetaroot_ == &::google::protobuf::internal::kEmptyString) {
+    bidordermetaroot_ = new ::std::string;
   }
-  insidebookmetabid_->assign(value);
+  bidordermetaroot_->assign(value);
 }
-inline void LimitBookMeta::set_insidebookmetabid(const char* value) {
-  set_has_insidebookmetabid();
-  if (insidebookmetabid_ == &::google::protobuf::internal::kEmptyString) {
-    insidebookmetabid_ = new ::std::string;
+inline void LimitBookMeta::set_bidordermetaroot(const char* value) {
+  set_has_bidordermetaroot();
+  if (bidordermetaroot_ == &::google::protobuf::internal::kEmptyString) {
+    bidordermetaroot_ = new ::std::string;
   }
-  insidebookmetabid_->assign(value);
+  bidordermetaroot_->assign(value);
 }
-inline void LimitBookMeta::set_insidebookmetabid(const void* value, size_t size) {
-  set_has_insidebookmetabid();
-  if (insidebookmetabid_ == &::google::protobuf::internal::kEmptyString) {
-    insidebookmetabid_ = new ::std::string;
+inline void LimitBookMeta::set_bidordermetaroot(const void* value, size_t size) {
+  set_has_bidordermetaroot();
+  if (bidordermetaroot_ == &::google::protobuf::internal::kEmptyString) {
+    bidordermetaroot_ = new ::std::string;
   }
-  insidebookmetabid_->assign(reinterpret_cast<const char*>(value), size);
+  bidordermetaroot_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* LimitBookMeta::mutable_insidebookmetabid() {
-  set_has_insidebookmetabid();
-  if (insidebookmetabid_ == &::google::protobuf::internal::kEmptyString) {
-    insidebookmetabid_ = new ::std::string;
+inline ::std::string* LimitBookMeta::mutable_bidordermetaroot() {
+  set_has_bidordermetaroot();
+  if (bidordermetaroot_ == &::google::protobuf::internal::kEmptyString) {
+    bidordermetaroot_ = new ::std::string;
   }
-  return insidebookmetabid_;
+  return bidordermetaroot_;
 }
-inline ::std::string* LimitBookMeta::release_insidebookmetabid() {
-  clear_has_insidebookmetabid();
-  if (insidebookmetabid_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* LimitBookMeta::release_bidordermetaroot() {
+  clear_has_bidordermetaroot();
+  if (bidordermetaroot_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = insidebookmetabid_;
-    insidebookmetabid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = bidordermetaroot_;
+    bidordermetaroot_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
-inline void LimitBookMeta::set_allocated_insidebookmetabid(::std::string* insidebookmetabid) {
-  if (insidebookmetabid_ != &::google::protobuf::internal::kEmptyString) {
-    delete insidebookmetabid_;
+inline void LimitBookMeta::set_allocated_bidordermetaroot(::std::string* bidordermetaroot) {
+  if (bidordermetaroot_ != &::google::protobuf::internal::kEmptyString) {
+    delete bidordermetaroot_;
   }
-  if (insidebookmetabid) {
-    set_has_insidebookmetabid();
-    insidebookmetabid_ = insidebookmetabid;
+  if (bidordermetaroot) {
+    set_has_bidordermetaroot();
+    bidordermetaroot_ = bidordermetaroot;
   } else {
-    clear_has_insidebookmetabid();
-    insidebookmetabid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    clear_has_bidordermetaroot();
+    bidordermetaroot_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   }
 }
 
-// optional bytes insidebookmetaask = 60;
-inline bool LimitBookMeta::has_insidebookmetaask() const {
+// optional bytes askordermetaroot = 60;
+inline bool LimitBookMeta::has_askordermetaroot() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
-inline void LimitBookMeta::set_has_insidebookmetaask() {
+inline void LimitBookMeta::set_has_askordermetaroot() {
   _has_bits_[0] |= 0x00000020u;
 }
-inline void LimitBookMeta::clear_has_insidebookmetaask() {
+inline void LimitBookMeta::clear_has_askordermetaroot() {
   _has_bits_[0] &= ~0x00000020u;
 }
-inline void LimitBookMeta::clear_insidebookmetaask() {
-  if (insidebookmetaask_ != &::google::protobuf::internal::kEmptyString) {
-    insidebookmetaask_->clear();
+inline void LimitBookMeta::clear_askordermetaroot() {
+  if (askordermetaroot_ != &::google::protobuf::internal::kEmptyString) {
+    askordermetaroot_->clear();
   }
-  clear_has_insidebookmetaask();
+  clear_has_askordermetaroot();
 }
-inline const ::std::string& LimitBookMeta::insidebookmetaask() const {
-  return *insidebookmetaask_;
+inline const ::std::string& LimitBookMeta::askordermetaroot() const {
+  return *askordermetaroot_;
 }
-inline void LimitBookMeta::set_insidebookmetaask(const ::std::string& value) {
-  set_has_insidebookmetaask();
-  if (insidebookmetaask_ == &::google::protobuf::internal::kEmptyString) {
-    insidebookmetaask_ = new ::std::string;
+inline void LimitBookMeta::set_askordermetaroot(const ::std::string& value) {
+  set_has_askordermetaroot();
+  if (askordermetaroot_ == &::google::protobuf::internal::kEmptyString) {
+    askordermetaroot_ = new ::std::string;
   }
-  insidebookmetaask_->assign(value);
+  askordermetaroot_->assign(value);
 }
-inline void LimitBookMeta::set_insidebookmetaask(const char* value) {
-  set_has_insidebookmetaask();
-  if (insidebookmetaask_ == &::google::protobuf::internal::kEmptyString) {
-    insidebookmetaask_ = new ::std::string;
+inline void LimitBookMeta::set_askordermetaroot(const char* value) {
+  set_has_askordermetaroot();
+  if (askordermetaroot_ == &::google::protobuf::internal::kEmptyString) {
+    askordermetaroot_ = new ::std::string;
   }
-  insidebookmetaask_->assign(value);
+  askordermetaroot_->assign(value);
 }
-inline void LimitBookMeta::set_insidebookmetaask(const void* value, size_t size) {
-  set_has_insidebookmetaask();
-  if (insidebookmetaask_ == &::google::protobuf::internal::kEmptyString) {
-    insidebookmetaask_ = new ::std::string;
+inline void LimitBookMeta::set_askordermetaroot(const void* value, size_t size) {
+  set_has_askordermetaroot();
+  if (askordermetaroot_ == &::google::protobuf::internal::kEmptyString) {
+    askordermetaroot_ = new ::std::string;
   }
-  insidebookmetaask_->assign(reinterpret_cast<const char*>(value), size);
+  askordermetaroot_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* LimitBookMeta::mutable_insidebookmetaask() {
-  set_has_insidebookmetaask();
-  if (insidebookmetaask_ == &::google::protobuf::internal::kEmptyString) {
-    insidebookmetaask_ = new ::std::string;
+inline ::std::string* LimitBookMeta::mutable_askordermetaroot() {
+  set_has_askordermetaroot();
+  if (askordermetaroot_ == &::google::protobuf::internal::kEmptyString) {
+    askordermetaroot_ = new ::std::string;
   }
-  return insidebookmetaask_;
+  return askordermetaroot_;
 }
-inline ::std::string* LimitBookMeta::release_insidebookmetaask() {
-  clear_has_insidebookmetaask();
-  if (insidebookmetaask_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* LimitBookMeta::release_askordermetaroot() {
+  clear_has_askordermetaroot();
+  if (askordermetaroot_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = insidebookmetaask_;
-    insidebookmetaask_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = askordermetaroot_;
+    askordermetaroot_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
-inline void LimitBookMeta::set_allocated_insidebookmetaask(::std::string* insidebookmetaask) {
-  if (insidebookmetaask_ != &::google::protobuf::internal::kEmptyString) {
-    delete insidebookmetaask_;
+inline void LimitBookMeta::set_allocated_askordermetaroot(::std::string* askordermetaroot) {
+  if (askordermetaroot_ != &::google::protobuf::internal::kEmptyString) {
+    delete askordermetaroot_;
   }
-  if (insidebookmetaask) {
-    set_has_insidebookmetaask();
-    insidebookmetaask_ = insidebookmetaask;
+  if (askordermetaroot) {
+    set_has_askordermetaroot();
+    askordermetaroot_ = askordermetaroot;
   } else {
-    clear_has_insidebookmetaask();
-    insidebookmetaask_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    clear_has_askordermetaroot();
+    askordermetaroot_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   }
 }
 
@@ -12285,15 +12294,37 @@ inline void OrderMeta::set_allocated_orderfillmetaid(::std::string* orderfillmet
   }
 }
 
-// optional bytes prev = 80;
-inline bool OrderMeta::has_prev() const {
+// optional int32 timestamp = 75;
+inline bool OrderMeta::has_timestamp() const {
   return (_has_bits_[0] & 0x00000100u) != 0;
 }
-inline void OrderMeta::set_has_prev() {
+inline void OrderMeta::set_has_timestamp() {
   _has_bits_[0] |= 0x00000100u;
 }
-inline void OrderMeta::clear_has_prev() {
+inline void OrderMeta::clear_has_timestamp() {
   _has_bits_[0] &= ~0x00000100u;
+}
+inline void OrderMeta::clear_timestamp() {
+  timestamp_ = 0;
+  clear_has_timestamp();
+}
+inline ::google::protobuf::int32 OrderMeta::timestamp() const {
+  return timestamp_;
+}
+inline void OrderMeta::set_timestamp(::google::protobuf::int32 value) {
+  set_has_timestamp();
+  timestamp_ = value;
+}
+
+// optional bytes prev = 80;
+inline bool OrderMeta::has_prev() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void OrderMeta::set_has_prev() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void OrderMeta::clear_has_prev() {
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline void OrderMeta::clear_prev() {
   if (prev_ != &::google::protobuf::internal::kEmptyString) {

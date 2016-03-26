@@ -537,8 +537,8 @@ void protobuf_AssignDesc_StateData_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LimitBookMeta, bidsize_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LimitBookMeta, asksize_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LimitBookMeta, ask_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LimitBookMeta, insidebookmetabid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LimitBookMeta, insidebookmetaask_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LimitBookMeta, bidordermetaroot_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LimitBookMeta, askordermetaroot_),
   };
   LimitBookMeta_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -586,7 +586,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(MarketTicMeta));
   OrderMeta_descriptor_ = file->message_type(24);
-  static const int OrderMeta_offsets_[9] = {
+  static const int OrderMeta_offsets_[10] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderMeta, refnum_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderMeta, fname_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderMeta, playerid_),
@@ -595,6 +595,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderMeta, price_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderMeta, txmetaid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderMeta, orderfillmetaid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderMeta, timestamp_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderMeta, prev_),
   };
   OrderMeta_reflection_ =
@@ -875,114 +876,113 @@ void protobuf_AddDesc_StateData_2eproto() {
 
   ::fantasybit::protobuf_AddDesc_ProtoData_2eproto();
   ::fantasybit::protobuf_AddDesc_NameData_2eproto();
-  ::fantasybit::protobuf_AddDesc_StateData_2eproto();
   ::fantasybit::protobuf_AddDesc_StaticData_2eproto();
   ::fantasybit::protobuf_AddDesc_StatusData_2eproto();
   ::fantasybit::protobuf_AddDesc_ExData_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\017StateData.proto\022\nfantasybit\032\017ProtoData"
-    ".proto\032\016NameData.proto\032\017StateData.proto\032"
-    "\020StaticData.proto\032\020StatusData.proto\032\014ExD"
-    "ata.proto\"r\n\tBlockMeta\022\020\n\010blocknum\030( \001(\005"
-    "\022\020\n\010trmetaid\0302 \001(\014\022\022\n\ntxmetaroot\030\n \001(\014\022\021"
-    "\n\tpbstateid\030< \001(\014\022\014\n\004prev\030\024 \001(\014\022\014\n\004next\030"
-    "\036 \001(\014\"\227\001\n\006TxMeta\022\020\n\010blocknum\030\n \001(\005\022\r\n\005tx"
-    "num\030\024 \001(\005\022%\n\006txtype\030( \001(\0162\025.fantasybit.T"
-    "ransType\022#\n\002tx\0302 \001(\0132\027.fantasybit.Transa"
-    "ction\022\024\n\014fantasy_name\030< \001(\t\022\n\n\002id\030F \001(\014\""
-    "\230\001\n\006TrMeta\022\020\n\010blocknum\030\n \001(\005\022 \n\004type\030( \001"
-    "(\0162\022.fantasybit.TrType\022\016\n\006season\0302 \001(\r\022\014"
-    "\n\004week\030< \001(\r\022\024\n\014gamemetaroot\030F \001(\014\022\024\n\014da"
-    "tametaroot\030P \001(\014\022\020\n\010txmetaid\030d \001(\014\"D\n\010Ga"
-    "meMeta\022\020\n\010txmetaid\030\n \001(\014\022&\n\010gamedata\030\024 \001"
-    "(\0132\024.fantasybit.GameData\"<\n\010DataMeta\022\020\n\010"
-    "txmetaid\030\n \001(\014\022\036\n\004data\030\024 \001(\0132\020.fantasybi"
-    "t.Data\"R\n\017LeaderBoardMeta\022\014\n\004week\030\n \001(\r\022"
-    "\025\n\rfnbalmetaroot\030\024 \001(\014\022\014\n\004prev\030\036 \001(\014\022\014\n\004"
-    "next\030( \001(\014\"\256\001\n\022FantasyNameBalMeta\022\020\n\010txm"
-    "etaid\030\n \001(\014\022\020\n\010trmetaid\030\024 \001(\014\022,\n\010fnameba"
-    "l\030\036 \001(\0132\032.fantasybit.FantasyNameBal\022\025\n\ra"
-    "wardmetaroot\0302 \001(\014\022\023\n\013pnlmetaroot\030< \001(\014\022"
-    "\014\n\004prev\030F \001(\014\022\014\n\004next\030P \001(\014\"\257\001\n\020FantasyN"
-    "ameState\022\014\n\004name\030\001 \001(\t\022\034\n\024fantasynamebal"
-    "metaid\030\n \001(\014\022\023\n\013posmetaroot\030\024 \001(\014\022\026\n\016ord"
-    "ersmetaroot\030\036 \001(\014\022\024\n\014projmetaroot\030( \001(\014\022"
-    "\014\n\004prev\030F \001(\014\022\014\n\004next\030P \001(\014\022\020\n\010txmetaid\030"
-    "2 \001(\014\"\222\001\n\022WeekGameStatusMeta\022\014\n\004week\030\n \001"
-    "(\r\022\032\n\022gameresultmetaroot\030\024 \001(\014\022\032\n\022ingame"
-    "projmetaroot\030\036 \001(\014\022\032\n\022opengamestatusroot"
-    "\030( \001(\014\022\014\n\004prev\0302 \001(\014\022\014\n\004next\030< \001(\014\"~\n\016In"
-    "GameProjMeta\022\016\n\006gameid\030\024 \001(\t\022\030\n\020gamestat"
-    "usmetaid\030( \001(\014\022\024\n\014homeprojmeta\030< \001(\014\022\024\n\014"
-    "awayprojmeta\030F \001(\014\022\026\n\016gamedatametaid\0302 \001"
-    "(\014\"\205\001\n\017GameResultsMeta\022\016\n\006gameid\030\024 \001(\t\022\030"
-    "\n\020gamestatusmetaid\030( \001(\014\022\026\n\016homeresultme"
-    "ta\030< \001(\014\022\026\n\016awayresultmeta\030F \001(\014\022\030\n\020resu"
-    "ltdatametaid\0302 \001(\014\"\301\001\n\016GameStatusMeta\022\n\n"
-    "\002id\030\001 \001(\t\022\014\n\004week\030\002 \001(\005\022&\n\010gameinfo\030\n \001("
-    "\0132\024.fantasybit.GameInfo\022)\n\tgamesatus\030\024 \001"
-    "(\0132\026.fantasybit.GameStatus\022\022\n\ngamemetaid"
-    "\030\036 \001(\014\022\022\n\ndatametaid\030( \001(\014\022\014\n\004prev\0302 \001(\014"
-    "\022\014\n\004next\030< \001(\014\"\207\001\n\014TeamProjMeta\022\016\n\006gamei"
-    "d\030\024 \001(\t\022\014\n\004team\030\036 \001(\t\022\023\n\013kickofftime\030( \001"
-    "(\r\022\014\n\004week\0302 \001(\r\022\036\n\026gameplayerprojmetaro"
-    "ot\030< \001(\014\022\026\n\016gamedatametaid\030F \001(\014\"\211\001\n\016Tea"
-    "mResultMeta\022\016\n\006gameid\030\024 \001(\t\022\014\n\004team\030\036 \001("
-    "\t\022\023\n\013kickofftime\030( \001(\r\022\014\n\004week\0302 \001(\r\022\034\n\024"
-    "playerresultmetaroot\030< \001(\014\022\030\n\020resultdata"
-    "metaid\030F \001(\014\"\217\001\n\022GamePlayerProjMeta\022\020\n\010p"
+    ".proto\032\016NameData.proto\032\020StaticData.proto"
+    "\032\020StatusData.proto\032\014ExData.proto\"r\n\tBloc"
+    "kMeta\022\020\n\010blocknum\030( \001(\005\022\020\n\010trmetaid\0302 \001("
+    "\014\022\022\n\ntxmetaroot\030\n \001(\014\022\021\n\tpbstateid\030< \001(\014"
+    "\022\014\n\004prev\030\024 \001(\014\022\014\n\004next\030\036 \001(\014\"\227\001\n\006TxMeta\022"
+    "\020\n\010blocknum\030\n \001(\005\022\r\n\005txnum\030\024 \001(\005\022%\n\006txty"
+    "pe\030( \001(\0162\025.fantasybit.TransType\022#\n\002tx\0302 "
+    "\001(\0132\027.fantasybit.Transaction\022\024\n\014fantasy_"
+    "name\030< \001(\t\022\n\n\002id\030F \001(\014\"\230\001\n\006TrMeta\022\020\n\010blo"
+    "cknum\030\n \001(\005\022 \n\004type\030( \001(\0162\022.fantasybit.T"
+    "rType\022\016\n\006season\0302 \001(\r\022\014\n\004week\030< \001(\r\022\024\n\014g"
+    "amemetaroot\030F \001(\014\022\024\n\014datametaroot\030P \001(\014\022"
+    "\020\n\010txmetaid\030d \001(\014\"D\n\010GameMeta\022\020\n\010txmetai"
+    "d\030\n \001(\014\022&\n\010gamedata\030\024 \001(\0132\024.fantasybit.G"
+    "ameData\"<\n\010DataMeta\022\020\n\010txmetaid\030\n \001(\014\022\036\n"
+    "\004data\030\024 \001(\0132\020.fantasybit.Data\"R\n\017LeaderB"
+    "oardMeta\022\014\n\004week\030\n \001(\r\022\025\n\rfnbalmetaroot\030"
+    "\024 \001(\014\022\014\n\004prev\030\036 \001(\014\022\014\n\004next\030( \001(\014\"\256\001\n\022Fa"
+    "ntasyNameBalMeta\022\020\n\010txmetaid\030\n \001(\014\022\020\n\010tr"
+    "metaid\030\024 \001(\014\022,\n\010fnamebal\030\036 \001(\0132\032.fantasy"
+    "bit.FantasyNameBal\022\025\n\rawardmetaroot\0302 \001("
+    "\014\022\023\n\013pnlmetaroot\030< \001(\014\022\014\n\004prev\030F \001(\014\022\014\n\004"
+    "next\030P \001(\014\"\257\001\n\020FantasyNameState\022\014\n\004name\030"
+    "\001 \001(\t\022\034\n\024fantasynamebalmetaid\030\n \001(\014\022\023\n\013p"
+    "osmetaroot\030\024 \001(\014\022\026\n\016ordersmetaroot\030\036 \001(\014"
+    "\022\024\n\014projmetaroot\030( \001(\014\022\014\n\004prev\030F \001(\014\022\014\n\004"
+    "next\030P \001(\014\022\020\n\010txmetaid\0302 \001(\014\"\222\001\n\022WeekGam"
+    "eStatusMeta\022\014\n\004week\030\n \001(\r\022\032\n\022gameresultm"
+    "etaroot\030\024 \001(\014\022\032\n\022ingameprojmetaroot\030\036 \001("
+    "\014\022\032\n\022opengamestatusroot\030( \001(\014\022\014\n\004prev\0302 "
+    "\001(\014\022\014\n\004next\030< \001(\014\"~\n\016InGameProjMeta\022\016\n\006g"
+    "ameid\030\024 \001(\t\022\030\n\020gamestatusmetaid\030( \001(\014\022\024\n"
+    "\014homeprojmeta\030< \001(\014\022\024\n\014awayprojmeta\030F \001("
+    "\014\022\026\n\016gamedatametaid\0302 \001(\014\"\205\001\n\017GameResult"
+    "sMeta\022\016\n\006gameid\030\024 \001(\t\022\030\n\020gamestatusmetai"
+    "d\030( \001(\014\022\026\n\016homeresultmeta\030< \001(\014\022\026\n\016awayr"
+    "esultmeta\030F \001(\014\022\030\n\020resultdatametaid\0302 \001("
+    "\014\"\301\001\n\016GameStatusMeta\022\n\n\002id\030\001 \001(\t\022\014\n\004week"
+    "\030\002 \001(\005\022&\n\010gameinfo\030\n \001(\0132\024.fantasybit.Ga"
+    "meInfo\022)\n\tgamesatus\030\024 \001(\0132\026.fantasybit.G"
+    "ameStatus\022\022\n\ngamemetaid\030\036 \001(\014\022\022\n\ndatamet"
+    "aid\030( \001(\014\022\014\n\004prev\0302 \001(\014\022\014\n\004next\030< \001(\014\"\207\001"
+    "\n\014TeamProjMeta\022\016\n\006gameid\030\024 \001(\t\022\014\n\004team\030\036"
+    " \001(\t\022\023\n\013kickofftime\030( \001(\r\022\014\n\004week\0302 \001(\r\022"
+    "\036\n\026gameplayerprojmetaroot\030< \001(\014\022\026\n\016gamed"
+    "atametaid\030F \001(\014\"\211\001\n\016TeamResultMeta\022\016\n\006ga"
+    "meid\030\024 \001(\t\022\014\n\004team\030\036 \001(\t\022\023\n\013kickofftime\030"
+    "( \001(\r\022\014\n\004week\0302 \001(\r\022\034\n\024playerresultmetar"
+    "oot\030< \001(\014\022\030\n\020resultdatametaid\030F \001(\014\"\217\001\n\022"
+    "GamePlayerProjMeta\022\020\n\010playerid\030\024 \001(\t\022\030\n\020"
+    "gamestatusmetaid\030\036 \001(\014\022\032\n\022projmetaplayer"
+    "root\030< \001(\014\022\031\n\021posmetaplayerroot\030F \001(\014\022\026\n"
+    "\016gamedatametaid\030P \001(\014\"X\n\010ProjMeta\022\014\n\004nam"
+    "e\030\n \001(\t\022\014\n\004proj\030\024 \001(\005\022\020\n\010playerid\030\036 \001(\t\022"
+    "\020\n\010txmetaid\030( \001(\014\022\014\n\004prev\0302 \001(\014\"e\n\007PosMe"
+    "ta\022\014\n\004name\030\n \001(\t\022\013\n\003qty\030\024 \001(\005\022\r\n\005price\030\036"
+    " \001(\005\022\020\n\010playerid\030( \001(\t\022\020\n\010txmetaid\0302 \001(\014"
+    "\022\014\n\004prev\030< \001(\014\"\302\001\n\020PlayerResultMeta\022\020\n\010p"
     "layerid\030\024 \001(\t\022\030\n\020gamestatusmetaid\030\036 \001(\014\022"
-    "\032\n\022projmetaplayerroot\030< \001(\014\022\031\n\021posmetapl"
-    "ayerroot\030F \001(\014\022\026\n\016gamedatametaid\030P \001(\014\"X"
-    "\n\010ProjMeta\022\014\n\004name\030\n \001(\t\022\014\n\004proj\030\024 \001(\005\022\020"
-    "\n\010playerid\030\036 \001(\t\022\020\n\010txmetaid\030( \001(\014\022\014\n\004pr"
-    "ev\0302 \001(\014\"e\n\007PosMeta\022\014\n\004name\030\n \001(\t\022\013\n\003qty"
-    "\030\024 \001(\005\022\r\n\005price\030\036 \001(\005\022\020\n\010playerid\030( \001(\t\022"
-    "\020\n\010txmetaid\0302 \001(\014\022\014\n\004prev\030< \001(\014\"\302\001\n\020Play"
-    "erResultMeta\022\020\n\010playerid\030\024 \001(\t\022\030\n\020gamest"
-    "atusmetaid\030\036 \001(\014\022\016\n\006result\030( \001(\002\022 \n\005stat"
-    "s\0302 \001(\0132\021.fantasybit.Stats\022\033\n\023awardmetap"
-    "layerroot\030< \001(\014\022\031\n\021pnlmetaplayerroot\030F \001"
-    "(\014\022\030\n\020resultdatametaid\030P \001(\014\"d\n\tAwardMet"
-    "a\022\014\n\004name\030\n \001(\t\022\014\n\004proj\030\024 \001(\005\022\r\n\005award\030\036"
-    " \001(\004\022\022\n\nprojmetaid\030( \001(\014\022\030\n\020resultdatame"
-    "taid\0302 \001(\014\"h\n\007PnlMeta\022/\n\014fantaybitpnl\030\024 "
-    "\001(\0132\031.fantasybit.FantasyBitPnl\022\022\n\nprojme"
-    "taid\030\036 \001(\014\022\030\n\020resultdatametaid\030( \001(\014\"s\n\021"
-    "PlayerMarketState\022\027\n\017limitbookmetaid\030\n \001"
-    "(\014\022\020\n\010playerid\030\024 \001(\t\022\027\n\017marketticmetaid\030"
-    "\036 \001(\014\022\014\n\004prev\030( \001(\014\022\014\n\004next\0302 \001(\014\"\201\001\n\rLi"
-    "mitBookMeta\022\013\n\003bid\030\n \001(\005\022\017\n\007bidsize\030\024 \001("
-    "\005\022\017\n\007asksize\030\036 \001(\005\022\013\n\003ask\030( \001(\005\022\031\n\021insid"
-    "ebookmetabid\0302 \001(\014\022\031\n\021insidebookmetaask\030"
-    "< \001(\014\"6\n\016InsideBookMeta\022\017\n\007totsize\030\n \001(\005"
-    "\022\023\n\013orderidroot\030\024 \001(\014\"Q\n\rMarketTicMeta\022\r"
-    "\n\005price\030\024 \001(\005\022\014\n\004size\030\036 \001(\005\022\025\n\rorderfill"
-    "head\030( \001(\014\022\014\n\004prev\0302 \001(\014\"\243\001\n\tOrderMeta\022\016"
-    "\n\006refnum\030\001 \001(\005\022\r\n\005fname\030\n \001(\t\022\020\n\010playeri"
-    "d\030\024 \001(\t\022\017\n\007buyside\030\036 \001(\010\022\014\n\004size\030( \001(\005\022\r"
-    "\n\005price\0302 \001(\005\022\020\n\010txmetaid\030< \001(\014\022\027\n\017order"
-    "fillmetaid\030F \001(\014\022\014\n\004prev\030P \001(\014\"\251\001\n\rOrder"
-    "FillMeta\022\016\n\006refnum\030\001 \001(\005\022\r\n\005fname\030\n \001(\t\022"
-    "\020\n\010playerid\030\017 \001(\t\022\021\n\tfillprice\030\024 \001(\005\022\020\n\010"
-    "fillsize\030\036 \001(\005\022\017\n\007buyside\030# \001(\010\022\021\n\ttimes"
-    "tamp\030( \001(\005\022\020\n\010txmetaid\030< \001(\014\022\014\n\004prev\030F \001"
-    "(\014\"m\n\017GlobalStateMeta\022,\n\013globalstate\030\n \001"
-    "(\0132\027.fantasybit.GlobalState\022\020\n\010trmetaid\030"
-    "\024 \001(\014\022\014\n\004prev\030\036 \001(\014\022\014\n\004next\030( \001(\014\"\236\001\n\nPl"
-    "ayerMeta\022\020\n\010playerid\030\n \001(\t\022+\n\013player_bas"
-    "e\030\024 \001(\0132\026.fantasybit.PlayerBase\022/\n\rplaye"
-    "r_status\030\036 \001(\0132\030.fantasybit.PlayerStatus"
-    "\022\022\n\ndatametaid\030( \001(\014\022\014\n\004prev\0302 \001(\014\"B\n\010Te"
-    "amMeta\022\016\n\006teamid\030\n \001(\t\022\030\n\020playermetaidro"
-    "ot\030\024 \001(\014\022\014\n\004prev\030\036 \001(\014\"\335\001\n\007pbstate\022\027\n\017sc"
-    "hedulestateid\030\n \001(\014\022\032\n\022leaderboardstatei"
-    "d\030\024 \001(\014\022\023\n\013projstateid\030\036 \001(\014\022\022\n\nposstate"
-    "id\030# \001(\014\022\024\n\014orderstateid\030( \001(\014\022\025\n\rmarket"
-    "stateid\0302 \001(\014\022\025\n\rglobalstateid\030< \001(\014\022\024\n\014"
-    "teamstatemid\030F \001(\014\022\032\n\022fantasynamestateid"
-    "\030P \001(\014\"*\n\nMerkleTree\022\014\n\004root\030\n \001(\014\022\016\n\006le"
-    "aves\030\024 \003(\014", 4090);
+    "\016\n\006result\030( \001(\002\022 \n\005stats\0302 \001(\0132\021.fantasy"
+    "bit.Stats\022\033\n\023awardmetaplayerroot\030< \001(\014\022\031"
+    "\n\021pnlmetaplayerroot\030F \001(\014\022\030\n\020resultdatam"
+    "etaid\030P \001(\014\"d\n\tAwardMeta\022\014\n\004name\030\n \001(\t\022\014"
+    "\n\004proj\030\024 \001(\005\022\r\n\005award\030\036 \001(\004\022\022\n\nprojmetai"
+    "d\030( \001(\014\022\030\n\020resultdatametaid\0302 \001(\014\"h\n\007Pnl"
+    "Meta\022/\n\014fantaybitpnl\030\024 \001(\0132\031.fantasybit."
+    "FantasyBitPnl\022\022\n\nprojmetaid\030\036 \001(\014\022\030\n\020res"
+    "ultdatametaid\030( \001(\014\"s\n\021PlayerMarketState"
+    "\022\027\n\017limitbookmetaid\030\n \001(\014\022\020\n\010playerid\030\024 "
+    "\001(\t\022\027\n\017marketticmetaid\030\036 \001(\014\022\014\n\004prev\030( \001"
+    "(\014\022\014\n\004next\0302 \001(\014\"\177\n\rLimitBookMeta\022\013\n\003bid"
+    "\030\n \001(\005\022\017\n\007bidsize\030\024 \001(\005\022\017\n\007asksize\030\036 \001(\005"
+    "\022\013\n\003ask\030( \001(\005\022\030\n\020bidordermetaroot\0302 \001(\014\022"
+    "\030\n\020askordermetaroot\030< \001(\014\"6\n\016InsideBookM"
+    "eta\022\017\n\007totsize\030\n \001(\005\022\023\n\013orderidroot\030\024 \001("
+    "\014\"Q\n\rMarketTicMeta\022\r\n\005price\030\024 \001(\005\022\014\n\004siz"
+    "e\030\036 \001(\005\022\025\n\rorderfillhead\030( \001(\014\022\014\n\004prev\0302"
+    " \001(\014\"\266\001\n\tOrderMeta\022\016\n\006refnum\030\001 \001(\005\022\r\n\005fn"
+    "ame\030\n \001(\t\022\020\n\010playerid\030\024 \001(\t\022\017\n\007buyside\030\036"
+    " \001(\010\022\014\n\004size\030( \001(\005\022\r\n\005price\0302 \001(\005\022\020\n\010txm"
+    "etaid\030< \001(\014\022\027\n\017orderfillmetaid\030F \001(\014\022\021\n\t"
+    "timestamp\030K \001(\005\022\014\n\004prev\030P \001(\014\"\251\001\n\rOrderF"
+    "illMeta\022\016\n\006refnum\030\001 \001(\005\022\r\n\005fname\030\n \001(\t\022\020"
+    "\n\010playerid\030\017 \001(\t\022\021\n\tfillprice\030\024 \001(\005\022\020\n\010f"
+    "illsize\030\036 \001(\005\022\017\n\007buyside\030# \001(\010\022\021\n\ttimest"
+    "amp\030( \001(\005\022\020\n\010txmetaid\030< \001(\014\022\014\n\004prev\030F \001("
+    "\014\"m\n\017GlobalStateMeta\022,\n\013globalstate\030\n \001("
+    "\0132\027.fantasybit.GlobalState\022\020\n\010trmetaid\030\024"
+    " \001(\014\022\014\n\004prev\030\036 \001(\014\022\014\n\004next\030( \001(\014\"\236\001\n\nPla"
+    "yerMeta\022\020\n\010playerid\030\n \001(\t\022+\n\013player_base"
+    "\030\024 \001(\0132\026.fantasybit.PlayerBase\022/\n\rplayer"
+    "_status\030\036 \001(\0132\030.fantasybit.PlayerStatus\022"
+    "\022\n\ndatametaid\030( \001(\014\022\014\n\004prev\0302 \001(\014\"B\n\010Tea"
+    "mMeta\022\016\n\006teamid\030\n \001(\t\022\030\n\020playermetaidroo"
+    "t\030\024 \001(\014\022\014\n\004prev\030\036 \001(\014\"\335\001\n\007pbstate\022\027\n\017sch"
+    "edulestateid\030\n \001(\014\022\032\n\022leaderboardstateid"
+    "\030\024 \001(\014\022\023\n\013projstateid\030\036 \001(\014\022\022\n\nposstatei"
+    "d\030# \001(\014\022\024\n\014orderstateid\030( \001(\014\022\025\n\rmarkets"
+    "tateid\0302 \001(\014\022\025\n\rglobalstateid\030< \001(\014\022\024\n\014t"
+    "eamstatemid\030F \001(\014\022\032\n\022fantasynamestateid\030"
+    "P \001(\014\"*\n\nMerkleTree\022\014\n\004root\030\n \001(\014\022\016\n\006lea"
+    "ves\030\024 \003(\014", 4089);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "StateData.proto", &protobuf_RegisterTypes);
   BlockMeta::default_instance_ = new BlockMeta();
@@ -10041,8 +10041,8 @@ const int LimitBookMeta::kBidFieldNumber;
 const int LimitBookMeta::kBidsizeFieldNumber;
 const int LimitBookMeta::kAsksizeFieldNumber;
 const int LimitBookMeta::kAskFieldNumber;
-const int LimitBookMeta::kInsidebookmetabidFieldNumber;
-const int LimitBookMeta::kInsidebookmetaaskFieldNumber;
+const int LimitBookMeta::kBidordermetarootFieldNumber;
+const int LimitBookMeta::kAskordermetarootFieldNumber;
 #endif  // !_MSC_VER
 
 LimitBookMeta::LimitBookMeta()
@@ -10065,8 +10065,8 @@ void LimitBookMeta::SharedCtor() {
   bidsize_ = 0;
   asksize_ = 0;
   ask_ = 0;
-  insidebookmetabid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  insidebookmetaask_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  bidordermetaroot_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  askordermetaroot_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -10075,11 +10075,11 @@ LimitBookMeta::~LimitBookMeta() {
 }
 
 void LimitBookMeta::SharedDtor() {
-  if (insidebookmetabid_ != &::google::protobuf::internal::kEmptyString) {
-    delete insidebookmetabid_;
+  if (bidordermetaroot_ != &::google::protobuf::internal::kEmptyString) {
+    delete bidordermetaroot_;
   }
-  if (insidebookmetaask_ != &::google::protobuf::internal::kEmptyString) {
-    delete insidebookmetaask_;
+  if (askordermetaroot_ != &::google::protobuf::internal::kEmptyString) {
+    delete askordermetaroot_;
   }
   if (this != default_instance_) {
   }
@@ -10112,14 +10112,14 @@ void LimitBookMeta::Clear() {
     bidsize_ = 0;
     asksize_ = 0;
     ask_ = 0;
-    if (has_insidebookmetabid()) {
-      if (insidebookmetabid_ != &::google::protobuf::internal::kEmptyString) {
-        insidebookmetabid_->clear();
+    if (has_bidordermetaroot()) {
+      if (bidordermetaroot_ != &::google::protobuf::internal::kEmptyString) {
+        bidordermetaroot_->clear();
       }
     }
-    if (has_insidebookmetaask()) {
-      if (insidebookmetaask_ != &::google::protobuf::internal::kEmptyString) {
-        insidebookmetaask_->clear();
+    if (has_askordermetaroot()) {
+      if (askordermetaroot_ != &::google::protobuf::internal::kEmptyString) {
+        askordermetaroot_->clear();
       }
     }
   }
@@ -10192,31 +10192,31 @@ bool LimitBookMeta::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(402)) goto parse_insidebookmetabid;
+        if (input->ExpectTag(402)) goto parse_bidordermetaroot;
         break;
       }
 
-      // optional bytes insidebookmetabid = 50;
+      // optional bytes bidordermetaroot = 50;
       case 50: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_insidebookmetabid:
+         parse_bidordermetaroot:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_insidebookmetabid()));
+                input, this->mutable_bidordermetaroot()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(482)) goto parse_insidebookmetaask;
+        if (input->ExpectTag(482)) goto parse_askordermetaroot;
         break;
       }
 
-      // optional bytes insidebookmetaask = 60;
+      // optional bytes askordermetaroot = 60;
       case 60: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_insidebookmetaask:
+         parse_askordermetaroot:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_insidebookmetaask()));
+                input, this->mutable_askordermetaroot()));
         } else {
           goto handle_uninterpreted;
         }
@@ -10262,16 +10262,16 @@ void LimitBookMeta::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(40, this->ask(), output);
   }
 
-  // optional bytes insidebookmetabid = 50;
-  if (has_insidebookmetabid()) {
+  // optional bytes bidordermetaroot = 50;
+  if (has_bidordermetaroot()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      50, this->insidebookmetabid(), output);
+      50, this->bidordermetaroot(), output);
   }
 
-  // optional bytes insidebookmetaask = 60;
-  if (has_insidebookmetaask()) {
+  // optional bytes askordermetaroot = 60;
+  if (has_askordermetaroot()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      60, this->insidebookmetaask(), output);
+      60, this->askordermetaroot(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -10302,18 +10302,18 @@ void LimitBookMeta::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(40, this->ask(), target);
   }
 
-  // optional bytes insidebookmetabid = 50;
-  if (has_insidebookmetabid()) {
+  // optional bytes bidordermetaroot = 50;
+  if (has_bidordermetaroot()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        50, this->insidebookmetabid(), target);
+        50, this->bidordermetaroot(), target);
   }
 
-  // optional bytes insidebookmetaask = 60;
-  if (has_insidebookmetaask()) {
+  // optional bytes askordermetaroot = 60;
+  if (has_askordermetaroot()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        60, this->insidebookmetaask(), target);
+        60, this->askordermetaroot(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -10355,18 +10355,18 @@ int LimitBookMeta::ByteSize() const {
           this->ask());
     }
 
-    // optional bytes insidebookmetabid = 50;
-    if (has_insidebookmetabid()) {
+    // optional bytes bidordermetaroot = 50;
+    if (has_bidordermetaroot()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->insidebookmetabid());
+          this->bidordermetaroot());
     }
 
-    // optional bytes insidebookmetaask = 60;
-    if (has_insidebookmetaask()) {
+    // optional bytes askordermetaroot = 60;
+    if (has_askordermetaroot()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->insidebookmetaask());
+          this->askordermetaroot());
     }
 
   }
@@ -10408,11 +10408,11 @@ void LimitBookMeta::MergeFrom(const LimitBookMeta& from) {
     if (from.has_ask()) {
       set_ask(from.ask());
     }
-    if (from.has_insidebookmetabid()) {
-      set_insidebookmetabid(from.insidebookmetabid());
+    if (from.has_bidordermetaroot()) {
+      set_bidordermetaroot(from.bidordermetaroot());
     }
-    if (from.has_insidebookmetaask()) {
-      set_insidebookmetaask(from.insidebookmetaask());
+    if (from.has_askordermetaroot()) {
+      set_askordermetaroot(from.askordermetaroot());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -10441,8 +10441,8 @@ void LimitBookMeta::Swap(LimitBookMeta* other) {
     std::swap(bidsize_, other->bidsize_);
     std::swap(asksize_, other->asksize_);
     std::swap(ask_, other->ask_);
-    std::swap(insidebookmetabid_, other->insidebookmetabid_);
-    std::swap(insidebookmetaask_, other->insidebookmetaask_);
+    std::swap(bidordermetaroot_, other->bidordermetaroot_);
+    std::swap(askordermetaroot_, other->askordermetaroot_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -11069,6 +11069,7 @@ const int OrderMeta::kSizeFieldNumber;
 const int OrderMeta::kPriceFieldNumber;
 const int OrderMeta::kTxmetaidFieldNumber;
 const int OrderMeta::kOrderfillmetaidFieldNumber;
+const int OrderMeta::kTimestampFieldNumber;
 const int OrderMeta::kPrevFieldNumber;
 #endif  // !_MSC_VER
 
@@ -11096,6 +11097,7 @@ void OrderMeta::SharedCtor() {
   price_ = 0;
   txmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   orderfillmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  timestamp_ = 0;
   prev_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -11173,6 +11175,7 @@ void OrderMeta::Clear() {
     }
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    timestamp_ = 0;
     if (has_prev()) {
       if (prev_ != &::google::protobuf::internal::kEmptyString) {
         prev_->clear();
@@ -11310,6 +11313,22 @@ bool OrderMeta::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(600)) goto parse_timestamp;
+        break;
+      }
+
+      // optional int32 timestamp = 75;
+      case 75: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_timestamp:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &timestamp_)));
+          set_has_timestamp();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectTag(642)) goto parse_prev;
         break;
       }
@@ -11396,6 +11415,11 @@ void OrderMeta::SerializeWithCachedSizes(
       70, this->orderfillmetaid(), output);
   }
 
+  // optional int32 timestamp = 75;
+  if (has_timestamp()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(75, this->timestamp(), output);
+  }
+
   // optional bytes prev = 80;
   if (has_prev()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
@@ -11462,6 +11486,11 @@ void OrderMeta::SerializeWithCachedSizes(
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         70, this->orderfillmetaid(), target);
+  }
+
+  // optional int32 timestamp = 75;
+  if (has_timestamp()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(75, this->timestamp(), target);
   }
 
   // optional bytes prev = 80;
@@ -11538,6 +11567,13 @@ int OrderMeta::ByteSize() const {
 
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional int32 timestamp = 75;
+    if (has_timestamp()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->timestamp());
+    }
+
     // optional bytes prev = 80;
     if (has_prev()) {
       total_size += 2 +
@@ -11598,6 +11634,9 @@ void OrderMeta::MergeFrom(const OrderMeta& from) {
     }
   }
   if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_timestamp()) {
+      set_timestamp(from.timestamp());
+    }
     if (from.has_prev()) {
       set_prev(from.prev());
     }
@@ -11632,6 +11671,7 @@ void OrderMeta::Swap(OrderMeta* other) {
     std::swap(price_, other->price_);
     std::swap(txmetaid_, other->txmetaid_);
     std::swap(orderfillmetaid_, other->orderfillmetaid_);
+    std::swap(timestamp_, other->timestamp_);
     std::swap(prev_, other->prev_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);

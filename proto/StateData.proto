@@ -1,7 +1,6 @@
 package fantasybit;
 import "ProtoData.proto";
 import "NameData.proto";
-import "StateData.proto";
 import "StaticData.proto";
 import "StatusData.proto";
 import "ExData.proto";
@@ -248,12 +247,12 @@ message LimitBookMeta {
     optional int32 bidsize = 20;
     optional int32 asksize = 30;
     optional int32 ask = 40;
-    optional bytes insidebookmetabid = 50;
-    optional bytes insidebookmetaask = 60;
+    optional bytes bidordermetaroot = 50;
+    optional bytes askordermetaroot = 60;
 }
 
 message InsideBookMeta {
-    optional int32 totsize = 10;
+    optional int32 totsize = 10; 
     optional bytes orderidroot = 20;
 }
 
@@ -273,6 +272,7 @@ message OrderMeta {
     optional int32 price = 50;
     optional bytes txmetaid = 60;
     optional bytes orderfillmetaid = 70;
+    optional int32 timestamp = 75;
     optional bytes prev = 80;
 }
 
