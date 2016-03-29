@@ -251,10 +251,10 @@ message LimitBookMeta {
     optional bytes askordermetaroot = 60;
 }
 
-message InsideBookMeta {
-    optional int32 totsize = 10; 
-    optional bytes orderidroot = 20;
-}
+//message InsideBookMeta {
+//    optional int32 totsize = 10;
+//    optional bytes orderidroot = 20;
+//}
 
 message MarketTicMeta {
     optional int32 price = 20;

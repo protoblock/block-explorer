@@ -10,6 +10,16 @@ LimitBook::LimitBook(const QString &playerid, QObject *parent)
     m_bestAsk = BOOK_SIZE;
 }
 
+int LimitBook::getBestAsk() const
+{
+    return m_bestAsk+1;
+}
+
+int LimitBook::getBestBid() const
+{
+    return m_bestBid+1;
+}
+
 void LimitBook::GetTop(bool isbuy) {
     if (isbuy) {
         for (; m_bestBid >= 0 && m_bids[m_bestBid].totSize == 0; --m_bestBid) ;
@@ -320,8 +330,8 @@ qDebug() << "level2 sweepbids  fillqty continue " << fillqty;
         SendFill(order, fillqty, m_bestBid, false);
         //NewTrade(mBb, fillqty, Side.ASK);
 
-        for (auto iiter = curr.rtop();
-             iiter != curr.rbot() && left > 0;) {
+        for (auto iiter = curr.top();
+             iiter != curr.bot() && left > 0;) {
             Order &ord = *iiter;
 #ifdef TRACE
 qDebug() << "level2 sweepbids  curr ord iityer" << mBb << ord.DebugString() << " left " << left;

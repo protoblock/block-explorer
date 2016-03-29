@@ -86,9 +86,6 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* LimitBookMeta_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   LimitBookMeta_reflection_ = NULL;
-const ::google::protobuf::Descriptor* InsideBookMeta_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  InsideBookMeta_reflection_ = NULL;
 const ::google::protobuf::Descriptor* MarketTicMeta_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   MarketTicMeta_reflection_ = NULL;
@@ -551,23 +548,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LimitBookMeta));
-  InsideBookMeta_descriptor_ = file->message_type(22);
-  static const int InsideBookMeta_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InsideBookMeta, totsize_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InsideBookMeta, orderidroot_),
-  };
-  InsideBookMeta_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      InsideBookMeta_descriptor_,
-      InsideBookMeta::default_instance_,
-      InsideBookMeta_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InsideBookMeta, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InsideBookMeta, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(InsideBookMeta));
-  MarketTicMeta_descriptor_ = file->message_type(23);
+  MarketTicMeta_descriptor_ = file->message_type(22);
   static const int MarketTicMeta_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MarketTicMeta, price_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MarketTicMeta, size_),
@@ -585,7 +566,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(MarketTicMeta));
-  OrderMeta_descriptor_ = file->message_type(24);
+  OrderMeta_descriptor_ = file->message_type(23);
   static const int OrderMeta_offsets_[10] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderMeta, refnum_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderMeta, fname_),
@@ -609,7 +590,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(OrderMeta));
-  OrderFillMeta_descriptor_ = file->message_type(25);
+  OrderFillMeta_descriptor_ = file->message_type(24);
   static const int OrderFillMeta_offsets_[9] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderFillMeta, refnum_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderFillMeta, fname_),
@@ -632,7 +613,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(OrderFillMeta));
-  GlobalStateMeta_descriptor_ = file->message_type(26);
+  GlobalStateMeta_descriptor_ = file->message_type(25);
   static const int GlobalStateMeta_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GlobalStateMeta, globalstate_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GlobalStateMeta, trmetaid_),
@@ -650,7 +631,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(GlobalStateMeta));
-  PlayerMeta_descriptor_ = file->message_type(27);
+  PlayerMeta_descriptor_ = file->message_type(26);
   static const int PlayerMeta_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerMeta, playerid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerMeta, player_base_),
@@ -669,7 +650,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PlayerMeta));
-  TeamMeta_descriptor_ = file->message_type(28);
+  TeamMeta_descriptor_ = file->message_type(27);
   static const int TeamMeta_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TeamMeta, teamid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TeamMeta, playermetaidroot_),
@@ -686,7 +667,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TeamMeta));
-  pbstate_descriptor_ = file->message_type(29);
+  pbstate_descriptor_ = file->message_type(28);
   static const int pbstate_offsets_[9] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbstate, schedulestateid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbstate, leaderboardstateid_),
@@ -709,7 +690,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(pbstate));
-  MerkleTree_descriptor_ = file->message_type(30);
+  MerkleTree_descriptor_ = file->message_type(29);
   static const int MerkleTree_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MerkleTree, root_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MerkleTree, leaves_),
@@ -782,8 +763,6 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     LimitBookMeta_descriptor_, &LimitBookMeta::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    InsideBookMeta_descriptor_, &InsideBookMeta::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     MarketTicMeta_descriptor_, &MarketTicMeta::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     OrderMeta_descriptor_, &OrderMeta::default_instance());
@@ -848,8 +827,6 @@ void protobuf_ShutdownFile_StateData_2eproto() {
   delete PlayerMarketState_reflection_;
   delete LimitBookMeta::default_instance_;
   delete LimitBookMeta_reflection_;
-  delete InsideBookMeta::default_instance_;
-  delete InsideBookMeta_reflection_;
   delete MarketTicMeta::default_instance_;
   delete MarketTicMeta_reflection_;
   delete OrderMeta::default_instance_;
@@ -954,35 +931,33 @@ void protobuf_AddDesc_StateData_2eproto() {
     "(\014\022\014\n\004next\0302 \001(\014\"\177\n\rLimitBookMeta\022\013\n\003bid"
     "\030\n \001(\005\022\017\n\007bidsize\030\024 \001(\005\022\017\n\007asksize\030\036 \001(\005"
     "\022\013\n\003ask\030( \001(\005\022\030\n\020bidordermetaroot\0302 \001(\014\022"
-    "\030\n\020askordermetaroot\030< \001(\014\"6\n\016InsideBookM"
-    "eta\022\017\n\007totsize\030\n \001(\005\022\023\n\013orderidroot\030\024 \001("
-    "\014\"Q\n\rMarketTicMeta\022\r\n\005price\030\024 \001(\005\022\014\n\004siz"
-    "e\030\036 \001(\005\022\025\n\rorderfillhead\030( \001(\014\022\014\n\004prev\0302"
-    " \001(\014\"\266\001\n\tOrderMeta\022\016\n\006refnum\030\001 \001(\005\022\r\n\005fn"
-    "ame\030\n \001(\t\022\020\n\010playerid\030\024 \001(\t\022\017\n\007buyside\030\036"
-    " \001(\010\022\014\n\004size\030( \001(\005\022\r\n\005price\0302 \001(\005\022\020\n\010txm"
-    "etaid\030< \001(\014\022\027\n\017orderfillmetaid\030F \001(\014\022\021\n\t"
-    "timestamp\030K \001(\005\022\014\n\004prev\030P \001(\014\"\251\001\n\rOrderF"
-    "illMeta\022\016\n\006refnum\030\001 \001(\005\022\r\n\005fname\030\n \001(\t\022\020"
-    "\n\010playerid\030\017 \001(\t\022\021\n\tfillprice\030\024 \001(\005\022\020\n\010f"
-    "illsize\030\036 \001(\005\022\017\n\007buyside\030# \001(\010\022\021\n\ttimest"
-    "amp\030( \001(\005\022\020\n\010txmetaid\030< \001(\014\022\014\n\004prev\030F \001("
-    "\014\"m\n\017GlobalStateMeta\022,\n\013globalstate\030\n \001("
-    "\0132\027.fantasybit.GlobalState\022\020\n\010trmetaid\030\024"
-    " \001(\014\022\014\n\004prev\030\036 \001(\014\022\014\n\004next\030( \001(\014\"\236\001\n\nPla"
-    "yerMeta\022\020\n\010playerid\030\n \001(\t\022+\n\013player_base"
-    "\030\024 \001(\0132\026.fantasybit.PlayerBase\022/\n\rplayer"
-    "_status\030\036 \001(\0132\030.fantasybit.PlayerStatus\022"
-    "\022\n\ndatametaid\030( \001(\014\022\014\n\004prev\0302 \001(\014\"B\n\010Tea"
-    "mMeta\022\016\n\006teamid\030\n \001(\t\022\030\n\020playermetaidroo"
-    "t\030\024 \001(\014\022\014\n\004prev\030\036 \001(\014\"\335\001\n\007pbstate\022\027\n\017sch"
-    "edulestateid\030\n \001(\014\022\032\n\022leaderboardstateid"
-    "\030\024 \001(\014\022\023\n\013projstateid\030\036 \001(\014\022\022\n\nposstatei"
-    "d\030# \001(\014\022\024\n\014orderstateid\030( \001(\014\022\025\n\rmarkets"
-    "tateid\0302 \001(\014\022\025\n\rglobalstateid\030< \001(\014\022\024\n\014t"
-    "eamstatemid\030F \001(\014\022\032\n\022fantasynamestateid\030"
-    "P \001(\014\"*\n\nMerkleTree\022\014\n\004root\030\n \001(\014\022\016\n\006lea"
-    "ves\030\024 \003(\014", 4089);
+    "\030\n\020askordermetaroot\030< \001(\014\"Q\n\rMarketTicMe"
+    "ta\022\r\n\005price\030\024 \001(\005\022\014\n\004size\030\036 \001(\005\022\025\n\rorder"
+    "fillhead\030( \001(\014\022\014\n\004prev\0302 \001(\014\"\266\001\n\tOrderMe"
+    "ta\022\016\n\006refnum\030\001 \001(\005\022\r\n\005fname\030\n \001(\t\022\020\n\010pla"
+    "yerid\030\024 \001(\t\022\017\n\007buyside\030\036 \001(\010\022\014\n\004size\030( \001"
+    "(\005\022\r\n\005price\0302 \001(\005\022\020\n\010txmetaid\030< \001(\014\022\027\n\017o"
+    "rderfillmetaid\030F \001(\014\022\021\n\ttimestamp\030K \001(\005\022"
+    "\014\n\004prev\030P \001(\014\"\251\001\n\rOrderFillMeta\022\016\n\006refnu"
+    "m\030\001 \001(\005\022\r\n\005fname\030\n \001(\t\022\020\n\010playerid\030\017 \001(\t"
+    "\022\021\n\tfillprice\030\024 \001(\005\022\020\n\010fillsize\030\036 \001(\005\022\017\n"
+    "\007buyside\030# \001(\010\022\021\n\ttimestamp\030( \001(\005\022\020\n\010txm"
+    "etaid\030< \001(\014\022\014\n\004prev\030F \001(\014\"m\n\017GlobalState"
+    "Meta\022,\n\013globalstate\030\n \001(\0132\027.fantasybit.G"
+    "lobalState\022\020\n\010trmetaid\030\024 \001(\014\022\014\n\004prev\030\036 \001"
+    "(\014\022\014\n\004next\030( \001(\014\"\236\001\n\nPlayerMeta\022\020\n\010playe"
+    "rid\030\n \001(\t\022+\n\013player_base\030\024 \001(\0132\026.fantasy"
+    "bit.PlayerBase\022/\n\rplayer_status\030\036 \001(\0132\030."
+    "fantasybit.PlayerStatus\022\022\n\ndatametaid\030( "
+    "\001(\014\022\014\n\004prev\0302 \001(\014\"B\n\010TeamMeta\022\016\n\006teamid\030"
+    "\n \001(\t\022\030\n\020playermetaidroot\030\024 \001(\014\022\014\n\004prev\030"
+    "\036 \001(\014\"\335\001\n\007pbstate\022\027\n\017schedulestateid\030\n \001"
+    "(\014\022\032\n\022leaderboardstateid\030\024 \001(\014\022\023\n\013projst"
+    "ateid\030\036 \001(\014\022\022\n\nposstateid\030# \001(\014\022\024\n\014order"
+    "stateid\030( \001(\014\022\025\n\rmarketstateid\0302 \001(\014\022\025\n\r"
+    "globalstateid\030< \001(\014\022\024\n\014teamstatemid\030F \001("
+    "\014\022\032\n\022fantasynamestateid\030P \001(\014\"*\n\nMerkleT"
+    "ree\022\014\n\004root\030\n \001(\014\022\016\n\006leaves\030\024 \003(\014", 4033);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "StateData.proto", &protobuf_RegisterTypes);
   BlockMeta::default_instance_ = new BlockMeta();
@@ -1007,7 +982,6 @@ void protobuf_AddDesc_StateData_2eproto() {
   PnlMeta::default_instance_ = new PnlMeta();
   PlayerMarketState::default_instance_ = new PlayerMarketState();
   LimitBookMeta::default_instance_ = new LimitBookMeta();
-  InsideBookMeta::default_instance_ = new InsideBookMeta();
   MarketTicMeta::default_instance_ = new MarketTicMeta();
   OrderMeta::default_instance_ = new OrderMeta();
   OrderFillMeta::default_instance_ = new OrderFillMeta();
@@ -1038,7 +1012,6 @@ void protobuf_AddDesc_StateData_2eproto() {
   PnlMeta::default_instance_->InitAsDefaultInstance();
   PlayerMarketState::default_instance_->InitAsDefaultInstance();
   LimitBookMeta::default_instance_->InitAsDefaultInstance();
-  InsideBookMeta::default_instance_->InitAsDefaultInstance();
   MarketTicMeta::default_instance_->InitAsDefaultInstance();
   OrderMeta::default_instance_->InitAsDefaultInstance();
   OrderFillMeta::default_instance_->InitAsDefaultInstance();
@@ -10454,262 +10427,6 @@ void LimitBookMeta::Swap(LimitBookMeta* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = LimitBookMeta_descriptor_;
   metadata.reflection = LimitBookMeta_reflection_;
-  return metadata;
-}
-
-
-// ===================================================================
-
-#ifndef _MSC_VER
-const int InsideBookMeta::kTotsizeFieldNumber;
-const int InsideBookMeta::kOrderidrootFieldNumber;
-#endif  // !_MSC_VER
-
-InsideBookMeta::InsideBookMeta()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-}
-
-void InsideBookMeta::InitAsDefaultInstance() {
-}
-
-InsideBookMeta::InsideBookMeta(const InsideBookMeta& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void InsideBookMeta::SharedCtor() {
-  _cached_size_ = 0;
-  totsize_ = 0;
-  orderidroot_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-InsideBookMeta::~InsideBookMeta() {
-  SharedDtor();
-}
-
-void InsideBookMeta::SharedDtor() {
-  if (orderidroot_ != &::google::protobuf::internal::kEmptyString) {
-    delete orderidroot_;
-  }
-  if (this != default_instance_) {
-  }
-}
-
-void InsideBookMeta::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* InsideBookMeta::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return InsideBookMeta_descriptor_;
-}
-
-const InsideBookMeta& InsideBookMeta::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_StateData_2eproto();
-  return *default_instance_;
-}
-
-InsideBookMeta* InsideBookMeta::default_instance_ = NULL;
-
-InsideBookMeta* InsideBookMeta::New() const {
-  return new InsideBookMeta;
-}
-
-void InsideBookMeta::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    totsize_ = 0;
-    if (has_orderidroot()) {
-      if (orderidroot_ != &::google::protobuf::internal::kEmptyString) {
-        orderidroot_->clear();
-      }
-    }
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool InsideBookMeta::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional int32 totsize = 10;
-      case 10: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &totsize_)));
-          set_has_totsize();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(162)) goto parse_orderidroot;
-        break;
-      }
-
-      // optional bytes orderidroot = 20;
-      case 20: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_orderidroot:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_orderidroot()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void InsideBookMeta::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional int32 totsize = 10;
-  if (has_totsize()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(10, this->totsize(), output);
-  }
-
-  // optional bytes orderidroot = 20;
-  if (has_orderidroot()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      20, this->orderidroot(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* InsideBookMeta::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional int32 totsize = 10;
-  if (has_totsize()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(10, this->totsize(), target);
-  }
-
-  // optional bytes orderidroot = 20;
-  if (has_orderidroot()) {
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        20, this->orderidroot(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int InsideBookMeta::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional int32 totsize = 10;
-    if (has_totsize()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->totsize());
-    }
-
-    // optional bytes orderidroot = 20;
-    if (has_orderidroot()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->orderidroot());
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void InsideBookMeta::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const InsideBookMeta* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const InsideBookMeta*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void InsideBookMeta::MergeFrom(const InsideBookMeta& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_totsize()) {
-      set_totsize(from.totsize());
-    }
-    if (from.has_orderidroot()) {
-      set_orderidroot(from.orderidroot());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void InsideBookMeta::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void InsideBookMeta::CopyFrom(const InsideBookMeta& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool InsideBookMeta::IsInitialized() const {
-
-  return true;
-}
-
-void InsideBookMeta::Swap(InsideBookMeta* other) {
-  if (other != this) {
-    std::swap(totsize_, other->totsize_);
-    std::swap(orderidroot_, other->orderidroot_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata InsideBookMeta::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = InsideBookMeta_descriptor_;
-  metadata.reflection = InsideBookMeta_reflection_;
   return metadata;
 }
 

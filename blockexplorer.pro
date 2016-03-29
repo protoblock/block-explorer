@@ -31,7 +31,9 @@ SOURCES += main.cpp \
     createstate.cpp \
     ldbwriter.cpp \
     datastores.cpp \
-    DistributionAlgo.cpp
+    DistributionAlgo.cpp \
+    limitbook.cpp \
+    insidebook.cpp
 
 OTHER_FILES += main.qml \
     content/Blocks.qml \
@@ -101,7 +103,9 @@ HEADERS += \
     createstate.h \
     ldbwriter.h \
     datastores.h \
-    DistributionAlgo.h
+    DistributionAlgo.h \
+    limitbook.h \
+    insidebook.h
 
 
 DISTFILES += \

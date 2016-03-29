@@ -57,6 +57,10 @@ public:
     bool NewOrder(Order &eo, Position &);
 
     int32_t CancelOrder(Order &order);
+    int getBestBid() const;
+
+    int getBestAsk() const;
+
 signals:
     void orderFill(qint32);
     void newNew(qint32);
