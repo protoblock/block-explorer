@@ -344,6 +344,12 @@ void CreateState::processTr(const TrMeta &trmeta, const std::string &trid) {
         m_posstore.clear();
         m_projmetamap.clear();
         m_projmetatree.Clear();
+        m_marketstore.clear();
+        m_orderstore.clear();
+        m_playermarketstatetree.Clear();
+        m_ordermetatree.Clear();
+        m_ordermetamap.clear();
+        m_playermarketstatemap.clear();
         m_pbstate.set_projstateid("");
         m_pbstate.set_posstateid("");
 
@@ -598,6 +604,7 @@ void CreateState::processGameResult(const GameResult &grslt,
 
 void CreateState::fromProj2Results(const TeamProjMeta &teamproj,TeamResultMeta &teamresult,
                                    const string &statusid, const string &trid) {
+
     teamresult.set_gameid(teamproj.gameid());
     teamresult.set_team(teamproj.team());
     teamresult.set_kickofftime(teamproj.kickofftime());
@@ -645,6 +652,7 @@ std::string CreateState::ProcessResults(
         prm.set_playerid(gppm.playerid());
         prm.set_gamestatusmetaid(id);
 
+        { //AWARD
         MerkleTree mtree2{};
         ldb.read(gppm.projmetaplayerroot(),mtree2);
         std::unordered_map<std::string,int> nameproj;
@@ -672,6 +680,39 @@ std::string CreateState::ProcessResults(
         awardtree.set_root(makeMerkleRoot(awardtree.leaves()));
         ldb.write(awardtree);
         prm.set_awardmetaplayerroot(awardtree.root());
+        }
+
+        { //PNL
+        MerkleTree mtree2{};
+        ldb.read(gppm.posmetaplayerroot(),mtree2);
+        std::unordered_map<std::string,pair<int,int>> namepos;
+        std::unordered_map<std::string, PnlMeta> pnlm{};
+        for ( auto &posmetaid : mtree2.leaves() ) {
+            PosMeta pm{};
+            ldb.read(posmetaid,pm);
+            PnlMeta pnl{};
+            pnl.set_name(pm.name());
+            pnl.set_qty(pm.qty());
+            pnl.set_price(pm.price());
+            pnl.set_posmetaid(posmetaid);
+            pnl.set_resultdatametaid(trid);
+            pnlm[pm.name()] = pnl;
+            namepos[pm.name()] = {pnl.qty(),pnl.price()};
+        }
+        SettlePositionsRawStake set(namepos);
+        auto pnls = set.settle(prm.result(),"FantasyAgent");
+        MerkleTree pnltree{};
+        for ( auto &r : pnls ) {
+            PnlMeta &pnl = pnlm[r.first];
+            pnl.set_pnl(r.second);
+
+            pnltree.add_leaves(ldb.write(pnl));
+            m_fantasynamestore.pnl(pnl,trid);
+        }
+        pnltree.set_root(makeMerkleRoot(pnltree.leaves()));
+        ldb.write(pnltree);
+        prm.set_pnlmetaplayerroot(pnltree.root());
+        }
         playerresulttree.add_leaves(ldb.write(prm));
         qDebug() << gppm.DebugString().data();
     }
@@ -772,7 +813,8 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
     }
 }
 
-std::string CreateState::processNewOrder(const std::string &txid,
+std::string CreateState::processNewOrder(
+                        const std::string &txid,
                         const ExchangeOrder &eo,
                         const std::string &fname,
                         int32_t refnum) {
@@ -790,10 +832,23 @@ std::string CreateState::processNewOrder(const std::string &txid,
         lb = m_marketstore.m_pid2LimitBook[pid];
     }
     PosMeta pm{};
+    m_orderstore.m_dirtypid.insert(pid.toStdString());
     if ( lb->NewOrder(ometa,pm) ) {
-        //istant fill
+
         while( !lb->m_qFills.isEmpty() ) {
             OrderFillMeta ofm = lb->m_qFills.dequeue();
+            ofm.set_txmetaid(txid);
+            auto mid = m_marketstore.newFill(ofm);
+            if ( mid != "") {
+                auto &mtm = m_marketstore.m_marketticmeta[mid];
+                ldb.write(mid,mtm.SerializeAsString());
+                ldb.write(mtm.orderfillhead(),ofm.SerializeAsString());
+            }
+            m_orderstore.newFill(ofm);
+            auto id = m_posstore.process(ofm);
+            if ( id != "")
+                ldb.write(id,m_posstore.m_posstatemap[id].SerializeAsString());
+
         }
     }
 
@@ -1240,15 +1295,21 @@ void CreateState::createTrGameDataState() {
 
 void CreateState::createTrLeaderboardState() {
     for (auto newam : m_fantasynamestore.m_pendingnew ) {
-        auto &mtree = m_fantasynamestore.m_pendingawards[newam.first];
-        mtree.set_root(makeMerkleRoot(mtree.leaves()));
         auto &fnb = m_fantasynamestore.m_pendingnew[newam.first];
-        fnb.set_awardmetaroot(ldb.write(mtree));
-//        ToDo pnl
-//        auto &mtree2 = m_fantasynamestore.m_pendingnew[newam.first];
-//        mtree.set_root(makeMerkleRoot(mtree.leaves));
-//        auto &fnb = m_fantasynamestore.m_pendingnew[newam.first];
-//        fnb.set_awardmetaroot(ldb.write(mtree));
+
+        auto it = m_fantasynamestore.m_pendingawards.find(newam.first);
+        if ( it != m_fantasynamestore.m_pendingawards.end()) {
+            auto &mtree = m_fantasynamestore.m_pendingawards[newam.first];
+            mtree.set_root(makeMerkleRoot(mtree.leaves()));
+            fnb.set_awardmetaroot(ldb.write(mtree));
+        }
+        auto it2 = m_fantasynamestore.m_pendingpnl.find(newam.first);
+        if ( it2 != m_fantasynamestore.m_pendingpnl.end()) {
+            auto &mtree = m_fantasynamestore.m_pendingpnl[newam.first];
+            mtree.set_root(makeMerkleRoot(mtree.leaves()));
+            fnb.set_pnlmetaroot(ldb.write(mtree));
+        }
+
         auto id = m_fantasynamestore.update(fnb);
         if ( id != "")
             ldb.write(id,m_fantasynamestore.m_fantasynamebalmetamap[id].SerializeAsString());
@@ -1256,6 +1317,8 @@ void CreateState::createTrLeaderboardState() {
     }
     m_fantasynamestore.m_pendingnew.clear();
     m_fantasynamestore.m_pendingawards.clear();
+    m_fantasynamestore.m_pendingpnl.clear();
+
     //createNameTxState();
 
 }
@@ -1278,6 +1341,101 @@ void CreateState::createTxState() {
 
 void CreateState::createMarketOrderState() {
 
+    for ( auto ref : m_orderstore.m_dirtyorders ) {
+        auto &oldid = m_orderstore.m_refnum2orderid[ref];
+        OrderMeta om = m_orderstore.m_ordermetamap[oldid];
+        om.set_prev(oldid);
+        m_orderstore.m_ordermetamap.erase(oldid);
+        auto it = m_orderstore.m_orderFills.find(ref);
+        if ( it != m_orderstore.m_orderFills.end()) {
+            MerkleTree &mt = it->second;
+            mt.set_root(makeMerkleRoot(mt.leaves()));
+            om.set_orderfillmetaid(ldb.write(mt));
+        }
+
+        auto newoid = ldb.write(om);
+        m_orderstore.m_ordermetamap[newoid] = om;
+        m_orderstore.m_refnum2orderid[ref] = newoid;
+    }
+
+    m_orderstore.m_dirtyorders.clear();
+
+    for ( auto pid : m_orderstore.m_dirtypid) {
+        LimitBook &lb = *m_marketstore.m_pid2LimitBook[pid.data()];
+        int bprice = lb.getBestBid();
+        int aprice = lb.getBestAsk();
+        PlayerMarketState pms{};
+        auto it = m_marketstore.m_pid2marketid.find(pid);
+        if ( it != m_marketstore.m_pid2marketid.end()) {
+            pms.set_prev(it->first);
+            m_marketstore.m_marketmetamap.erase(it->second);
+        }
+        pms.set_playerid(pid);
+        MerkleTree limitbook{};
+        while(bprice > 0 || aprice <= 40) {
+            LimitBookMeta lbm;
+            while ( bprice > 0 ) {
+                auto ib = lb.getInside(true,bprice);
+                if ( ib->totSize <= 0) {
+                    bprice--;
+                    continue;
+                }
+                lbm.set_bid(bprice);
+                lbm.set_bidsize(ib->totSize);
+                MerkleTree mtree;
+                for (auto iiter = ib->top(); iiter != ib->bot(); iiter++) {
+                    //todo orderfillmetaid
+                    mtree.add_leaves(m_orderstore.m_refnum2orderid[iiter->refnum()]);
+                }
+                mtree.set_root(makeMerkleRoot(mtree.leaves()));
+                lbm.set_bidordermetaroot(ldb.write(mtree));
+                bprice--;
+                break;
+            }
+            while ( aprice <= 40 ) {
+                auto ib = lb.getInside(false,aprice);
+                if ( ib->totSize <= 0) {
+                    aprice++;
+                    continue;
+                }
+                lbm.set_ask(aprice);
+                lbm.set_asksize(ib->totSize);
+                MerkleTree mtree;
+                for (auto iiter = ib->top(); iiter != ib->bot(); iiter++) {
+                    //todo orderfillmetaid
+                    mtree.add_leaves(m_orderstore.m_refnum2orderid[iiter->refnum()]);
+                }
+                mtree.set_root(makeMerkleRoot(mtree.leaves()));
+                lbm.set_askordermetaroot(ldb.write(mtree));
+                aprice++;
+                break;
+            }
+            limitbook.add_leaves(ldb.write(lbm));
+        }
+        limitbook.set_root(makeMerkleRoot(limitbook.leaves()));
+        {
+        auto it = m_marketstore.m_pid2marketticid.find(pid);
+        if ( it != m_marketstore.m_pid2marketticid.end())
+            pms.set_marketticmetaid(it->second);
+        }
+        pms.set_limitbookmetaid(ldb.write(limitbook));
+        m_marketstore.m_marketmetamap[ldb.write(pms)] = pms;
+    }
+
+    MerkleTree mtree;
+    for ( auto it : m_marketstore.m_marketmetamap) {
+        mtree.add_leaves(it.first);
+    }
+    mtree.set_root(makeMerkleRoot(mtree.leaves()));
+    m_pbstate.set_marketstateid(ldb.write(mtree));
+
+
+//    if (m_orderstore.m_dirtypid.size() > 0)
+//    for (m_playermarketstatemap
+    m_orderstore.m_dirtypid.clear();
+
+
+/*
     for ( auto oref : m_orderstore.m_neworders) {
         OrderMeta &order = m_orderstore.m_ordermetamap[m_orderstore.m_refnum2orderid[oref]];
 
@@ -1291,7 +1449,7 @@ void CreateState::createMarketOrderState() {
         if ( id != "")
             ldb.write(id,m_posstore.m_posstatemap[id].SerializeAsString());
     }
-
+*/
 }
 
 /**

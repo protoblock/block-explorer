@@ -64,7 +64,7 @@ public:
 
     std::string update(const FantasyNameBalMeta &gm);
 
-    std::string award(const AwardMeta &gm);
+    //std::string award(const AwardMeta &gm);
 
     std::unordered_map<std::string,FantasyNameBalMeta>
             m_pendingnew;
@@ -72,7 +72,12 @@ public:
     std::unordered_map<std::string,MerkleTree>
             m_pendingawards;
 
+    std::unordered_map<std::string,MerkleTree>
+            m_pendingpnl;
+
     std::string award(const AwardMeta &am, const std::string &trid);
+    std::string pnl(const PnlMeta &am, const std::string &trid);
+
 };
 
 /**
@@ -216,7 +221,7 @@ public:
         auto pf = makeid(ofm.playerid(),ofm.fname());
         auto it = m_posid2metaid.find(pf);
         if ( it != m_posid2metaid.end()) {
-            pm.CopyFrom(m_posstatemap[it->first]);
+            pm.CopyFrom(m_posstatemap[it->second]);
             pm.set_prev(it->second);
             pm.set_qty(pm.qty() + fillqty);
             pm.set_price(pm.price() + fillpos);
@@ -225,9 +230,12 @@ public:
         else  {
             pm.set_qty(fillqty);
             pm.set_price(fillpos);
+            newposmeta.push_back(pf);
         }
 
         pm.set_name(ofm.fname());
+        pm.set_playerid(ofm.playerid());
+        pm.set_txmetaid(ofm.txmetaid());
 
         return update(pm,pf);
     }
@@ -266,15 +274,27 @@ public:
     std::unordered_map<std::string,OrderFillMeta>
             m_orderfillmetamap;
 
+    std::unordered_map<int32_t,MerkleTree>
+            m_orderFills;
+
     std::vector<int32_t> m_neworders;
 
-    std::vector<int32_t> m_dirtyorders;
+    std::set<int32_t> m_dirtyorders;
 
     std::vector<std::string> m_newfills;
+
+    std::set<std::string> m_dirtypid;
+
+    std::set<std::string> m_dirtypidfname;
+
+    void clear() {
+        m_ordermetamap.clear();
+        m_orderfillmetamap.clear();
+        m_orderFills.clear();
+    }
+
 //    std::unordered_map<std::string, bool> dirtyplayerfname;
-
 //    std::vector<std::string> newprojmeta;
-
     void init() {
         for ( auto om : m_ordermetamap) {
             m_refnum2orderid[om.second.refnum()] = om.first;
@@ -289,6 +309,25 @@ public:
         return   m_ordermetamap[this->ref2id(iref)] ;
     }
 
+    std::string newFill(const OrderFillMeta &fill) {
+
+        auto &it = m_orderFills.find(fill.refnum());
+        if ( it == m_orderFills.end())
+            m_orderFills[fill.refnum()] = {};
+
+        MerkleTree &mtree = m_orderFills[fill.refnum()];
+        auto hf = hashit(fill);
+        mtree.add_leaves(hf);
+
+        auto om = ref2OrderMeta(fill.refnum());
+        om.set_size(om.size()-fill.fillsize());
+        if (m_dirtyorders.find(om.refnum()) == m_dirtyorders.end()) {
+            om.set_prev(ref2id(om.refnum()));
+            m_dirtyorders.insert(om.refnum());
+        }
+        m_newfills.push_back(hf);
+        return hf;
+    }
 
     std::string process_new(const std::string &txid,
                             const ExchangeOrder &eo,
@@ -341,6 +380,20 @@ public:
     std::unordered_map<std::string,LimitBookMeta>
         m_limitbookidmap;
 
+    std::unordered_map<std::string,MarketTicMeta>
+        m_marketticmeta;
+
+    std::unordered_map<std::string,std::string>
+        m_pid2marketticid;
+
+    void clear() {
+        m_pid2LimitBook.clear();
+        m_marketmetamap.clear();
+        m_limitbookidmap.clear();
+        m_marketticmeta.clear();
+        m_pid2marketticid.clear();
+    }
+
     void init() {
         for ( auto mm : m_marketmetamap) {
             m_pid2marketid[mm.second.playerid()] = mm.first;
@@ -365,6 +418,24 @@ public:
         m_pid2LimitBook.insert(playerid,mylb)  ;
 
     }
+
+    std::string newFill(OrderFillMeta &fill) {
+        MarketTicMeta mtm{} ;
+        auto it = m_pid2marketticid.find(fill.playerid());
+        if ( it != m_pid2marketticid.end() ) {
+           MarketTicMeta &prevmtm = m_marketticmeta[it->first];
+           fill.set_prev(prevmtm.orderfillhead());
+           mtm.set_prev(it->second);
+        }
+        mtm.set_price(fill.fillprice());
+        mtm.set_size(fill.fillsize());
+        mtm.set_orderfillhead(hashit(fill));
+        auto mid = hashit(mtm);
+        m_pid2marketticid[fill.playerid()] = mid;
+        m_marketticmeta[mid] = mtm;
+        return mid;
+    }
+
 };
 /*
 class xxMarketStore {

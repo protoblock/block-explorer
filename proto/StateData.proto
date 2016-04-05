@@ -75,7 +75,11 @@ message LeaderBoardMeta {
 message FantasyNameBalMeta {
     optional bytes txmetaid = 10;
     optional bytes trmetaid = 20;
-    optional FantasyNameBal fnamebal = 30;
+    //optional FantasyNameBal fnamebal = 30;
+    optional string name = 25;
+    optional string public_key = 30;
+    optional uint64 bits = 35;
+    optional int64 stake = 40;
     optional bytes awardmetaroot = 50;
     optional bytes pnlmetaroot = 60;
     optional bytes prev = 70;
@@ -229,9 +233,12 @@ message AwardMeta {
 }
 
 message PnlMeta {
-    optional FantasyBitPnl fantaybitpnl = 20;
-    optional bytes projmetaid = 30;
-    optional bytes resultdatametaid = 40;
+    optional string name = 10;
+    optional int32 qty = 20;
+    optional int32 price = 30;
+    optional int64 pnl = 40;
+    optional bytes posmetaid = 50;
+    optional bytes resultdatametaid = 60;
 }
 
 message PlayerMarketState {

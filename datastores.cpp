@@ -90,19 +90,18 @@ void PlayerStore::clean() {
 
 void FantasyNameStore::init() {
     for ( auto fnb : m_fantasynamebalmetamap) {
-        m_name2metaid[fnb.second.fnamebal().name()] = fnb.first;
+        m_name2metaid[fnb.second.name()] = fnb.first;
     }
 }
 
 std::string FantasyNameStore::process_new(const std::string &txid, const NameTrans &nt) {
-    FantasyNameBal fnb;
-    fnb.set_name(nt.fantasy_name());
-    fnb.set_public_key(nt.public_key());
-    fnb.set_bits(0);
-    fnb.set_stake(0);
+    //FantasyNameBal fnb;
     FantasyNameBalMeta fbm;
+    fbm.set_name(nt.fantasy_name());
+    fbm.set_public_key(nt.public_key());
+    fbm.set_bits(0);
+    fbm.set_stake(0);
     fbm.set_txmetaid(txid);
-    fbm.mutable_fnamebal()->CopyFrom(fnb);
 
     return update(fbm);
 }
@@ -110,8 +109,8 @@ std::string FantasyNameStore::process_new(const std::string &txid, const NameTra
 std::string FantasyNameStore::update(const FantasyNameBalMeta &gm) {
     auto newid = hashit(gm.SerializeAsString());
     m_fantasynamebalmetamap[newid] = gm;
-    m_name2metaid[gm.fnamebal().name()] = newid;
-    dirty.push_back(gm.fnamebal().name());
+    m_name2metaid[gm.name()] = newid;
+    dirty.push_back(gm.name());
 
     return newid;
 }
@@ -125,24 +124,64 @@ std::string FantasyNameStore::award(const AwardMeta &am, const string &trid) {
         fnbm = &m_pendingnew[am.name()];
         auto it2 = m_name2metaid.find(am.name());
         if ( it2 != m_name2metaid.end()) {
+            fnbm->CopyFrom(m_fantasynamebalmetamap[it2->second]);
             fnbm->set_prev(it2->second);
-            fnbm->mutable_fnamebal()->
-                    CopyFrom(m_fantasynamebalmetamap[it2->second].fnamebal());
-
+            fnbm->mutable_awardmetaroot()->clear();
+            fnbm->mutable_pnlmetaroot()->clear();
+            fnbm->mutable_trmetaid()->clear();
+            fnbm->mutable_txmetaid()->clear();
         }
         m_pendingawards[am.name()] = MerkleTree::default_instance();
+
         ammt = &m_pendingawards[am.name()];
         fnbm->set_trmetaid(trid);
     }
     else {
-        ammt = &m_pendingawards[am.name()];
         fnbm = &m_pendingnew[am.name()];
+        if ( m_pendingawards.find(am.name()) == m_pendingawards.end())
+            m_pendingawards[am.name()] = MerkleTree::default_instance();
+
+        ammt = &m_pendingawards[am.name()];
     }
 
     ammt->add_leaves(hashit(am));
-    auto oldbal = fnbm->fnamebal();
-    fnbm->mutable_fnamebal()->set_bits(am.award() + oldbal.bits());
-    fnbm->mutable_fnamebal()->set_stake(am.award() + oldbal.stake());
+    fnbm->set_bits(am.award() + fnbm->bits());
+    fnbm->set_stake(am.award() + fnbm->stake());
+
+    return "";
+}
+
+std::string FantasyNameStore::pnl(const PnlMeta &am, const string &trid) {
+    FantasyNameBalMeta *fnbm;
+    MerkleTree *ammt;
+    auto it = m_pendingnew.find(am.name());
+    if ( it == m_pendingnew.end()) {
+        m_pendingnew[am.name()] = FantasyNameBalMeta::default_instance();
+        fnbm = &m_pendingnew[am.name()];
+        auto it2 = m_name2metaid.find(am.name());
+        if ( it2 != m_name2metaid.end()) {
+            fnbm->CopyFrom(m_fantasynamebalmetamap[it2->second]);
+            fnbm->set_prev(it2->second);
+            fnbm->mutable_awardmetaroot()->clear();
+            fnbm->mutable_pnlmetaroot()->clear();
+            fnbm->mutable_trmetaid()->clear();
+            fnbm->mutable_txmetaid()->clear();
+        }
+        m_pendingpnl[am.name()] = MerkleTree::default_instance();
+
+        ammt = &m_pendingpnl[am.name()];
+        fnbm->set_trmetaid(trid);
+    }
+    else {
+        fnbm = &m_pendingnew[am.name()];
+        if ( m_pendingpnl.find(am.name()) == m_pendingpnl.end())
+            m_pendingpnl[am.name()] = MerkleTree::default_instance();
+
+        ammt = &m_pendingpnl[am.name()];
+    }
+
+    ammt->add_leaves(hashit(am));
+    fnbm->set_stake(fnbm->stake() + am.pnl());
 
     return "";
 }

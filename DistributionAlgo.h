@@ -40,23 +40,23 @@ struct DistribuePointsAvg : DistributePoints
 };
 
 
-//class SettlementAlgo {};
+class SettlementAlgo {};
 
-//class SettlePositions : public SettlementAlgo
-//{
-//public:
-//    SettlePositions(const BookPos &p) : positions(p) {}
+class SettlePositions : public SettlementAlgo
+{
+public:
+    SettlePositions(const NameValuePairs<std::pair<int,int>> &p) : positions(p) {}
 
-//protected:
-//   const BookPos &positions;
-//};
+protected:
+    NameValuePairs<std::pair<int,int>> positions;
+};
 
-//using PnlResults = NameValuePairs<std::pair<SettlePos,Int> >;
+using PnlResults = NameValuePairs<int>;
 
-//struct SettlePositionsRawStake : SettlePositions {
-//    SettlePositionsRawStake(const BookPos &p) : SettlePositions(p) {}
-//    PnlResults settle(const double result, const std::string &agent) const;
-//};
+struct SettlePositionsRawStake : SettlePositions {
+    SettlePositionsRawStake(const NameValuePairs<std::pair<int,int>> &p) : SettlePositions(p) {}
+    PnlResults settle(const double result, const std::string &agent) const;
+};
 
 
 }

@@ -932,14 +932,43 @@ class FantasyNameBalMeta : public ::google::protobuf::Message {
   inline ::std::string* release_trmetaid();
   inline void set_allocated_trmetaid(::std::string* trmetaid);
 
-  // optional .fantasybit.FantasyNameBal fnamebal = 30;
-  inline bool has_fnamebal() const;
-  inline void clear_fnamebal();
-  static const int kFnamebalFieldNumber = 30;
-  inline const ::fantasybit::FantasyNameBal& fnamebal() const;
-  inline ::fantasybit::FantasyNameBal* mutable_fnamebal();
-  inline ::fantasybit::FantasyNameBal* release_fnamebal();
-  inline void set_allocated_fnamebal(::fantasybit::FantasyNameBal* fnamebal);
+  // optional string name = 25;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 25;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
+  inline void set_allocated_name(::std::string* name);
+
+  // optional string public_key = 30;
+  inline bool has_public_key() const;
+  inline void clear_public_key();
+  static const int kPublicKeyFieldNumber = 30;
+  inline const ::std::string& public_key() const;
+  inline void set_public_key(const ::std::string& value);
+  inline void set_public_key(const char* value);
+  inline void set_public_key(const char* value, size_t size);
+  inline ::std::string* mutable_public_key();
+  inline ::std::string* release_public_key();
+  inline void set_allocated_public_key(::std::string* public_key);
+
+  // optional uint64 bits = 35;
+  inline bool has_bits() const;
+  inline void clear_bits();
+  static const int kBitsFieldNumber = 35;
+  inline ::google::protobuf::uint64 bits() const;
+  inline void set_bits(::google::protobuf::uint64 value);
+
+  // optional int64 stake = 40;
+  inline bool has_stake() const;
+  inline void clear_stake();
+  static const int kStakeFieldNumber = 40;
+  inline ::google::protobuf::int64 stake() const;
+  inline void set_stake(::google::protobuf::int64 value);
 
   // optional bytes awardmetaroot = 50;
   inline bool has_awardmetaroot() const;
@@ -995,8 +1024,14 @@ class FantasyNameBalMeta : public ::google::protobuf::Message {
   inline void clear_has_txmetaid();
   inline void set_has_trmetaid();
   inline void clear_has_trmetaid();
-  inline void set_has_fnamebal();
-  inline void clear_has_fnamebal();
+  inline void set_has_name();
+  inline void clear_has_name();
+  inline void set_has_public_key();
+  inline void clear_has_public_key();
+  inline void set_has_bits();
+  inline void clear_has_bits();
+  inline void set_has_stake();
+  inline void clear_has_stake();
   inline void set_has_awardmetaroot();
   inline void clear_has_awardmetaroot();
   inline void set_has_pnlmetaroot();
@@ -1010,14 +1045,17 @@ class FantasyNameBalMeta : public ::google::protobuf::Message {
 
   ::std::string* txmetaid_;
   ::std::string* trmetaid_;
-  ::fantasybit::FantasyNameBal* fnamebal_;
+  ::std::string* name_;
+  ::std::string* public_key_;
+  ::google::protobuf::uint64 bits_;
+  ::google::protobuf::int64 stake_;
   ::std::string* awardmetaroot_;
   ::std::string* pnlmetaroot_;
   ::std::string* prev_;
   ::std::string* next_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(10 + 31) / 32];
 
   friend void  protobuf_AddDesc_StateData_2eproto();
   friend void protobuf_AssignDesc_StateData_2eproto();
@@ -2957,31 +2995,55 @@ class PnlMeta : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional .fantasybit.FantasyBitPnl fantaybitpnl = 20;
-  inline bool has_fantaybitpnl() const;
-  inline void clear_fantaybitpnl();
-  static const int kFantaybitpnlFieldNumber = 20;
-  inline const ::fantasybit::FantasyBitPnl& fantaybitpnl() const;
-  inline ::fantasybit::FantasyBitPnl* mutable_fantaybitpnl();
-  inline ::fantasybit::FantasyBitPnl* release_fantaybitpnl();
-  inline void set_allocated_fantaybitpnl(::fantasybit::FantasyBitPnl* fantaybitpnl);
+  // optional string name = 10;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 10;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
+  inline void set_allocated_name(::std::string* name);
 
-  // optional bytes projmetaid = 30;
-  inline bool has_projmetaid() const;
-  inline void clear_projmetaid();
-  static const int kProjmetaidFieldNumber = 30;
-  inline const ::std::string& projmetaid() const;
-  inline void set_projmetaid(const ::std::string& value);
-  inline void set_projmetaid(const char* value);
-  inline void set_projmetaid(const void* value, size_t size);
-  inline ::std::string* mutable_projmetaid();
-  inline ::std::string* release_projmetaid();
-  inline void set_allocated_projmetaid(::std::string* projmetaid);
+  // optional int32 qty = 20;
+  inline bool has_qty() const;
+  inline void clear_qty();
+  static const int kQtyFieldNumber = 20;
+  inline ::google::protobuf::int32 qty() const;
+  inline void set_qty(::google::protobuf::int32 value);
 
-  // optional bytes resultdatametaid = 40;
+  // optional int32 price = 30;
+  inline bool has_price() const;
+  inline void clear_price();
+  static const int kPriceFieldNumber = 30;
+  inline ::google::protobuf::int32 price() const;
+  inline void set_price(::google::protobuf::int32 value);
+
+  // optional int64 pnl = 40;
+  inline bool has_pnl() const;
+  inline void clear_pnl();
+  static const int kPnlFieldNumber = 40;
+  inline ::google::protobuf::int64 pnl() const;
+  inline void set_pnl(::google::protobuf::int64 value);
+
+  // optional bytes posmetaid = 50;
+  inline bool has_posmetaid() const;
+  inline void clear_posmetaid();
+  static const int kPosmetaidFieldNumber = 50;
+  inline const ::std::string& posmetaid() const;
+  inline void set_posmetaid(const ::std::string& value);
+  inline void set_posmetaid(const char* value);
+  inline void set_posmetaid(const void* value, size_t size);
+  inline ::std::string* mutable_posmetaid();
+  inline ::std::string* release_posmetaid();
+  inline void set_allocated_posmetaid(::std::string* posmetaid);
+
+  // optional bytes resultdatametaid = 60;
   inline bool has_resultdatametaid() const;
   inline void clear_resultdatametaid();
-  static const int kResultdatametaidFieldNumber = 40;
+  static const int kResultdatametaidFieldNumber = 60;
   inline const ::std::string& resultdatametaid() const;
   inline void set_resultdatametaid(const ::std::string& value);
   inline void set_resultdatametaid(const char* value);
@@ -2992,21 +3054,30 @@ class PnlMeta : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:fantasybit.PnlMeta)
  private:
-  inline void set_has_fantaybitpnl();
-  inline void clear_has_fantaybitpnl();
-  inline void set_has_projmetaid();
-  inline void clear_has_projmetaid();
+  inline void set_has_name();
+  inline void clear_has_name();
+  inline void set_has_qty();
+  inline void clear_has_qty();
+  inline void set_has_price();
+  inline void clear_has_price();
+  inline void set_has_pnl();
+  inline void clear_has_pnl();
+  inline void set_has_posmetaid();
+  inline void clear_has_posmetaid();
   inline void set_has_resultdatametaid();
   inline void clear_has_resultdatametaid();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::fantasybit::FantasyBitPnl* fantaybitpnl_;
-  ::std::string* projmetaid_;
+  ::std::string* name_;
+  ::google::protobuf::int32 qty_;
+  ::google::protobuf::int32 price_;
+  ::google::protobuf::int64 pnl_;
+  ::std::string* posmetaid_;
   ::std::string* resultdatametaid_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
 
   friend void  protobuf_AddDesc_StateData_2eproto();
   friend void protobuf_AssignDesc_StateData_2eproto();
@@ -6038,53 +6109,199 @@ inline void FantasyNameBalMeta::set_allocated_trmetaid(::std::string* trmetaid) 
   }
 }
 
-// optional .fantasybit.FantasyNameBal fnamebal = 30;
-inline bool FantasyNameBalMeta::has_fnamebal() const {
+// optional string name = 25;
+inline bool FantasyNameBalMeta::has_name() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void FantasyNameBalMeta::set_has_fnamebal() {
+inline void FantasyNameBalMeta::set_has_name() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void FantasyNameBalMeta::clear_has_fnamebal() {
+inline void FantasyNameBalMeta::clear_has_name() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void FantasyNameBalMeta::clear_fnamebal() {
-  if (fnamebal_ != NULL) fnamebal_->::fantasybit::FantasyNameBal::Clear();
-  clear_has_fnamebal();
-}
-inline const ::fantasybit::FantasyNameBal& FantasyNameBalMeta::fnamebal() const {
-  return fnamebal_ != NULL ? *fnamebal_ : *default_instance_->fnamebal_;
-}
-inline ::fantasybit::FantasyNameBal* FantasyNameBalMeta::mutable_fnamebal() {
-  set_has_fnamebal();
-  if (fnamebal_ == NULL) fnamebal_ = new ::fantasybit::FantasyNameBal;
-  return fnamebal_;
-}
-inline ::fantasybit::FantasyNameBal* FantasyNameBalMeta::release_fnamebal() {
-  clear_has_fnamebal();
-  ::fantasybit::FantasyNameBal* temp = fnamebal_;
-  fnamebal_ = NULL;
-  return temp;
-}
-inline void FantasyNameBalMeta::set_allocated_fnamebal(::fantasybit::FantasyNameBal* fnamebal) {
-  delete fnamebal_;
-  fnamebal_ = fnamebal;
-  if (fnamebal) {
-    set_has_fnamebal();
-  } else {
-    clear_has_fnamebal();
+inline void FantasyNameBalMeta::clear_name() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    name_->clear();
   }
+  clear_has_name();
+}
+inline const ::std::string& FantasyNameBalMeta::name() const {
+  return *name_;
+}
+inline void FantasyNameBalMeta::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void FantasyNameBalMeta::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void FantasyNameBalMeta::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* FantasyNameBalMeta::mutable_name() {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  return name_;
+}
+inline ::std::string* FantasyNameBalMeta::release_name() {
+  clear_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void FantasyNameBalMeta::set_allocated_name(::std::string* name) {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (name) {
+    set_has_name();
+    name_ = name;
+  } else {
+    clear_has_name();
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string public_key = 30;
+inline bool FantasyNameBalMeta::has_public_key() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void FantasyNameBalMeta::set_has_public_key() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void FantasyNameBalMeta::clear_has_public_key() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void FantasyNameBalMeta::clear_public_key() {
+  if (public_key_ != &::google::protobuf::internal::kEmptyString) {
+    public_key_->clear();
+  }
+  clear_has_public_key();
+}
+inline const ::std::string& FantasyNameBalMeta::public_key() const {
+  return *public_key_;
+}
+inline void FantasyNameBalMeta::set_public_key(const ::std::string& value) {
+  set_has_public_key();
+  if (public_key_ == &::google::protobuf::internal::kEmptyString) {
+    public_key_ = new ::std::string;
+  }
+  public_key_->assign(value);
+}
+inline void FantasyNameBalMeta::set_public_key(const char* value) {
+  set_has_public_key();
+  if (public_key_ == &::google::protobuf::internal::kEmptyString) {
+    public_key_ = new ::std::string;
+  }
+  public_key_->assign(value);
+}
+inline void FantasyNameBalMeta::set_public_key(const char* value, size_t size) {
+  set_has_public_key();
+  if (public_key_ == &::google::protobuf::internal::kEmptyString) {
+    public_key_ = new ::std::string;
+  }
+  public_key_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* FantasyNameBalMeta::mutable_public_key() {
+  set_has_public_key();
+  if (public_key_ == &::google::protobuf::internal::kEmptyString) {
+    public_key_ = new ::std::string;
+  }
+  return public_key_;
+}
+inline ::std::string* FantasyNameBalMeta::release_public_key() {
+  clear_has_public_key();
+  if (public_key_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = public_key_;
+    public_key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void FantasyNameBalMeta::set_allocated_public_key(::std::string* public_key) {
+  if (public_key_ != &::google::protobuf::internal::kEmptyString) {
+    delete public_key_;
+  }
+  if (public_key) {
+    set_has_public_key();
+    public_key_ = public_key;
+  } else {
+    clear_has_public_key();
+    public_key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional uint64 bits = 35;
+inline bool FantasyNameBalMeta::has_bits() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void FantasyNameBalMeta::set_has_bits() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void FantasyNameBalMeta::clear_has_bits() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void FantasyNameBalMeta::clear_bits() {
+  bits_ = GOOGLE_ULONGLONG(0);
+  clear_has_bits();
+}
+inline ::google::protobuf::uint64 FantasyNameBalMeta::bits() const {
+  return bits_;
+}
+inline void FantasyNameBalMeta::set_bits(::google::protobuf::uint64 value) {
+  set_has_bits();
+  bits_ = value;
+}
+
+// optional int64 stake = 40;
+inline bool FantasyNameBalMeta::has_stake() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void FantasyNameBalMeta::set_has_stake() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void FantasyNameBalMeta::clear_has_stake() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void FantasyNameBalMeta::clear_stake() {
+  stake_ = GOOGLE_LONGLONG(0);
+  clear_has_stake();
+}
+inline ::google::protobuf::int64 FantasyNameBalMeta::stake() const {
+  return stake_;
+}
+inline void FantasyNameBalMeta::set_stake(::google::protobuf::int64 value) {
+  set_has_stake();
+  stake_ = value;
 }
 
 // optional bytes awardmetaroot = 50;
 inline bool FantasyNameBalMeta::has_awardmetaroot() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void FantasyNameBalMeta::set_has_awardmetaroot() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000040u;
 }
 inline void FantasyNameBalMeta::clear_has_awardmetaroot() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void FantasyNameBalMeta::clear_awardmetaroot() {
   if (awardmetaroot_ != &::google::protobuf::internal::kEmptyString) {
@@ -6148,13 +6365,13 @@ inline void FantasyNameBalMeta::set_allocated_awardmetaroot(::std::string* award
 
 // optional bytes pnlmetaroot = 60;
 inline bool FantasyNameBalMeta::has_pnlmetaroot() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
 inline void FantasyNameBalMeta::set_has_pnlmetaroot() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000080u;
 }
 inline void FantasyNameBalMeta::clear_has_pnlmetaroot() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void FantasyNameBalMeta::clear_pnlmetaroot() {
   if (pnlmetaroot_ != &::google::protobuf::internal::kEmptyString) {
@@ -6218,13 +6435,13 @@ inline void FantasyNameBalMeta::set_allocated_pnlmetaroot(::std::string* pnlmeta
 
 // optional bytes prev = 70;
 inline bool FantasyNameBalMeta::has_prev() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+  return (_has_bits_[0] & 0x00000100u) != 0;
 }
 inline void FantasyNameBalMeta::set_has_prev() {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000100u;
 }
 inline void FantasyNameBalMeta::clear_has_prev() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline void FantasyNameBalMeta::clear_prev() {
   if (prev_ != &::google::protobuf::internal::kEmptyString) {
@@ -6288,13 +6505,13 @@ inline void FantasyNameBalMeta::set_allocated_prev(::std::string* prev) {
 
 // optional bytes next = 80;
 inline bool FantasyNameBalMeta::has_next() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000200u) != 0;
 }
 inline void FantasyNameBalMeta::set_has_next() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000200u;
 }
 inline void FantasyNameBalMeta::clear_has_next() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline void FantasyNameBalMeta::clear_next() {
   if (next_ != &::google::protobuf::internal::kEmptyString) {
@@ -10776,123 +10993,221 @@ inline void AwardMeta::set_allocated_resultdatametaid(::std::string* resultdatam
 
 // PnlMeta
 
-// optional .fantasybit.FantasyBitPnl fantaybitpnl = 20;
-inline bool PnlMeta::has_fantaybitpnl() const {
+// optional string name = 10;
+inline bool PnlMeta::has_name() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void PnlMeta::set_has_fantaybitpnl() {
+inline void PnlMeta::set_has_name() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void PnlMeta::clear_has_fantaybitpnl() {
+inline void PnlMeta::clear_has_name() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void PnlMeta::clear_fantaybitpnl() {
-  if (fantaybitpnl_ != NULL) fantaybitpnl_->::fantasybit::FantasyBitPnl::Clear();
-  clear_has_fantaybitpnl();
-}
-inline const ::fantasybit::FantasyBitPnl& PnlMeta::fantaybitpnl() const {
-  return fantaybitpnl_ != NULL ? *fantaybitpnl_ : *default_instance_->fantaybitpnl_;
-}
-inline ::fantasybit::FantasyBitPnl* PnlMeta::mutable_fantaybitpnl() {
-  set_has_fantaybitpnl();
-  if (fantaybitpnl_ == NULL) fantaybitpnl_ = new ::fantasybit::FantasyBitPnl;
-  return fantaybitpnl_;
-}
-inline ::fantasybit::FantasyBitPnl* PnlMeta::release_fantaybitpnl() {
-  clear_has_fantaybitpnl();
-  ::fantasybit::FantasyBitPnl* temp = fantaybitpnl_;
-  fantaybitpnl_ = NULL;
-  return temp;
-}
-inline void PnlMeta::set_allocated_fantaybitpnl(::fantasybit::FantasyBitPnl* fantaybitpnl) {
-  delete fantaybitpnl_;
-  fantaybitpnl_ = fantaybitpnl;
-  if (fantaybitpnl) {
-    set_has_fantaybitpnl();
-  } else {
-    clear_has_fantaybitpnl();
+inline void PnlMeta::clear_name() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    name_->clear();
   }
+  clear_has_name();
 }
-
-// optional bytes projmetaid = 30;
-inline bool PnlMeta::has_projmetaid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+inline const ::std::string& PnlMeta::name() const {
+  return *name_;
 }
-inline void PnlMeta::set_has_projmetaid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PnlMeta::clear_has_projmetaid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void PnlMeta::clear_projmetaid() {
-  if (projmetaid_ != &::google::protobuf::internal::kEmptyString) {
-    projmetaid_->clear();
+inline void PnlMeta::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
   }
-  clear_has_projmetaid();
+  name_->assign(value);
 }
-inline const ::std::string& PnlMeta::projmetaid() const {
-  return *projmetaid_;
-}
-inline void PnlMeta::set_projmetaid(const ::std::string& value) {
-  set_has_projmetaid();
-  if (projmetaid_ == &::google::protobuf::internal::kEmptyString) {
-    projmetaid_ = new ::std::string;
+inline void PnlMeta::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
   }
-  projmetaid_->assign(value);
+  name_->assign(value);
 }
-inline void PnlMeta::set_projmetaid(const char* value) {
-  set_has_projmetaid();
-  if (projmetaid_ == &::google::protobuf::internal::kEmptyString) {
-    projmetaid_ = new ::std::string;
+inline void PnlMeta::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
   }
-  projmetaid_->assign(value);
+  name_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline void PnlMeta::set_projmetaid(const void* value, size_t size) {
-  set_has_projmetaid();
-  if (projmetaid_ == &::google::protobuf::internal::kEmptyString) {
-    projmetaid_ = new ::std::string;
+inline ::std::string* PnlMeta::mutable_name() {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
   }
-  projmetaid_->assign(reinterpret_cast<const char*>(value), size);
+  return name_;
 }
-inline ::std::string* PnlMeta::mutable_projmetaid() {
-  set_has_projmetaid();
-  if (projmetaid_ == &::google::protobuf::internal::kEmptyString) {
-    projmetaid_ = new ::std::string;
-  }
-  return projmetaid_;
-}
-inline ::std::string* PnlMeta::release_projmetaid() {
-  clear_has_projmetaid();
-  if (projmetaid_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* PnlMeta::release_name() {
+  clear_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = projmetaid_;
-    projmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
-inline void PnlMeta::set_allocated_projmetaid(::std::string* projmetaid) {
-  if (projmetaid_ != &::google::protobuf::internal::kEmptyString) {
-    delete projmetaid_;
+inline void PnlMeta::set_allocated_name(::std::string* name) {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
   }
-  if (projmetaid) {
-    set_has_projmetaid();
-    projmetaid_ = projmetaid;
+  if (name) {
+    set_has_name();
+    name_ = name;
   } else {
-    clear_has_projmetaid();
-    projmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    clear_has_name();
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   }
 }
 
-// optional bytes resultdatametaid = 40;
-inline bool PnlMeta::has_resultdatametaid() const {
+// optional int32 qty = 20;
+inline bool PnlMeta::has_qty() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void PnlMeta::set_has_qty() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void PnlMeta::clear_has_qty() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void PnlMeta::clear_qty() {
+  qty_ = 0;
+  clear_has_qty();
+}
+inline ::google::protobuf::int32 PnlMeta::qty() const {
+  return qty_;
+}
+inline void PnlMeta::set_qty(::google::protobuf::int32 value) {
+  set_has_qty();
+  qty_ = value;
+}
+
+// optional int32 price = 30;
+inline bool PnlMeta::has_price() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void PnlMeta::set_has_resultdatametaid() {
+inline void PnlMeta::set_has_price() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void PnlMeta::clear_has_resultdatametaid() {
+inline void PnlMeta::clear_has_price() {
   _has_bits_[0] &= ~0x00000004u;
+}
+inline void PnlMeta::clear_price() {
+  price_ = 0;
+  clear_has_price();
+}
+inline ::google::protobuf::int32 PnlMeta::price() const {
+  return price_;
+}
+inline void PnlMeta::set_price(::google::protobuf::int32 value) {
+  set_has_price();
+  price_ = value;
+}
+
+// optional int64 pnl = 40;
+inline bool PnlMeta::has_pnl() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void PnlMeta::set_has_pnl() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void PnlMeta::clear_has_pnl() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void PnlMeta::clear_pnl() {
+  pnl_ = GOOGLE_LONGLONG(0);
+  clear_has_pnl();
+}
+inline ::google::protobuf::int64 PnlMeta::pnl() const {
+  return pnl_;
+}
+inline void PnlMeta::set_pnl(::google::protobuf::int64 value) {
+  set_has_pnl();
+  pnl_ = value;
+}
+
+// optional bytes posmetaid = 50;
+inline bool PnlMeta::has_posmetaid() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void PnlMeta::set_has_posmetaid() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void PnlMeta::clear_has_posmetaid() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void PnlMeta::clear_posmetaid() {
+  if (posmetaid_ != &::google::protobuf::internal::kEmptyString) {
+    posmetaid_->clear();
+  }
+  clear_has_posmetaid();
+}
+inline const ::std::string& PnlMeta::posmetaid() const {
+  return *posmetaid_;
+}
+inline void PnlMeta::set_posmetaid(const ::std::string& value) {
+  set_has_posmetaid();
+  if (posmetaid_ == &::google::protobuf::internal::kEmptyString) {
+    posmetaid_ = new ::std::string;
+  }
+  posmetaid_->assign(value);
+}
+inline void PnlMeta::set_posmetaid(const char* value) {
+  set_has_posmetaid();
+  if (posmetaid_ == &::google::protobuf::internal::kEmptyString) {
+    posmetaid_ = new ::std::string;
+  }
+  posmetaid_->assign(value);
+}
+inline void PnlMeta::set_posmetaid(const void* value, size_t size) {
+  set_has_posmetaid();
+  if (posmetaid_ == &::google::protobuf::internal::kEmptyString) {
+    posmetaid_ = new ::std::string;
+  }
+  posmetaid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PnlMeta::mutable_posmetaid() {
+  set_has_posmetaid();
+  if (posmetaid_ == &::google::protobuf::internal::kEmptyString) {
+    posmetaid_ = new ::std::string;
+  }
+  return posmetaid_;
+}
+inline ::std::string* PnlMeta::release_posmetaid() {
+  clear_has_posmetaid();
+  if (posmetaid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = posmetaid_;
+    posmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void PnlMeta::set_allocated_posmetaid(::std::string* posmetaid) {
+  if (posmetaid_ != &::google::protobuf::internal::kEmptyString) {
+    delete posmetaid_;
+  }
+  if (posmetaid) {
+    set_has_posmetaid();
+    posmetaid_ = posmetaid;
+  } else {
+    clear_has_posmetaid();
+    posmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional bytes resultdatametaid = 60;
+inline bool PnlMeta::has_resultdatametaid() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void PnlMeta::set_has_resultdatametaid() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void PnlMeta::clear_has_resultdatametaid() {
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void PnlMeta::clear_resultdatametaid() {
   if (resultdatametaid_ != &::google::protobuf::internal::kEmptyString) {

@@ -111,27 +111,27 @@ NameValuePairs<int>
 
 //#include "ExchangeData.h"
 
-//PnlResults SettlePositionsRawStake::
-//            settle(
-//                const double result,
-//                const std::string &agent
-//            ) const {
+PnlResults SettlePositionsRawStake::
+            settle(
+                const double result,
+                const std::string &agent
+            ) const {
 
-//    PnlResults pnl{};
-//    if (positions.positions().size() == 0)
-//        return pnl;
+    PnlResults pnl{};
+    if (positions.size() == 0)
+        return pnl;
 
-//    //double mean = 0;
-//    //vector<double> diffs;
-//    //diffs.reserve(positions.size());
-//    int intresult = floor((result * 100.0) + 0.5);
+    //double mean = 0;
+    //vector<double> diffs;
+    //diffs.reserve(positions.size());
+    int intresult = floor((result * 100.0) + 0.5);
 
-//    for(const auto& settlepos : positions.positions()) {
-//        int hispnl = (settlepos.qty() * intresult) + settlepos.price() * 100;
-//        pnl[settlepos.pk()] = make_pair(settlepos,hispnl);
-//    }
+    for(const auto& settlepos : positions) {
+        int hispnl = (settlepos.second.first * intresult) + settlepos.second.second * 100;
+        pnl[settlepos.first] = hispnl;
+    }
 
-//    return pnl;
-//}
+    return pnl;
+}
 
 }

@@ -232,10 +232,13 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LeaderBoardMeta));
   FantasyNameBalMeta_descriptor_ = file->message_type(6);
-  static const int FantasyNameBalMeta_offsets_[7] = {
+  static const int FantasyNameBalMeta_offsets_[10] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FantasyNameBalMeta, txmetaid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FantasyNameBalMeta, trmetaid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FantasyNameBalMeta, fnamebal_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FantasyNameBalMeta, name_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FantasyNameBalMeta, public_key_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FantasyNameBalMeta, bits_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FantasyNameBalMeta, stake_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FantasyNameBalMeta, awardmetaroot_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FantasyNameBalMeta, pnlmetaroot_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FantasyNameBalMeta, prev_),
@@ -493,9 +496,12 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AwardMeta));
   PnlMeta_descriptor_ = file->message_type(19);
-  static const int PnlMeta_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, fantaybitpnl_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, projmetaid_),
+  static const int PnlMeta_offsets_[6] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, name_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, qty_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, price_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, pnl_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, posmetaid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, resultdatametaid_),
   };
   PnlMeta_reflection_ =
@@ -875,89 +881,90 @@ void protobuf_AddDesc_StateData_2eproto() {
     "ameData\"<\n\010DataMeta\022\020\n\010txmetaid\030\n \001(\014\022\036\n"
     "\004data\030\024 \001(\0132\020.fantasybit.Data\"R\n\017LeaderB"
     "oardMeta\022\014\n\004week\030\n \001(\r\022\025\n\rfnbalmetaroot\030"
-    "\024 \001(\014\022\014\n\004prev\030\036 \001(\014\022\014\n\004next\030( \001(\014\"\256\001\n\022Fa"
+    "\024 \001(\014\022\014\n\004prev\030\036 \001(\014\022\014\n\004next\030( \001(\014\"\277\001\n\022Fa"
     "ntasyNameBalMeta\022\020\n\010txmetaid\030\n \001(\014\022\020\n\010tr"
-    "metaid\030\024 \001(\014\022,\n\010fnamebal\030\036 \001(\0132\032.fantasy"
-    "bit.FantasyNameBal\022\025\n\rawardmetaroot\0302 \001("
-    "\014\022\023\n\013pnlmetaroot\030< \001(\014\022\014\n\004prev\030F \001(\014\022\014\n\004"
-    "next\030P \001(\014\"\257\001\n\020FantasyNameState\022\014\n\004name\030"
-    "\001 \001(\t\022\034\n\024fantasynamebalmetaid\030\n \001(\014\022\023\n\013p"
-    "osmetaroot\030\024 \001(\014\022\026\n\016ordersmetaroot\030\036 \001(\014"
-    "\022\024\n\014projmetaroot\030( \001(\014\022\014\n\004prev\030F \001(\014\022\014\n\004"
-    "next\030P \001(\014\022\020\n\010txmetaid\0302 \001(\014\"\222\001\n\022WeekGam"
-    "eStatusMeta\022\014\n\004week\030\n \001(\r\022\032\n\022gameresultm"
-    "etaroot\030\024 \001(\014\022\032\n\022ingameprojmetaroot\030\036 \001("
-    "\014\022\032\n\022opengamestatusroot\030( \001(\014\022\014\n\004prev\0302 "
-    "\001(\014\022\014\n\004next\030< \001(\014\"~\n\016InGameProjMeta\022\016\n\006g"
-    "ameid\030\024 \001(\t\022\030\n\020gamestatusmetaid\030( \001(\014\022\024\n"
-    "\014homeprojmeta\030< \001(\014\022\024\n\014awayprojmeta\030F \001("
-    "\014\022\026\n\016gamedatametaid\0302 \001(\014\"\205\001\n\017GameResult"
-    "sMeta\022\016\n\006gameid\030\024 \001(\t\022\030\n\020gamestatusmetai"
-    "d\030( \001(\014\022\026\n\016homeresultmeta\030< \001(\014\022\026\n\016awayr"
-    "esultmeta\030F \001(\014\022\030\n\020resultdatametaid\0302 \001("
-    "\014\"\301\001\n\016GameStatusMeta\022\n\n\002id\030\001 \001(\t\022\014\n\004week"
-    "\030\002 \001(\005\022&\n\010gameinfo\030\n \001(\0132\024.fantasybit.Ga"
-    "meInfo\022)\n\tgamesatus\030\024 \001(\0132\026.fantasybit.G"
-    "ameStatus\022\022\n\ngamemetaid\030\036 \001(\014\022\022\n\ndatamet"
-    "aid\030( \001(\014\022\014\n\004prev\0302 \001(\014\022\014\n\004next\030< \001(\014\"\207\001"
-    "\n\014TeamProjMeta\022\016\n\006gameid\030\024 \001(\t\022\014\n\004team\030\036"
-    " \001(\t\022\023\n\013kickofftime\030( \001(\r\022\014\n\004week\0302 \001(\r\022"
-    "\036\n\026gameplayerprojmetaroot\030< \001(\014\022\026\n\016gamed"
-    "atametaid\030F \001(\014\"\211\001\n\016TeamResultMeta\022\016\n\006ga"
-    "meid\030\024 \001(\t\022\014\n\004team\030\036 \001(\t\022\023\n\013kickofftime\030"
-    "( \001(\r\022\014\n\004week\0302 \001(\r\022\034\n\024playerresultmetar"
-    "oot\030< \001(\014\022\030\n\020resultdatametaid\030F \001(\014\"\217\001\n\022"
-    "GamePlayerProjMeta\022\020\n\010playerid\030\024 \001(\t\022\030\n\020"
-    "gamestatusmetaid\030\036 \001(\014\022\032\n\022projmetaplayer"
-    "root\030< \001(\014\022\031\n\021posmetaplayerroot\030F \001(\014\022\026\n"
-    "\016gamedatametaid\030P \001(\014\"X\n\010ProjMeta\022\014\n\004nam"
-    "e\030\n \001(\t\022\014\n\004proj\030\024 \001(\005\022\020\n\010playerid\030\036 \001(\t\022"
-    "\020\n\010txmetaid\030( \001(\014\022\014\n\004prev\0302 \001(\014\"e\n\007PosMe"
-    "ta\022\014\n\004name\030\n \001(\t\022\013\n\003qty\030\024 \001(\005\022\r\n\005price\030\036"
-    " \001(\005\022\020\n\010playerid\030( \001(\t\022\020\n\010txmetaid\0302 \001(\014"
-    "\022\014\n\004prev\030< \001(\014\"\302\001\n\020PlayerResultMeta\022\020\n\010p"
+    "metaid\030\024 \001(\014\022\014\n\004name\030\031 \001(\t\022\022\n\npublic_key"
+    "\030\036 \001(\t\022\014\n\004bits\030# \001(\004\022\r\n\005stake\030( \001(\003\022\025\n\ra"
+    "wardmetaroot\0302 \001(\014\022\023\n\013pnlmetaroot\030< \001(\014\022"
+    "\014\n\004prev\030F \001(\014\022\014\n\004next\030P \001(\014\"\257\001\n\020FantasyN"
+    "ameState\022\014\n\004name\030\001 \001(\t\022\034\n\024fantasynamebal"
+    "metaid\030\n \001(\014\022\023\n\013posmetaroot\030\024 \001(\014\022\026\n\016ord"
+    "ersmetaroot\030\036 \001(\014\022\024\n\014projmetaroot\030( \001(\014\022"
+    "\014\n\004prev\030F \001(\014\022\014\n\004next\030P \001(\014\022\020\n\010txmetaid\030"
+    "2 \001(\014\"\222\001\n\022WeekGameStatusMeta\022\014\n\004week\030\n \001"
+    "(\r\022\032\n\022gameresultmetaroot\030\024 \001(\014\022\032\n\022ingame"
+    "projmetaroot\030\036 \001(\014\022\032\n\022opengamestatusroot"
+    "\030( \001(\014\022\014\n\004prev\0302 \001(\014\022\014\n\004next\030< \001(\014\"~\n\016In"
+    "GameProjMeta\022\016\n\006gameid\030\024 \001(\t\022\030\n\020gamestat"
+    "usmetaid\030( \001(\014\022\024\n\014homeprojmeta\030< \001(\014\022\024\n\014"
+    "awayprojmeta\030F \001(\014\022\026\n\016gamedatametaid\0302 \001"
+    "(\014\"\205\001\n\017GameResultsMeta\022\016\n\006gameid\030\024 \001(\t\022\030"
+    "\n\020gamestatusmetaid\030( \001(\014\022\026\n\016homeresultme"
+    "ta\030< \001(\014\022\026\n\016awayresultmeta\030F \001(\014\022\030\n\020resu"
+    "ltdatametaid\0302 \001(\014\"\301\001\n\016GameStatusMeta\022\n\n"
+    "\002id\030\001 \001(\t\022\014\n\004week\030\002 \001(\005\022&\n\010gameinfo\030\n \001("
+    "\0132\024.fantasybit.GameInfo\022)\n\tgamesatus\030\024 \001"
+    "(\0132\026.fantasybit.GameStatus\022\022\n\ngamemetaid"
+    "\030\036 \001(\014\022\022\n\ndatametaid\030( \001(\014\022\014\n\004prev\0302 \001(\014"
+    "\022\014\n\004next\030< \001(\014\"\207\001\n\014TeamProjMeta\022\016\n\006gamei"
+    "d\030\024 \001(\t\022\014\n\004team\030\036 \001(\t\022\023\n\013kickofftime\030( \001"
+    "(\r\022\014\n\004week\0302 \001(\r\022\036\n\026gameplayerprojmetaro"
+    "ot\030< \001(\014\022\026\n\016gamedatametaid\030F \001(\014\"\211\001\n\016Tea"
+    "mResultMeta\022\016\n\006gameid\030\024 \001(\t\022\014\n\004team\030\036 \001("
+    "\t\022\023\n\013kickofftime\030( \001(\r\022\014\n\004week\0302 \001(\r\022\034\n\024"
+    "playerresultmetaroot\030< \001(\014\022\030\n\020resultdata"
+    "metaid\030F \001(\014\"\217\001\n\022GamePlayerProjMeta\022\020\n\010p"
     "layerid\030\024 \001(\t\022\030\n\020gamestatusmetaid\030\036 \001(\014\022"
-    "\016\n\006result\030( \001(\002\022 \n\005stats\0302 \001(\0132\021.fantasy"
-    "bit.Stats\022\033\n\023awardmetaplayerroot\030< \001(\014\022\031"
-    "\n\021pnlmetaplayerroot\030F \001(\014\022\030\n\020resultdatam"
-    "etaid\030P \001(\014\"d\n\tAwardMeta\022\014\n\004name\030\n \001(\t\022\014"
-    "\n\004proj\030\024 \001(\005\022\r\n\005award\030\036 \001(\004\022\022\n\nprojmetai"
-    "d\030( \001(\014\022\030\n\020resultdatametaid\0302 \001(\014\"h\n\007Pnl"
-    "Meta\022/\n\014fantaybitpnl\030\024 \001(\0132\031.fantasybit."
-    "FantasyBitPnl\022\022\n\nprojmetaid\030\036 \001(\014\022\030\n\020res"
-    "ultdatametaid\030( \001(\014\"s\n\021PlayerMarketState"
-    "\022\027\n\017limitbookmetaid\030\n \001(\014\022\020\n\010playerid\030\024 "
-    "\001(\t\022\027\n\017marketticmetaid\030\036 \001(\014\022\014\n\004prev\030( \001"
-    "(\014\022\014\n\004next\0302 \001(\014\"\177\n\rLimitBookMeta\022\013\n\003bid"
-    "\030\n \001(\005\022\017\n\007bidsize\030\024 \001(\005\022\017\n\007asksize\030\036 \001(\005"
-    "\022\013\n\003ask\030( \001(\005\022\030\n\020bidordermetaroot\0302 \001(\014\022"
-    "\030\n\020askordermetaroot\030< \001(\014\"Q\n\rMarketTicMe"
-    "ta\022\r\n\005price\030\024 \001(\005\022\014\n\004size\030\036 \001(\005\022\025\n\rorder"
-    "fillhead\030( \001(\014\022\014\n\004prev\0302 \001(\014\"\266\001\n\tOrderMe"
-    "ta\022\016\n\006refnum\030\001 \001(\005\022\r\n\005fname\030\n \001(\t\022\020\n\010pla"
-    "yerid\030\024 \001(\t\022\017\n\007buyside\030\036 \001(\010\022\014\n\004size\030( \001"
-    "(\005\022\r\n\005price\0302 \001(\005\022\020\n\010txmetaid\030< \001(\014\022\027\n\017o"
-    "rderfillmetaid\030F \001(\014\022\021\n\ttimestamp\030K \001(\005\022"
-    "\014\n\004prev\030P \001(\014\"\251\001\n\rOrderFillMeta\022\016\n\006refnu"
-    "m\030\001 \001(\005\022\r\n\005fname\030\n \001(\t\022\020\n\010playerid\030\017 \001(\t"
-    "\022\021\n\tfillprice\030\024 \001(\005\022\020\n\010fillsize\030\036 \001(\005\022\017\n"
-    "\007buyside\030# \001(\010\022\021\n\ttimestamp\030( \001(\005\022\020\n\010txm"
-    "etaid\030< \001(\014\022\014\n\004prev\030F \001(\014\"m\n\017GlobalState"
-    "Meta\022,\n\013globalstate\030\n \001(\0132\027.fantasybit.G"
-    "lobalState\022\020\n\010trmetaid\030\024 \001(\014\022\014\n\004prev\030\036 \001"
-    "(\014\022\014\n\004next\030( \001(\014\"\236\001\n\nPlayerMeta\022\020\n\010playe"
-    "rid\030\n \001(\t\022+\n\013player_base\030\024 \001(\0132\026.fantasy"
-    "bit.PlayerBase\022/\n\rplayer_status\030\036 \001(\0132\030."
-    "fantasybit.PlayerStatus\022\022\n\ndatametaid\030( "
-    "\001(\014\022\014\n\004prev\0302 \001(\014\"B\n\010TeamMeta\022\016\n\006teamid\030"
-    "\n \001(\t\022\030\n\020playermetaidroot\030\024 \001(\014\022\014\n\004prev\030"
-    "\036 \001(\014\"\335\001\n\007pbstate\022\027\n\017schedulestateid\030\n \001"
-    "(\014\022\032\n\022leaderboardstateid\030\024 \001(\014\022\023\n\013projst"
-    "ateid\030\036 \001(\014\022\022\n\nposstateid\030# \001(\014\022\024\n\014order"
-    "stateid\030( \001(\014\022\025\n\rmarketstateid\0302 \001(\014\022\025\n\r"
-    "globalstateid\030< \001(\014\022\024\n\014teamstatemid\030F \001("
-    "\014\022\032\n\022fantasynamestateid\030P \001(\014\"*\n\nMerkleT"
-    "ree\022\014\n\004root\030\n \001(\014\022\016\n\006leaves\030\024 \003(\014", 4033);
+    "\032\n\022projmetaplayerroot\030< \001(\014\022\031\n\021posmetapl"
+    "ayerroot\030F \001(\014\022\026\n\016gamedatametaid\030P \001(\014\"X"
+    "\n\010ProjMeta\022\014\n\004name\030\n \001(\t\022\014\n\004proj\030\024 \001(\005\022\020"
+    "\n\010playerid\030\036 \001(\t\022\020\n\010txmetaid\030( \001(\014\022\014\n\004pr"
+    "ev\0302 \001(\014\"e\n\007PosMeta\022\014\n\004name\030\n \001(\t\022\013\n\003qty"
+    "\030\024 \001(\005\022\r\n\005price\030\036 \001(\005\022\020\n\010playerid\030( \001(\t\022"
+    "\020\n\010txmetaid\0302 \001(\014\022\014\n\004prev\030< \001(\014\"\302\001\n\020Play"
+    "erResultMeta\022\020\n\010playerid\030\024 \001(\t\022\030\n\020gamest"
+    "atusmetaid\030\036 \001(\014\022\016\n\006result\030( \001(\002\022 \n\005stat"
+    "s\0302 \001(\0132\021.fantasybit.Stats\022\033\n\023awardmetap"
+    "layerroot\030< \001(\014\022\031\n\021pnlmetaplayerroot\030F \001"
+    "(\014\022\030\n\020resultdatametaid\030P \001(\014\"d\n\tAwardMet"
+    "a\022\014\n\004name\030\n \001(\t\022\014\n\004proj\030\024 \001(\005\022\r\n\005award\030\036"
+    " \001(\004\022\022\n\nprojmetaid\030( \001(\014\022\030\n\020resultdatame"
+    "taid\0302 \001(\014\"m\n\007PnlMeta\022\014\n\004name\030\n \001(\t\022\013\n\003q"
+    "ty\030\024 \001(\005\022\r\n\005price\030\036 \001(\005\022\013\n\003pnl\030( \001(\003\022\021\n\t"
+    "posmetaid\0302 \001(\014\022\030\n\020resultdatametaid\030< \001("
+    "\014\"s\n\021PlayerMarketState\022\027\n\017limitbookmetai"
+    "d\030\n \001(\014\022\020\n\010playerid\030\024 \001(\t\022\027\n\017marketticme"
+    "taid\030\036 \001(\014\022\014\n\004prev\030( \001(\014\022\014\n\004next\0302 \001(\014\"\177"
+    "\n\rLimitBookMeta\022\013\n\003bid\030\n \001(\005\022\017\n\007bidsize\030"
+    "\024 \001(\005\022\017\n\007asksize\030\036 \001(\005\022\013\n\003ask\030( \001(\005\022\030\n\020b"
+    "idordermetaroot\0302 \001(\014\022\030\n\020askordermetaroo"
+    "t\030< \001(\014\"Q\n\rMarketTicMeta\022\r\n\005price\030\024 \001(\005\022"
+    "\014\n\004size\030\036 \001(\005\022\025\n\rorderfillhead\030( \001(\014\022\014\n\004"
+    "prev\0302 \001(\014\"\266\001\n\tOrderMeta\022\016\n\006refnum\030\001 \001(\005"
+    "\022\r\n\005fname\030\n \001(\t\022\020\n\010playerid\030\024 \001(\t\022\017\n\007buy"
+    "side\030\036 \001(\010\022\014\n\004size\030( \001(\005\022\r\n\005price\0302 \001(\005\022"
+    "\020\n\010txmetaid\030< \001(\014\022\027\n\017orderfillmetaid\030F \001"
+    "(\014\022\021\n\ttimestamp\030K \001(\005\022\014\n\004prev\030P \001(\014\"\251\001\n\r"
+    "OrderFillMeta\022\016\n\006refnum\030\001 \001(\005\022\r\n\005fname\030\n"
+    " \001(\t\022\020\n\010playerid\030\017 \001(\t\022\021\n\tfillprice\030\024 \001("
+    "\005\022\020\n\010fillsize\030\036 \001(\005\022\017\n\007buyside\030# \001(\010\022\021\n\t"
+    "timestamp\030( \001(\005\022\020\n\010txmetaid\030< \001(\014\022\014\n\004pre"
+    "v\030F \001(\014\"m\n\017GlobalStateMeta\022,\n\013globalstat"
+    "e\030\n \001(\0132\027.fantasybit.GlobalState\022\020\n\010trme"
+    "taid\030\024 \001(\014\022\014\n\004prev\030\036 \001(\014\022\014\n\004next\030( \001(\014\"\236"
+    "\001\n\nPlayerMeta\022\020\n\010playerid\030\n \001(\t\022+\n\013playe"
+    "r_base\030\024 \001(\0132\026.fantasybit.PlayerBase\022/\n\r"
+    "player_status\030\036 \001(\0132\030.fantasybit.PlayerS"
+    "tatus\022\022\n\ndatametaid\030( \001(\014\022\014\n\004prev\0302 \001(\014\""
+    "B\n\010TeamMeta\022\016\n\006teamid\030\n \001(\t\022\030\n\020playermet"
+    "aidroot\030\024 \001(\014\022\014\n\004prev\030\036 \001(\014\"\335\001\n\007pbstate\022"
+    "\027\n\017schedulestateid\030\n \001(\014\022\032\n\022leaderboards"
+    "tateid\030\024 \001(\014\022\023\n\013projstateid\030\036 \001(\014\022\022\n\npos"
+    "stateid\030# \001(\014\022\024\n\014orderstateid\030( \001(\014\022\025\n\rm"
+    "arketstateid\0302 \001(\014\022\025\n\rglobalstateid\030< \001("
+    "\014\022\024\n\014teamstatemid\030F \001(\014\022\032\n\022fantasynamest"
+    "ateid\030P \001(\014\"*\n\nMerkleTree\022\014\n\004root\030\n \001(\014\022"
+    "\016\n\006leaves\030\024 \003(\014", 4055);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "StateData.proto", &protobuf_RegisterTypes);
   BlockMeta::default_instance_ = new BlockMeta();
@@ -3285,7 +3292,10 @@ void LeaderBoardMeta::Swap(LeaderBoardMeta* other) {
 #ifndef _MSC_VER
 const int FantasyNameBalMeta::kTxmetaidFieldNumber;
 const int FantasyNameBalMeta::kTrmetaidFieldNumber;
-const int FantasyNameBalMeta::kFnamebalFieldNumber;
+const int FantasyNameBalMeta::kNameFieldNumber;
+const int FantasyNameBalMeta::kPublicKeyFieldNumber;
+const int FantasyNameBalMeta::kBitsFieldNumber;
+const int FantasyNameBalMeta::kStakeFieldNumber;
 const int FantasyNameBalMeta::kAwardmetarootFieldNumber;
 const int FantasyNameBalMeta::kPnlmetarootFieldNumber;
 const int FantasyNameBalMeta::kPrevFieldNumber;
@@ -3298,7 +3308,6 @@ FantasyNameBalMeta::FantasyNameBalMeta()
 }
 
 void FantasyNameBalMeta::InitAsDefaultInstance() {
-  fnamebal_ = const_cast< ::fantasybit::FantasyNameBal*>(&::fantasybit::FantasyNameBal::default_instance());
 }
 
 FantasyNameBalMeta::FantasyNameBalMeta(const FantasyNameBalMeta& from)
@@ -3311,7 +3320,10 @@ void FantasyNameBalMeta::SharedCtor() {
   _cached_size_ = 0;
   txmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   trmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  fnamebal_ = NULL;
+  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  public_key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  bits_ = GOOGLE_ULONGLONG(0);
+  stake_ = GOOGLE_LONGLONG(0);
   awardmetaroot_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   pnlmetaroot_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   prev_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -3330,6 +3342,12 @@ void FantasyNameBalMeta::SharedDtor() {
   if (trmetaid_ != &::google::protobuf::internal::kEmptyString) {
     delete trmetaid_;
   }
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (public_key_ != &::google::protobuf::internal::kEmptyString) {
+    delete public_key_;
+  }
   if (awardmetaroot_ != &::google::protobuf::internal::kEmptyString) {
     delete awardmetaroot_;
   }
@@ -3343,7 +3361,6 @@ void FantasyNameBalMeta::SharedDtor() {
     delete next_;
   }
   if (this != default_instance_) {
-    delete fnamebal_;
   }
 }
 
@@ -3380,9 +3397,18 @@ void FantasyNameBalMeta::Clear() {
         trmetaid_->clear();
       }
     }
-    if (has_fnamebal()) {
-      if (fnamebal_ != NULL) fnamebal_->::fantasybit::FantasyNameBal::Clear();
+    if (has_name()) {
+      if (name_ != &::google::protobuf::internal::kEmptyString) {
+        name_->clear();
+      }
     }
+    if (has_public_key()) {
+      if (public_key_ != &::google::protobuf::internal::kEmptyString) {
+        public_key_->clear();
+      }
+    }
+    bits_ = GOOGLE_ULONGLONG(0);
+    stake_ = GOOGLE_LONGLONG(0);
     if (has_awardmetaroot()) {
       if (awardmetaroot_ != &::google::protobuf::internal::kEmptyString) {
         awardmetaroot_->clear();
@@ -3393,6 +3419,8 @@ void FantasyNameBalMeta::Clear() {
         pnlmetaroot_->clear();
       }
     }
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (has_prev()) {
       if (prev_ != &::google::protobuf::internal::kEmptyString) {
         prev_->clear();
@@ -3437,17 +3465,69 @@ bool FantasyNameBalMeta::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(242)) goto parse_fnamebal;
+        if (input->ExpectTag(202)) goto parse_name;
         break;
       }
 
-      // optional .fantasybit.FantasyNameBal fnamebal = 30;
+      // optional string name = 25;
+      case 25: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_name:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->name().data(), this->name().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(242)) goto parse_public_key;
+        break;
+      }
+
+      // optional string public_key = 30;
       case 30: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_fnamebal:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_fnamebal()));
+         parse_public_key:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_public_key()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->public_key().data(), this->public_key().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(280)) goto parse_bits;
+        break;
+      }
+
+      // optional uint64 bits = 35;
+      case 35: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_bits:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &bits_)));
+          set_has_bits();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(320)) goto parse_stake;
+        break;
+      }
+
+      // optional int64 stake = 40;
+      case 40: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_stake:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &stake_)));
+          set_has_stake();
         } else {
           goto handle_uninterpreted;
         }
@@ -3541,10 +3621,32 @@ void FantasyNameBalMeta::SerializeWithCachedSizes(
       20, this->trmetaid(), output);
   }
 
-  // optional .fantasybit.FantasyNameBal fnamebal = 30;
-  if (has_fnamebal()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      30, this->fnamebal(), output);
+  // optional string name = 25;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      25, this->name(), output);
+  }
+
+  // optional string public_key = 30;
+  if (has_public_key()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->public_key().data(), this->public_key().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      30, this->public_key(), output);
+  }
+
+  // optional uint64 bits = 35;
+  if (has_bits()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(35, this->bits(), output);
+  }
+
+  // optional int64 stake = 40;
+  if (has_stake()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(40, this->stake(), output);
   }
 
   // optional bytes awardmetaroot = 50;
@@ -3593,11 +3695,34 @@ void FantasyNameBalMeta::SerializeWithCachedSizes(
         20, this->trmetaid(), target);
   }
 
-  // optional .fantasybit.FantasyNameBal fnamebal = 30;
-  if (has_fnamebal()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        30, this->fnamebal(), target);
+  // optional string name = 25;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        25, this->name(), target);
+  }
+
+  // optional string public_key = 30;
+  if (has_public_key()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->public_key().data(), this->public_key().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        30, this->public_key(), target);
+  }
+
+  // optional uint64 bits = 35;
+  if (has_bits()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(35, this->bits(), target);
+  }
+
+  // optional int64 stake = 40;
+  if (has_stake()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(40, this->stake(), target);
   }
 
   // optional bytes awardmetaroot = 50;
@@ -3653,11 +3778,32 @@ int FantasyNameBalMeta::ByteSize() const {
           this->trmetaid());
     }
 
-    // optional .fantasybit.FantasyNameBal fnamebal = 30;
-    if (has_fnamebal()) {
+    // optional string name = 25;
+    if (has_name()) {
       total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->fnamebal());
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->name());
+    }
+
+    // optional string public_key = 30;
+    if (has_public_key()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->public_key());
+    }
+
+    // optional uint64 bits = 35;
+    if (has_bits()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->bits());
+    }
+
+    // optional int64 stake = 40;
+    if (has_stake()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int64Size(
+          this->stake());
     }
 
     // optional bytes awardmetaroot = 50;
@@ -3674,6 +3820,8 @@ int FantasyNameBalMeta::ByteSize() const {
           this->pnlmetaroot());
     }
 
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     // optional bytes prev = 70;
     if (has_prev()) {
       total_size += 2 +
@@ -3721,8 +3869,17 @@ void FantasyNameBalMeta::MergeFrom(const FantasyNameBalMeta& from) {
     if (from.has_trmetaid()) {
       set_trmetaid(from.trmetaid());
     }
-    if (from.has_fnamebal()) {
-      mutable_fnamebal()->::fantasybit::FantasyNameBal::MergeFrom(from.fnamebal());
+    if (from.has_name()) {
+      set_name(from.name());
+    }
+    if (from.has_public_key()) {
+      set_public_key(from.public_key());
+    }
+    if (from.has_bits()) {
+      set_bits(from.bits());
+    }
+    if (from.has_stake()) {
+      set_stake(from.stake());
     }
     if (from.has_awardmetaroot()) {
       set_awardmetaroot(from.awardmetaroot());
@@ -3730,6 +3887,8 @@ void FantasyNameBalMeta::MergeFrom(const FantasyNameBalMeta& from) {
     if (from.has_pnlmetaroot()) {
       set_pnlmetaroot(from.pnlmetaroot());
     }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (from.has_prev()) {
       set_prev(from.prev());
     }
@@ -3761,7 +3920,10 @@ void FantasyNameBalMeta::Swap(FantasyNameBalMeta* other) {
   if (other != this) {
     std::swap(txmetaid_, other->txmetaid_);
     std::swap(trmetaid_, other->trmetaid_);
-    std::swap(fnamebal_, other->fnamebal_);
+    std::swap(name_, other->name_);
+    std::swap(public_key_, other->public_key_);
+    std::swap(bits_, other->bits_);
+    std::swap(stake_, other->stake_);
     std::swap(awardmetaroot_, other->awardmetaroot_);
     std::swap(pnlmetaroot_, other->pnlmetaroot_);
     std::swap(prev_, other->prev_);
@@ -9284,8 +9446,11 @@ void AwardMeta::Swap(AwardMeta* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int PnlMeta::kFantaybitpnlFieldNumber;
-const int PnlMeta::kProjmetaidFieldNumber;
+const int PnlMeta::kNameFieldNumber;
+const int PnlMeta::kQtyFieldNumber;
+const int PnlMeta::kPriceFieldNumber;
+const int PnlMeta::kPnlFieldNumber;
+const int PnlMeta::kPosmetaidFieldNumber;
 const int PnlMeta::kResultdatametaidFieldNumber;
 #endif  // !_MSC_VER
 
@@ -9295,7 +9460,6 @@ PnlMeta::PnlMeta()
 }
 
 void PnlMeta::InitAsDefaultInstance() {
-  fantaybitpnl_ = const_cast< ::fantasybit::FantasyBitPnl*>(&::fantasybit::FantasyBitPnl::default_instance());
 }
 
 PnlMeta::PnlMeta(const PnlMeta& from)
@@ -9306,8 +9470,11 @@ PnlMeta::PnlMeta(const PnlMeta& from)
 
 void PnlMeta::SharedCtor() {
   _cached_size_ = 0;
-  fantaybitpnl_ = NULL;
-  projmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  qty_ = 0;
+  price_ = 0;
+  pnl_ = GOOGLE_LONGLONG(0);
+  posmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   resultdatametaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -9317,14 +9484,16 @@ PnlMeta::~PnlMeta() {
 }
 
 void PnlMeta::SharedDtor() {
-  if (projmetaid_ != &::google::protobuf::internal::kEmptyString) {
-    delete projmetaid_;
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (posmetaid_ != &::google::protobuf::internal::kEmptyString) {
+    delete posmetaid_;
   }
   if (resultdatametaid_ != &::google::protobuf::internal::kEmptyString) {
     delete resultdatametaid_;
   }
   if (this != default_instance_) {
-    delete fantaybitpnl_;
   }
 }
 
@@ -9351,12 +9520,17 @@ PnlMeta* PnlMeta::New() const {
 
 void PnlMeta::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_fantaybitpnl()) {
-      if (fantaybitpnl_ != NULL) fantaybitpnl_->::fantasybit::FantasyBitPnl::Clear();
+    if (has_name()) {
+      if (name_ != &::google::protobuf::internal::kEmptyString) {
+        name_->clear();
+      }
     }
-    if (has_projmetaid()) {
-      if (projmetaid_ != &::google::protobuf::internal::kEmptyString) {
-        projmetaid_->clear();
+    qty_ = 0;
+    price_ = 0;
+    pnl_ = GOOGLE_LONGLONG(0);
+    if (has_posmetaid()) {
+      if (posmetaid_ != &::google::protobuf::internal::kEmptyString) {
+        posmetaid_->clear();
       }
     }
     if (has_resultdatametaid()) {
@@ -9375,35 +9549,86 @@ bool PnlMeta::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional .fantasybit.FantasyBitPnl fantaybitpnl = 20;
+      // optional string name = 10;
+      case 10: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->name().data(), this->name().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(160)) goto parse_qty;
+        break;
+      }
+
+      // optional int32 qty = 20;
       case 20: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_fantaybitpnl()));
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_qty:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &qty_)));
+          set_has_qty();
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(242)) goto parse_projmetaid;
+        if (input->ExpectTag(240)) goto parse_price;
         break;
       }
 
-      // optional bytes projmetaid = 30;
+      // optional int32 price = 30;
       case 30: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_projmetaid:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_projmetaid()));
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_price:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &price_)));
+          set_has_price();
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(322)) goto parse_resultdatametaid;
+        if (input->ExpectTag(320)) goto parse_pnl;
         break;
       }
 
-      // optional bytes resultdatametaid = 40;
+      // optional int64 pnl = 40;
       case 40: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_pnl:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &pnl_)));
+          set_has_pnl();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(402)) goto parse_posmetaid;
+        break;
+      }
+
+      // optional bytes posmetaid = 50;
+      case 50: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_posmetaid:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_posmetaid()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(482)) goto parse_resultdatametaid;
+        break;
+      }
+
+      // optional bytes resultdatametaid = 60;
+      case 60: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_resultdatametaid:
@@ -9434,22 +9659,40 @@ bool PnlMeta::MergePartialFromCodedStream(
 
 void PnlMeta::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional .fantasybit.FantasyBitPnl fantaybitpnl = 20;
-  if (has_fantaybitpnl()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      20, this->fantaybitpnl(), output);
+  // optional string name = 10;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      10, this->name(), output);
   }
 
-  // optional bytes projmetaid = 30;
-  if (has_projmetaid()) {
+  // optional int32 qty = 20;
+  if (has_qty()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(20, this->qty(), output);
+  }
+
+  // optional int32 price = 30;
+  if (has_price()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(30, this->price(), output);
+  }
+
+  // optional int64 pnl = 40;
+  if (has_pnl()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(40, this->pnl(), output);
+  }
+
+  // optional bytes posmetaid = 50;
+  if (has_posmetaid()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      30, this->projmetaid(), output);
+      50, this->posmetaid(), output);
   }
 
-  // optional bytes resultdatametaid = 40;
+  // optional bytes resultdatametaid = 60;
   if (has_resultdatametaid()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      40, this->resultdatametaid(), output);
+      60, this->resultdatametaid(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -9460,25 +9703,43 @@ void PnlMeta::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* PnlMeta::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional .fantasybit.FantasyBitPnl fantaybitpnl = 20;
-  if (has_fantaybitpnl()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        20, this->fantaybitpnl(), target);
+  // optional string name = 10;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        10, this->name(), target);
   }
 
-  // optional bytes projmetaid = 30;
-  if (has_projmetaid()) {
+  // optional int32 qty = 20;
+  if (has_qty()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(20, this->qty(), target);
+  }
+
+  // optional int32 price = 30;
+  if (has_price()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(30, this->price(), target);
+  }
+
+  // optional int64 pnl = 40;
+  if (has_pnl()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(40, this->pnl(), target);
+  }
+
+  // optional bytes posmetaid = 50;
+  if (has_posmetaid()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        30, this->projmetaid(), target);
+        50, this->posmetaid(), target);
   }
 
-  // optional bytes resultdatametaid = 40;
+  // optional bytes resultdatametaid = 60;
   if (has_resultdatametaid()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        40, this->resultdatametaid(), target);
+        60, this->resultdatametaid(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -9492,21 +9753,42 @@ int PnlMeta::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional .fantasybit.FantasyBitPnl fantaybitpnl = 20;
-    if (has_fantaybitpnl()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->fantaybitpnl());
+    // optional string name = 10;
+    if (has_name()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->name());
     }
 
-    // optional bytes projmetaid = 30;
-    if (has_projmetaid()) {
+    // optional int32 qty = 20;
+    if (has_qty()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->qty());
+    }
+
+    // optional int32 price = 30;
+    if (has_price()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->price());
+    }
+
+    // optional int64 pnl = 40;
+    if (has_pnl()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int64Size(
+          this->pnl());
+    }
+
+    // optional bytes posmetaid = 50;
+    if (has_posmetaid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->projmetaid());
+          this->posmetaid());
     }
 
-    // optional bytes resultdatametaid = 40;
+    // optional bytes resultdatametaid = 60;
     if (has_resultdatametaid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -9540,11 +9822,20 @@ void PnlMeta::MergeFrom(const ::google::protobuf::Message& from) {
 void PnlMeta::MergeFrom(const PnlMeta& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_fantaybitpnl()) {
-      mutable_fantaybitpnl()->::fantasybit::FantasyBitPnl::MergeFrom(from.fantaybitpnl());
+    if (from.has_name()) {
+      set_name(from.name());
     }
-    if (from.has_projmetaid()) {
-      set_projmetaid(from.projmetaid());
+    if (from.has_qty()) {
+      set_qty(from.qty());
+    }
+    if (from.has_price()) {
+      set_price(from.price());
+    }
+    if (from.has_pnl()) {
+      set_pnl(from.pnl());
+    }
+    if (from.has_posmetaid()) {
+      set_posmetaid(from.posmetaid());
     }
     if (from.has_resultdatametaid()) {
       set_resultdatametaid(from.resultdatametaid());
@@ -9572,8 +9863,11 @@ bool PnlMeta::IsInitialized() const {
 
 void PnlMeta::Swap(PnlMeta* other) {
   if (other != this) {
-    std::swap(fantaybitpnl_, other->fantaybitpnl_);
-    std::swap(projmetaid_, other->projmetaid_);
+    std::swap(name_, other->name_);
+    std::swap(qty_, other->qty_);
+    std::swap(price_, other->price_);
+    std::swap(pnl_, other->pnl_);
+    std::swap(posmetaid_, other->posmetaid_);
     std::swap(resultdatametaid_, other->resultdatametaid_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
