@@ -311,7 +311,7 @@ public:
 
     std::string newFill(const OrderFillMeta &fill) {
 
-        auto &it = m_orderFills.find(fill.refnum());
+        const auto &it = m_orderFills.find(fill.refnum());
         if ( it == m_orderFills.end())
             m_orderFills[fill.refnum()] = {};
 
@@ -348,6 +348,28 @@ public:
         m_neworders.push_back(refnum);
         return oid;
     }
+
+    std::string process_cancel(const std::string &txid,
+                            const ExchangeOrder &eo,
+                            const std::string &fname,
+                            int32_t refnum) {
+
+
+        auto it = m_refnum2orderid.find(eo.cancel_oref());
+        if ( it == end(m_refnum2orderid))
+            return "";
+
+        OrderMeta &om = m_ordermetamap[it->second];
+        om.set_prev(it->second);
+        om.set_size(0);
+        auto oid = hashit(om.SerializeAsString());
+        m_ordermetamap[oid] = om;
+        m_refnum2orderid[refnum] = oid;
+        m_dirtyorders.insert(om.refnum());
+        return oid;
+    }
+
+
 //        optional int32 refnum = 1;
 //        optional string fname = 10;
 //        optional string playerid = 20;

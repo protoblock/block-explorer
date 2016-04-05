@@ -796,6 +796,11 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
                                  stamped.seqnum());
 
             }
+            else if (emdg.type() == ExchangeOrder::CANCEL) {
+                processCancelOrder(nt.first,emdg,
+                                 stamped.signed_orig().fantasy_name(),
+                                 stamped.seqnum());
+            }
             //else todo: cancel
 
             qDebug() << "new ExchangeOrder " << emdg.DebugString().data();
@@ -852,6 +857,110 @@ std::string CreateState::processNewOrder(
         }
     }
 
+
+    return "";
+
+
+//    auto &tree = m_marketstore.m_pid2limitbookid[ometa.playerid()];
+//    int newaggsize = ometa.size();
+
+//    if ( tree.leaves_size() == 0) {
+//        processFirstOrder(ometa,ometaid);
+//        return "";
+//    }
+
+
+//    for ( auto l : tree.leaves() ) {
+//        LimitBookMeta & lbm = m_marketstore.m_limitbookidmap[l];
+//        auto &bapair = m_marketstore.m_limitid2insideidpair[l];
+
+//        auto price = ometa.buyside() ? lbm.ask() : lbm.bid();
+
+//        if ( ometa.buyside() && ometa.price() < lbm.ask() ||
+//             !ometa.buyside() && ometa.price() > lbm.bid()) {
+//            //dopassive
+
+//            //processPassiveOrder(ometa,ometaid);
+//            break;
+//        }
+
+//        else {
+//            //while(true) {
+//            auto ibmid = ometa.buyside() ? bapair.second : bapair.first;
+//            InsideBookMeta &ibm = m_insidemetamap[ibmid];
+//            int newtotal = ibm.totsize();
+//            std::list<std::string> &olist = m_inside2orderlist[ibm.orderidroot()];
+//            for (auto it = olist.begin(); it != olist.end();) {
+//                auto iordid = *it;
+//                OrderMeta &order = orderstore.m_ordermetamap[iordid];
+//                int newpasssize = order.size();
+//                int maxfills = std::min(newpasssize,newtotal);
+//                if (  maxfills >= newpasssize ) {
+//                    //DoFill(order,iordid,order.size());
+//                    newtotal -= newpasssize;
+//                    newaggsize -= newpasssize;
+//                    newpasssize = 0;
+//                }
+//                else {
+//                    newpasssize -= maxfills;
+//                    newtotal -= maxfills;
+//                    //DoFill(order,iordid,newsize);
+//                    newaggsize -= maxfills;
+//                }
+//                int numfills = (order.size() - newpasssize);
+
+
+//                if (numfills <= 0 ) {
+//                    //qDebug() << "unexpected numfilles = 0 ";
+//                    continue;
+//                }
+
+//                //DoFill  numfiils  order omet
+//                if ( newpasssize == 0 ) olist.erase(it);
+//                else it++;
+
+//                DoFill(orderstore,order,numfills,price,iordid);
+
+//                dirtyinsideid.push_back(ibmid);
+
+//                if ( newtotal == 0) break;
+//            }
+
+//            lbm.set_bidsize(newtotal);
+//            dirtypidlimitbook.push_back(pid);
+//            DoFill(orderstore,ometa,ometa.size() - newaggsize,price,ometaid);
+//        }
+//    }
+
+//    if ( newaggsize > 0 ) {
+//        ometa.set_size(newaggsize);
+//        insideordernew.push_back(ometaid);
+//    }
+
+//    ometa.set_prev(ometaid);
+
+//    return update();
+}
+
+std::string CreateState::processCancelOrder(
+                        const std::string &txid,
+                        const ExchangeOrder &eo,
+                        const std::string &fname,
+                        int32_t refnum) {
+
+    auto ometaid = m_orderstore.process_cancel(txid,eo,fname,refnum);
+    if ( ometaid == "" ) return "";
+
+    OrderMeta &ometa = m_orderstore.m_ordermetamap[ometaid];
+    ldb.write(ometaid,ometa.SerializeAsString());
+
+    QString pid = ometa.playerid().data();
+    auto lb = m_marketstore.m_pid2LimitBook[pid];
+    if ( lb == NULL) return "";
+
+    PosMeta pm{};
+    m_orderstore.m_dirtypid.insert(pid.toStdString());
+    lb->CancelOrder(ometa);
 
     return "";
 

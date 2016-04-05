@@ -28,5 +28,6 @@ void Actions::Test() {
     Blockchain bc{};
     bc.SeekToFirst();
     cout << "*** Genesis Block Merkle: " << bc.GetCurrentBlock().signedhead().head().transaction_id() << endl;
-    cout << "*** CreateMerkle: " << Actions::CreateMerkle(bc.GetCurrentBlock()).DebugString() << endl;
+    auto b = bc.GetCurrentBlock(); Actions::CreateMerkle(b);
+    cout << "*** CreateMerkle: " << b.DebugString() << endl;
 }

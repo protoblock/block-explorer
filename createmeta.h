@@ -26,9 +26,9 @@ public:
     }
 
     std::string DoMeta(const Block &,const std::string &);
-    TxMeta CreateMeta::createTxMeta(int32_t bnum, int32_t tnum, const SignedTransaction &st);
-    std::string CreateMeta::DoMetaTr(int32_t bnum, const SignedTransaction &st);
-    std::string CreateMeta::DoMetaTx(int32_t bnum, const Block &b);
+    TxMeta createTxMeta(int32_t bnum, int32_t tnum, const SignedTransaction &st);
+    std::string DoMetaTr(int32_t bnum, const SignedTransaction &st);
+    std::string DoMetaTx(int32_t bnum, const Block &b);
 
 
 };

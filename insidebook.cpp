@@ -13,14 +13,6 @@ std::list<OrderMeta>::iterator InsideBook::bot() {
     return end(mOList);
 }
 
-std::list<OrderMeta>::reverse_iterator InsideBook::rtop() {
-    return rbegin(mOList);
-}
-
-std::list<OrderMeta>::reverse_iterator InsideBook::rbot() {
-    return rend(mOList);
-}
-
 void InsideBook::New(OrderMeta &order) {
     totSize += order.size();
     mOMap.insert(make_pair(order.refnum(),mOList.insert(mOList.end(),order)));

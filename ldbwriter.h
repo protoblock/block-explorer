@@ -14,26 +14,7 @@ class LdbWriter {
 
 public:
 
-    void LdbWriter::init() {
-        //qDebug() << BlockMeta::descriptor()->file()->DebugString().data();
-        write_sync.sync = true;
-
-        leveldb::Options opt;
-        opt.create_if_missing = true;
-        opt.error_if_exists = false;
-
-        leveldb::Status status;
-
-        leveldb::DB *db;
-        status = leveldb::DB::Open(opt, "./block/meta", &db);
-        if (!status.ok()) {
-            std::cout << "!!! error opening db block/meta" << std::endl;
-            std::cout << "!!! " << status.ToString() << std::endl;
-            exit(1);
-        }
-
-        this->db = db;
-    }
+    void init();
 
 
     std::string write(const std::string &key, const std::string &val) {

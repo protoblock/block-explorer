@@ -124,6 +124,48 @@ bool LimitBook::NewOrder(Order &o, Position &posdelta) {
     return haspos;
 }
 
+int32_t LimitBook::CancelOrder(Order &order) {
+    //mBookDelta->Clear();
+    auto myprice = order.price()-1;
+    if ( (myprice < 0) || (myprice >= BOOK_SIZE) )
+        return -1;
+
+    if (order.buyside()) {
+        m_bids[myprice].Cancel(order);
+        //SaveRemove(order,order.core().size());
+        //mBookDelta->add_removes()->CopyFrom(order);
+        //{
+        //Send(new BookFeedData(ExecType.Canceled, order));
+
+        if (m_bestBid == myprice) {
+            if (m_bids[myprice].totSize > 0)
+                NewTop(myprice+1, m_bids[myprice].totSize, true);
+            else
+                GetTop(true);
+        }
+
+//        NewDepth(true, myprice);
+        //} else
+        //Send(new BookFeedData(ExecType.CancelReject, order));
+    }
+    else {
+        m_asks[myprice].Cancel(order);
+        //Send(new BookFeedData(ExecType.Canceled, order));
+//        SaveRemove(order,order.size());
+        if (m_bestAsk == myprice) {
+            if (m_asks[myprice].totSize > 0)
+                NewTop(myprice+1, m_asks[myprice].totSize, false);
+            else
+                GetTop(false);
+        }
+
+//        NewDepth(false, myprice);
+        //} else
+        //    //mFeed.Execution(order, BookFeed.OrdStatus.CancelReject, 0);
+        //    Send(new BookFeedData(ExecType.CancelReject, order));
+    }
+}
+
 bool LimitBook::NewBid(Order &order, Position &deltapos) {
 #ifdef TRACE
 qDebug() << "level2 New Bid " << order.price() << order.size();

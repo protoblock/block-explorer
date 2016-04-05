@@ -30,7 +30,7 @@ string CreateMeta::DoMetaTx(int32_t bnum, const Block &b) {
     MerkleTree mt{};
     for (int i = 1; i < b.signed_transactions_size(); i++) {
         auto &st = b.signed_transactions(i);
-        auto &txm = createTxMeta(bnum,i,st);
+        const auto &txm = createTxMeta(bnum,i,st);
         auto txms = txm.SerializeAsString();
         auto txmid = fc::sha256::hash(txms).str();
         writer.write(txmid,txms);

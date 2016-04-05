@@ -227,11 +227,11 @@ public:
 
     template<class T>
     std::string loadMerkleMap(const std::string &in, MerkleTree &mtree,
-                  std::unordered_map<std::string,typename T> &mapt) {
+                  std::unordered_map<std::string,  T> &mapt) {
 
         ldb.read(in,mtree);
         for ( auto nodestr : mtree.leaves()) {
-            typename T nodet;
+              T nodet;
             ldb.read(nodestr,nodet);
             mapt[nodestr] = nodet;
         }
@@ -240,7 +240,7 @@ public:
     }
 
     template<class T>
-    std::string setNewMerkelTree(const std::unordered_map<std::string,typename T> &mapt,
+    std::string setNewMerkelTree(const std::unordered_map<std::string,  T> &mapt,
                                  MerkleTree &mtree) {
         for ( auto &leaf : mapt) {
             mtree.add_leaves(leaf.first);
@@ -251,12 +251,12 @@ public:
     }
 
     template<class T>
-    std::string loadMerkleMap(const std::string &in,std::vector<typename T> &vect) {
+    std::string loadMerkleMap(const std::string &in,std::vector<  T> &vect) {
 
         MerkleTree mtree;
         ldb.read(in,mtree);
         for ( auto nodestr : mtree.leaves()) {
-            typename T nodet;
+              T nodet;
             ldb.read(nodestr,nodet);
             vect.push_back(nodet);
         }
@@ -267,7 +267,7 @@ public:
 
 
     template<class T>
-    void dumpMerkleMap(std::unordered_map<std::string,typename T> &mapt) {
+    void dumpMerkleMap(std::unordered_map<std::string,  T> &mapt) {
 
         for(auto p: mapt) {
             qDebug() << p.first.data();
@@ -303,6 +303,7 @@ public:
     void createTrLeaderboardState();
     std::string processNewOrder(const std::string &txid, const ExchangeOrder &eo, const std::string &fname, int32_t refnum);
     void processFirstOrder(const OrderMeta &ordernew, const std::string &newoid);
+    std::string processCancelOrder(const std::string &txid, const ExchangeOrder &eo, const std::string &fname, int32_t refnum);
 };
 
 
