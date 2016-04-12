@@ -831,16 +831,25 @@ std::string CreateState::processNewOrder(
     ldb.write(ometaid,ometa.SerializeAsString());
 
     QString pid = ometa.playerid().data();
-    auto lb = m_marketstore.m_pid2LimitBook[pid];
-    if ( lb == NULL) {
+    auto it = m_marketstore.m_pid2LimitBook.find(pid);
+    if ( it == end(m_marketstore.m_pid2LimitBook)) {
         m_marketstore.addLimitbook(pid);
-        lb = m_marketstore.m_pid2LimitBook[pid];
+        //lb = m_marketstore.m_pid2LimitBook[pid];
+        it = m_marketstore.m_pid2LimitBook.find(pid);
+        if ( pid == "1619") {
+            qDebug() << " pid";
+        }
     }
+
+    auto lb = m_marketstore.m_pid2LimitBook[pid];
     PosMeta pm{};
     m_orderstore.m_dirtypid.insert(pid.toStdString());
     if ( lb->NewOrder(ometa,pm) ) {
 
         while( !lb->m_qFills.isEmpty() ) {
+            if ( pid == "1619") {
+                qDebug() << " pid";
+            }
             OrderFillMeta ofm = lb->m_qFills.dequeue();
             ofm.set_txmetaid(txid);
             auto mid = m_marketstore.newFill(ofm);
@@ -955,8 +964,10 @@ std::string CreateState::processCancelOrder(
     ldb.write(ometaid,ometa.SerializeAsString());
 
     QString pid = ometa.playerid().data();
-    auto lb = m_marketstore.m_pid2LimitBook[pid];
-    if ( lb == NULL) return "";
+    auto it = m_marketstore.m_pid2LimitBook.find(pid);
+    if ( it == end(m_marketstore.m_pid2LimitBook)) return "";
+
+    auto lb = *it;
 
     PosMeta pm{};
     m_orderstore.m_dirtypid.insert(pid.toStdString());
@@ -993,13 +1004,13 @@ std::string CreateState::processCancelOrder(
 //            auto ibmid = ometa.buyside() ? bapair.second : bapair.first;
 //            InsideBookMeta &ibm = m_insidemetamap[ibmid];
 //            int newtotal = ibm.totsize();
-//            std::list<std::string> &olist = m_inside2orderlist[ibm.orderidroot()];
+//            std::list<std:f:string> &olist = m_inside2orderlist[ibm.orderidroot()];
 //            for (auto it = olist.begin(); it != olist.end();) {
 //                auto iordid = *it;
 //                OrderMeta &order = orderstore.m_ordermetamap[iordid];
 //                int newpasssize = order.size();
 //                int maxfills = std::min(newpasssize,newtotal);
-//                if (  maxfills >= newpasssize ) {
+//                if (  maxfillfinits >= newpasssize ) {
 //                    //DoFill(order,iordid,order.size());
 //                    newtotal -= newpasssize;
 //                    newaggsize -= newpasssize;
@@ -1467,15 +1478,23 @@ void CreateState::createMarketOrderState() {
         m_orderstore.m_refnum2orderid[ref] = newoid;
     }
 
-    m_orderstore.m_dirtyorders.clear();
+    if ( m_orderstore.m_dirtyorders.size() > 0 ) {
+        m_orderstore.m_dirtyorders.clear();
+        MerkleTree mtree;
+        setNewMerkelTree(m_orderstore.m_ordermetamap,mtree);
+        m_pbstate.set_orderstateid(mtree.root());
+    }
 
     for ( auto pid : m_orderstore.m_dirtypid) {
+        if ( pid == "1619") {
+            qDebug() << " pid";
+        }
         LimitBook &lb = *m_marketstore.m_pid2LimitBook[pid.data()];
         int bprice = lb.getBestBid();
         int aprice = lb.getBestAsk();
         PlayerMarketState pms{};
         auto it = m_marketstore.m_pid2marketid.find(pid);
-        if ( it != m_marketstore.m_pid2marketid.end()) {
+        if ( it != end(m_marketstore.m_pid2marketid) ) {
             pms.set_prev(it->first);
             m_marketstore.m_marketmetamap.erase(it->second);
         }
@@ -1528,21 +1547,36 @@ void CreateState::createMarketOrderState() {
             pms.set_marketticmetaid(it->second);
         }
         pms.set_limitbookmetaid(ldb.write(limitbook));
-        m_marketstore.m_marketmetamap[ldb.write(pms)] = pms;
+        auto mid = ldb.write(pms);
+        m_marketstore.m_marketmetamap[mid] = pms;
+        m_marketstore.m_pid2marketid[pid] = mid;
     }
 
-    MerkleTree mtree;
-    for ( auto it : m_marketstore.m_marketmetamap) {
-        mtree.add_leaves(it.first);
+    if ( m_orderstore.m_dirtypid.size() > 0) {
+        //m_playermarketstatemap.clear();
+        //m_playermarketstatetree.clear_leaves();
+        //m_playermarketstatemap = m_marketstore.m_marketmetamap;
+        MerkleTree mtree;
+        setNewMerkelTree(m_marketstore.m_marketmetamap,mtree);
+        m_pbstate.set_marketstateid(mtree.root());
+    
+    //    if (m_orderstore.m_dirtypid.size() > 0)
+    //    for (m_playermarketstatemap
+        m_orderstore.m_dirtypid.clear();
     }
-    mtree.set_root(makeMerkleRoot(mtree.leaves()));
-    m_pbstate.set_marketstateid(ldb.write(mtree));
 
+//    if ( m_orderstore.m_dirtypid.size() > 0) {
+//        m_playermarketstatemap.clear();
+//        m_playermarketstatetree.clear_leaves();
+//        m_playermarketstatemap = m_marketstore.m_marketmetamap;
+//        //MerkleTree mtree;
+//        setNewMerkelTree(m_playermarketstatemap,m_playermarketstatetree);
+//        m_pbstate.set_marketstateid(mtree.root());
 
-//    if (m_orderstore.m_dirtypid.size() > 0)
-//    for (m_playermarketstatemap
-    m_orderstore.m_dirtypid.clear();
-
+//    //    if (m_orderstore.m_dirtypid.size() > 0)
+//    //    for (m_playermarketstatemap
+//        m_orderstore.m_dirtypid.clear();
+//    }
 
 /*
     for ( auto oref : m_orderstore.m_neworders) {

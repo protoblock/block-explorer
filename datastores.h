@@ -414,11 +414,16 @@ public:
         m_limitbookidmap.clear();
         m_marketticmeta.clear();
         m_pid2marketticid.clear();
+        m_pid2marketid.clear();
     }
 
     void init() {
         for ( auto mm : m_marketmetamap) {
             m_pid2marketid[mm.second.playerid()] = mm.first;
+            if ( mm.second.playerid() == "1619") {
+                int i;
+                i++;
+            }
 
         }
 

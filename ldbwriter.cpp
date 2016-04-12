@@ -14,7 +14,7 @@ void fantasybit::LdbWriter::init() {
     leveldb::Status status;
 
     leveldb::DB *db;
-    status = leveldb::DB::Open(opt, "./block/meta", &db);
+    status = leveldb::DB::Open(opt, "D:/data/working-explorer/block/meta", &db);
     if (!status.ok()) {
         std::cout << "!!! error opening db block/meta" << std::endl;
         std::cout << "!!! " << status.ToString() << std::endl;

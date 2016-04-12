@@ -15,7 +15,7 @@ void Blockchain::init() {
     leveldb::Status status;
 
     leveldb::DB *db;
-    status = leveldb::DB::Open(optionsInt, "./block/blockchain", &db);
+    status = leveldb::DB::Open(optionsInt, "D:/data/working-explorer/block/blockchain", &db);
     if (!status.ok()) {
         cout << "!!! error opening db block/blockchain" << endl;
         cout << "!!! " << status.ToString() << endl;

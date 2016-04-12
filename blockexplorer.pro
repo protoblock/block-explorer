@@ -65,7 +65,7 @@ unix:macx {
 }
 
 win32 {
-   LIBS+= -L$$PWD/libwin64
+   LIBS+= -L"D:/libwin64"
 
     CONFIG(debug, debug|release) {
        LIBS+= -llibprotobufd \
@@ -83,7 +83,7 @@ win32 {
               -lfc
     }
 
-    BOOST_DIR = C:/work/boost
+    BOOST_DIR = C:\local\boost_1_55_0
     LIBS += -L$${BOOST_DIR}/lib64-msvc-12.0
     LIBS += -lboost_log-vc120-1_55
     INCLUDEPATH += $${BOOST_DIR}
