@@ -531,10 +531,10 @@ void CreateState::processGameResult(const GameResult &grslt,
     fromProj2Results(awayprojmeta,awayresultsmeta,id, trid);
 
 
-    qDebug() << " home ";
+//    qDebug() << " home ";
 
-    for ( auto hr : grslt.home_result())
-        qDebug() << hr.DebugString().data();
+//    for ( auto hr : grslt.home_result())
+//        qDebug() << hr.DebugString().data();
 
     homeresultsmeta.set_playerresultmetaroot(
                 ProcessResults(grslt.home_result(),
@@ -542,10 +542,10 @@ void CreateState::processGameResult(const GameResult &grslt,
                                id,trid));
 
 
-    qDebug() << " away ";
+//    qDebug() << " away ";
 
-    for ( auto hr : grslt.away_result())
-        qDebug() << hr.DebugString().data();
+//    for ( auto hr : grslt.away_result())
+//        qDebug() << hr.DebugString().data();
 
     awayresultsmeta.set_playerresultmetaroot(
                 ProcessResults(grslt.away_result(),
@@ -714,7 +714,7 @@ std::string CreateState::ProcessResults(
         prm.set_pnlmetaplayerroot(pnltree.root());
         }
         playerresulttree.add_leaves(ldb.write(prm));
-        qDebug() << gppm.DebugString().data();
+//        qDebug() << gppm.DebugString().data();
     }
 
     playerresulttree.set_root(makeMerkleRoot(playerresulttree.leaves()));
@@ -782,7 +782,7 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
         }
         case TransType::STAMPED: {
             auto & stamped = nt.second.tx().GetExtension(StampedTrans::stamped_trans);
-            qDebug() << "new StampedTrans " << stamped.timestamp() << stamped.seqnum();
+            //qDebug() << "new StampedTrans " << stamped.timestamp() << stamped.seqnum();
             const Transaction &t = stamped.signed_orig().trans();
             if (t.type() != TransType::EXCHANGE)
                 break;
@@ -803,7 +803,7 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
             }
             //else todo: cancel
 
-            qDebug() << "new ExchangeOrder " << emdg.DebugString().data();
+            //qDebug() << "new ExchangeOrder " << emdg.DebugString().data();
 //            auto name = inst.fantasy_name();
             //bool subscribe = mNameData.IsSubscribed(fn->FantasyName.alias());
             //m_marketstore.process(emdg,seqnum,fn);
@@ -827,7 +827,7 @@ std::string CreateState::processNewOrder(
     auto ometaid = m_orderstore.process_new(txid,eo,fname,refnum);
     if ( ometaid == "" ) return "";
 
-    OrderMeta &ometa = m_orderstore.m_ordermetamap[ometaid];
+    OrderMeta ometa = m_orderstore.m_ordermetamap[ometaid];
     ldb.write(ometaid,ometa.SerializeAsString());
 
     QString pid = ometa.playerid().data();
@@ -1495,7 +1495,7 @@ void CreateState::createMarketOrderState() {
         PlayerMarketState pms{};
         auto it = m_marketstore.m_pid2marketid.find(pid);
         if ( it != end(m_marketstore.m_pid2marketid) ) {
-            pms.set_prev(it->first);
+            pms.set_prev(it->second);
             m_marketstore.m_marketmetamap.erase(it->second);
         }
         pms.set_playerid(pid);

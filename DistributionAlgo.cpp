@@ -96,7 +96,7 @@ NameValuePairs<int>
     }
 
     if (result < total) {
-        qCritical() << "gave out to much";
+        qCritical() << "gave out to much" << result << total;
     }
     else {
         double leftover = result - total;

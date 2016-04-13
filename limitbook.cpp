@@ -350,7 +350,7 @@ int32_t LimitBook::SweepAsks( Order &order) {
 int32_t LimitBook::SweepBids( Order &order) {
     int price = order.price()-1;
     int left = order.size();
-    qDebug() << "level2 sweepbids  top ord core" << order.size();
+//    qDebug() << "level2 sweepbids  top ord core" << order.size();
     int32_t pos = 0;
     for (; m_bestBid >= price; --m_bestBid) {
         InsideBook &curr = m_bids[m_bestBid];
@@ -415,7 +415,8 @@ void LimitBook::SendFill(Order &o, int32_t q, int price, bool ispassive ) {
     price += 1;
     o.set_size(o.size()-q);
 
-    if ( ispassive ) {
+    //if ( ispassive )
+    {
         int32_t deltaqty;
         int32_t deltapos;
         if (o.buyside() ) {
