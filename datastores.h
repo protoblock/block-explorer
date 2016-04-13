@@ -319,7 +319,7 @@ public:
         auto hf = hashit(fill);
         mtree.add_leaves(hf);
 
-        auto om = ref2OrderMeta(fill.refnum());
+        auto &om = ref2OrderMeta(fill.refnum());
         om.set_size(om.size()-fill.fillsize());
         if (m_dirtyorders.find(om.refnum()) == m_dirtyorders.end()) {
             om.set_prev(ref2id(om.refnum()));
