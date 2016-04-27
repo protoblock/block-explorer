@@ -151,7 +151,7 @@ public:
 
     std::unordered_map<std::string, bool> dirtyplayerfname;
 
-    std::vector<std::string> newprojmeta;
+    std::set<std::string> newprojmeta;
 
     void init();
 
@@ -216,7 +216,7 @@ public:
     std::string process(const OrderFillMeta &ofm) {
         PosMeta pm;
 
-        uint32_t fillqty = ofm.fillsize() * ofm.buyside() ? 1 : -1;
+        uint32_t fillqty = ofm.fillsize() * (ofm.buyside() ? 1 : -1);
         uint32_t fillpos = ofm.fillprice() * -fillqty;
         auto pf = makeid(ofm.playerid(),ofm.fname());
         auto it = m_posid2metaid.find(pf);
@@ -362,6 +362,7 @@ public:
         OrderMeta &om = m_ordermetamap[it->second];
         om.set_prev(it->second);
         om.set_size(0);
+        om.set_txmetaid(txid);
         auto oid = hashit(om.SerializeAsString());
         m_ordermetamap[oid] = om;
         m_refnum2orderid[refnum] = oid;

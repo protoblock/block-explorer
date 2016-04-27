@@ -42,7 +42,7 @@ NameValuePairs<int>
         mean+=diff;
         diffs.emplace_back(diff);
 
-        //qInfo() << pair.first << " projection " << pair.second << " diff " << diff;
+        qInfo() << pair.first.data() << " projection " << pair.second << " diff " << diff;
     }
   
     mean /= projections.size();
@@ -89,14 +89,14 @@ NameValuePairs<int>
 			double amount = (result - diff)*payout;
             award[pair.first] = amount * 100.0;
 			total += amount;
-            //qInfo() << pair.first << " projection " << pair.second << " award " << amount;
+            qDebug() << pair.first.data() << " projection " << pair.second << " award " << amount;
 		}
-		else 
-            ;//qInfo() << pair.first << " projection " << pair.second << "no award ";
+        else
+            qDebug() << pair.first.data() << " projection " << pair.second << "no award ";
     }
 
     if (result < total) {
-        qCritical() << "gave out to much" << result << total;
+//        qCritical() << "gave out to much" << result << total;
     }
     else {
         double leftover = result - total;

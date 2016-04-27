@@ -280,8 +280,10 @@ void CreateState::processTrData(const std::string &datametaroot) {
 
     //dumpMerkleMap(datametamap);
     std::string id;
-    ResultData rd;
-    for(auto datap : datametamap) {
+
+    for( auto &it : datametatree.leaves() ) {
+        auto datapt = datametamap.find(it);
+        auto &datap = *datapt;
         switch(datap.second.data().type()) {
         case Data_Type_PLAYER:
             id = m_playerstore.process(datap.first,
@@ -308,8 +310,11 @@ void CreateState::processTrData(const std::string &datametaroot) {
             break;
 
         case Data_Type_RESULT: {
-            rd = datap.second.data().GetExtension(ResultData::result_data);
+            ResultData rd = datap.second.data().GetExtension(ResultData::result_data);
 //            m_gamestatustore.m_id2ingameprojmeta[rd.game_result().gameid()]
+
+            if ( rd.game_result().gameid() == "201501503" || rd.game_result().gameid() == "")
+                qDebug() << rd.game_result().DebugString().data();
 
             InGameProjMeta igpm;
             ldb.read(m_gamestatustore.m_id2ingameprojmeta[rd.game_result().gameid()],igpm);
@@ -327,6 +332,12 @@ void CreateState::processTr(const TrMeta &trmeta, const std::string &trid) {
     GlobalState gs;
     switch(trmeta.type()) {
     case TrType::WEEKOVER:
+        qDebug() << "bracedocsss week" << trmeta.week();
+        for ( auto i : bracedoc) {
+            qDebug() << i.first.data() << ":" << i.second;
+        }
+        bracedoc.clear();
+
         if ( trmeta.week()+1 > 16 ) {
             gs.set_week(0);
             gs.set_season(trmeta.season()+1);
@@ -362,8 +373,11 @@ void CreateState::processTr(const TrMeta &trmeta, const std::string &trid) {
         MerkleTree gamemetatree;
         std::unordered_map<std::string, GameMeta> gamemetamap;
         loadMerkleMap(trmeta.gamemetaroot(),gamemetatree,gamemetamap);
-        for (auto gmid : gamemetatree.leaves() )
+        for (auto gmid : gamemetatree.leaves() ) {
+            if ( gmid == "201501503")
+                qDebug() << "";
             processGameStart(gmid,gamemetamap[gmid],trid);
+        }
         break;
     }
     case TrType::SEASONEND:
@@ -417,6 +431,9 @@ void CreateState::processGameStart(const string &gmid,const GameMeta &gmeta,cons
     string id = m_gamestatustore.start(gmid,gmeta);
     if ( id != "")
         ldb.write(id,m_gamestatustore.m_gamestatsstatemap[id].SerializeAsString());
+
+    if ( gmeta.gamedata().gameid() == "201501503")
+        qDebug() << "";
 
     GameStatusMeta gsm = m_gamestatustore.getGameStatusMeta(gmeta.gamedata().gameid());
     const GameInfo &gi = gsm.gameinfo();
@@ -473,6 +490,8 @@ string CreateState::processTeamGameStart(
             continue;
         }
 
+//        if ( it->second.playerid() == "1122" && it->second.name() == "The Savages")
+//            qDebug() << " 1122 " << it->first.data();
         projposplayermap[it->second.playerid()].first.add_leaves(it->first);
         it = m_projstore.m_projstatemap.erase(it);
     }
@@ -510,6 +529,11 @@ void CreateState::processGameResult(const GameResult &grslt,
                                     const InGameProjMeta &igmeta,
                                     const string &trid) {
 
+    if ( grslt.gameid() == "201501503") {
+        qDebug() << grslt.DebugString().data();
+    }
+
+    qDebug() << "**gameid" << grslt.gameid().data();
     auto id = m_gamestatustore.close(trid,grslt.gameid());
     if ( id != "")
         ldb.write(id,m_gamestatustore.m_gamestatsstatemap[id].SerializeAsString());
@@ -539,7 +563,7 @@ void CreateState::processGameResult(const GameResult &grslt,
     homeresultsmeta.set_playerresultmetaroot(
                 ProcessResults(grslt.home_result(),
                                homeprojmeta.gameplayerprojmetaroot(),
-                               id,trid));
+                               id,trid,grslt.gameid()));
 
 
 //    qDebug() << " away ";
@@ -550,7 +574,7 @@ void CreateState::processGameResult(const GameResult &grslt,
     awayresultsmeta.set_playerresultmetaroot(
                 ProcessResults(grslt.away_result(),
                                awayprojmeta.gameplayerprojmetaroot(),
-                               id,trid));
+                               id,trid,grslt.gameid()));
 
     grm.set_homeresultmeta(ldb.write(homeresultsmeta));
     grm.set_awayresultmeta(ldb.write(awayresultsmeta));
@@ -623,20 +647,24 @@ void CreateState::fromProj2Results(const TeamProjMeta &teamproj,TeamResultMeta &
 std::string CreateState::ProcessResults(
         decltype(GameResult::default_instance().home_result()) &ingr,
         const std::string &gameplayerprojmetaroot,
-        const string &id,const string &trid) {
+        const string &id,const string &trid,
+        const string &gid) {
 
     MerkleTree playerresulttree{};
     std::unordered_map<std::string,PlayerResultMeta> pid2res;
     {
-    PlayerResultMeta prm;
-    prm.set_gamestatusmetaid(id);
-    prm.set_resultdatametaid(trid);
-    for ( auto &pr : ingr) {
-        prm.set_playerid(pr.playerid());
-        prm.set_result(pr.result());
-        prm.mutable_stats()->CopyFrom(pr.stats());
-        pid2res[pr.playerid()] = prm;
-    }
+        PlayerGameStats pgm;
+        PlayerResultMeta prm;
+        prm.set_gamestatusmetaid(id);
+        prm.set_resultdatametaid(trid);
+        pgm.set_gameid(gid);
+        for ( auto &pr : ingr) {
+            pgm.set_playerid(pr.playerid());
+            pgm.set_result(pr.result());
+            pgm.mutable_stats()->CopyFrom(pr.stats());
+            prm.set_playergamestatsid(ldb.write(pgm));
+            pid2res[pr.playerid()] = prm;
+        }
     }
 
     MerkleTree mtree{};
@@ -649,69 +677,77 @@ std::string CreateState::ProcessResults(
             continue;
 
         PlayerResultMeta &prm = it->second;//pid2res[gppm.playerid()];
-        prm.set_playerid(gppm.playerid());
-        prm.set_gamestatusmetaid(id);
+        PlayerGameStats pgm;
+        ldb.read(prm.playergamestatsid(),pgm);
+        //prm.set_playerid(gppm.playerid());
+        //prm.set_gamestatusmetaid(id);
 
         { //AWARD
-        MerkleTree mtree2{};
-        ldb.read(gppm.projmetaplayerroot(),mtree2);
-        std::unordered_map<std::string,int> nameproj;
-        std::unordered_map<std::string, AwardMeta> awm{};
-        for ( auto &projmid : mtree2.leaves() ) {
-            ProjMeta pm{};
-            ldb.read(projmid,pm);
-            AwardMeta am{};
-            am.set_name(pm.name());
-            am.set_proj(pm.proj());
-            am.set_projmetaid(projmid);
-            am.set_resultdatametaid(trid);
-            awm[pm.name()] = am;
-            nameproj[pm.name()] = pm.proj();
-        }
-        DistribuePointsAvg dist(nameproj);
-        auto awards = dist.distribute(prm.result(),"FantasyAgent");
-        MerkleTree awardtree{};
-        for ( auto &r : awards ) {
-            AwardMeta &am = awm[r.first];
-            am.set_award(r.second);
-            awardtree.add_leaves(ldb.write(am));
-            m_fantasynamestore.award(am,trid);
-        }
-        awardtree.set_root(makeMerkleRoot(awardtree.leaves()));
-        ldb.write(awardtree);
-        prm.set_awardmetaplayerroot(awardtree.root());
+            MerkleTree mtree2{};
+            ldb.read(gppm.projmetaplayerroot(),mtree2);
+            std::unordered_map<std::string,int> nameproj;
+            std::unordered_map<std::string, AwardMeta> awm{};
+            for ( auto &projmid : mtree2.leaves() ) {
+                ProjMeta pm{};
+                ldb.read(projmid,pm);
+                AwardMeta am{};
+                am.set_name(pm.name());
+                am.set_proj(pm.proj());
+                am.set_projmetaid(projmid);
+                am.set_playergamestatsid(prm.playergamestatsid());
+                awm[pm.name()] = am;
+                nameproj[pm.name()] = pm.proj();
+            }
+            DistribuePointsAvg dist(nameproj);
+//            if ( gppm.playerid() == "1122")
+//                qDebug() << "1122";
+            qDebug() << "***player result" << pgm.playerid().data() << pgm.result();
+            auto awards = dist.distribute(pgm.result(),"FantasyAgent");
+
+            MerkleTree awardtree{};
+            for ( auto &r : awards ) {
+                AwardMeta &am = awm[r.first];
+                am.set_award(r.second);
+                awardtree.add_leaves(ldb.write(am));
+                m_fantasynamestore.award(am,trid);
+                if ( am.name() == "Bracedoc")
+                    bracedoc[pgm.playerid()] = am.award();
+            }
+            awardtree.set_root(makeMerkleRoot(awardtree.leaves()));
+            ldb.write(awardtree);
+            prm.set_awardmetaplayerroot(awardtree.root());
         }
 
         { //PNL
-        MerkleTree mtree2{};
-        ldb.read(gppm.posmetaplayerroot(),mtree2);
-        std::unordered_map<std::string,pair<int,int>> namepos;
-        std::unordered_map<std::string, PnlMeta> pnlm{};
-        for ( auto &posmetaid : mtree2.leaves() ) {
-            PosMeta pm{};
-            ldb.read(posmetaid,pm);
-            PnlMeta pnl{};
-            pnl.set_name(pm.name());
-            pnl.set_qty(pm.qty());
-            pnl.set_price(pm.price());
-            pnl.set_posmetaid(posmetaid);
-            pnl.set_resultdatametaid(trid);
-            pnlm[pm.name()] = pnl;
-            namepos[pm.name()] = {pnl.qty(),pnl.price()};
-        }
-        SettlePositionsRawStake set(namepos);
-        auto pnls = set.settle(prm.result(),"FantasyAgent");
-        MerkleTree pnltree{};
-        for ( auto &r : pnls ) {
-            PnlMeta &pnl = pnlm[r.first];
-            pnl.set_pnl(r.second);
+            MerkleTree mtree2{};
+            ldb.read(gppm.posmetaplayerroot(),mtree2);
+            std::unordered_map<std::string,pair<int,int>> namepos;
+            std::unordered_map<std::string, PnlMeta> pnlm{};
+            for ( auto &posmetaid : mtree2.leaves() ) {
+                PosMeta pm{};
+                ldb.read(posmetaid,pm);
+                PnlMeta pnl{};
+                pnl.set_name(pm.name());
+                pnl.set_qty(pm.qty());
+                pnl.set_price(pm.price());
+                pnl.set_posmetaid(posmetaid);
+                pnl.set_playergamestatsid(prm.playergamestatsid());
+                pnlm[pm.name()] = pnl;
+                namepos[pm.name()] = {pnl.qty(),pnl.price()};
+            }
+            SettlePositionsRawStake set(namepos);
+            auto pnls = set.settle(pgm.result(),"FantasyAgent");
+            MerkleTree pnltree{};
+            for ( auto &r : pnls ) {
+                PnlMeta &pnl = pnlm[r.first];
+                pnl.set_pnl(r.second);
 
-            pnltree.add_leaves(ldb.write(pnl));
-            m_fantasynamestore.pnl(pnl,trid);
-        }
-        pnltree.set_root(makeMerkleRoot(pnltree.leaves()));
-        ldb.write(pnltree);
-        prm.set_pnlmetaplayerroot(pnltree.root());
+                pnltree.add_leaves(ldb.write(pnl));
+                m_fantasynamestore.pnl(pnl,trid);
+            }
+            pnltree.set_root(makeMerkleRoot(pnltree.leaves()));
+            ldb.write(pnltree);
+            prm.set_pnlmetaplayerroot(pnltree.root());
         }
         playerresulttree.add_leaves(ldb.write(prm));
 //        qDebug() << gppm.DebugString().data();
@@ -837,7 +873,7 @@ std::string CreateState::processNewOrder(
         //lb = m_marketstore.m_pid2LimitBook[pid];
         it = m_marketstore.m_pid2LimitBook.find(pid);
         if ( pid == "1619") {
-            qDebug() << " pid";
+//            qDebug() << " pid";
         }
     }
 
@@ -848,9 +884,12 @@ std::string CreateState::processNewOrder(
 
         while( !lb->m_qFills.isEmpty() ) {
             if ( pid == "1619") {
-                qDebug() << " pid";
+//                qDebug() << " pid";
             }
             OrderFillMeta ofm = lb->m_qFills.dequeue();
+            if ( ofm.fname() == ometa.fname() && ofm.refnum() != ometa.refnum() ) {
+                qDebug() << " self trade\n" << ofm.DebugString().data() << ometa.DebugString().data();
+            }
             ofm.set_txmetaid(txid);
             auto mid = m_marketstore.newFill(ofm);
             if ( mid != "") {
@@ -1487,7 +1526,7 @@ void CreateState::createMarketOrderState() {
 
     for ( auto pid : m_orderstore.m_dirtypid) {
         if ( pid == "1619") {
-            qDebug() << " pid";
+//            qDebug() << " pid";
         }
         LimitBook &lb = *m_marketstore.m_pid2LimitBook[pid.data()];
         int bprice = lb.getBestBid();
@@ -1639,6 +1678,8 @@ void CreateState::createProjState() {
 
         if ( m_projstore.newprojmeta.size()  > 0) {
             for ( auto np : m_projstore.newprojmeta) {
+//                if ( np == "1122:The Savages")
+//                    qDebug() << " found it ";
                 auto newstateid = m_projstore.m_projid2metaid[np];
                 m_projmetatree.add_leaves(newstateid);
                 m_projmetamap.insert(*m_projstore.m_projstatemap.find(newstateid));
@@ -1652,6 +1693,8 @@ void CreateState::createProjState() {
             for ( int i =0; i < m_projmetatree.leaves_size(); i++) {
                 const ProjMeta &pm = m_projmetamap[m_projmetatree.leaves(i)];
                 std::string id = ProjStore::makeid(pm.playerid(),pm.name());
+//                if ( id == "1122:The Savages")
+//                    qDebug() << " found it ";
                 if ( m_projstore.dirtyplayerfname.find(id) !=
                                  m_projstore.dirtyplayerfname.end()) {
                     auto &eid = m_projmetatree.leaves(i);

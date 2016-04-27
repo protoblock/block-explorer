@@ -116,6 +116,9 @@ std::string FantasyNameStore::update(const FantasyNameBalMeta &gm) {
 }
 
 std::string FantasyNameStore::award(const AwardMeta &am, const string &trid) {
+    if ( am.name() == "fantasy trader")
+        qDebug() << "";
+
     FantasyNameBalMeta *fnbm;
     MerkleTree *ammt;
     auto it = m_pendingnew.find(am.name());
@@ -144,9 +147,14 @@ std::string FantasyNameStore::award(const AwardMeta &am, const string &trid) {
         ammt = &m_pendingawards[am.name()];
     }
 
+
     ammt->add_leaves(hashit(am));
     fnbm->set_bits(am.award() + fnbm->bits());
     fnbm->set_stake(am.award() + fnbm->stake());
+
+    qDebug() << "adding award" << am.award() << " :: " << fnbm->name().data() <<
+             fnbm->public_key().data() << fnbm->bits();
+
 
     return "";
 }
@@ -341,14 +349,21 @@ void ProjStore::init() {
 
 std::string ProjStore::process(const std::string &txid, const ProjectionTrans &pj, const std::string &fname) {
     ProjMeta pm;
+//    if ( pj.playerid() == "1122" && fname == "The Savages")
+//        qDebug() << " 1122 " << pj.DebugString().data();
     auto pf = makeid(pj.playerid(),fname);
     auto it = m_projid2metaid.find(pf);
     if ( it != m_projid2metaid.end()) {
         pm.set_prev(it->second);
-        dirtyplayerfname[pf] = true;
+        if ( newprojmeta.find(pf) != newprojmeta.end() )
+            m_projstatemap.erase(it->second);
+        else if ( dirtyplayerfname.find(pf) !=  dirtyplayerfname.end())
+            m_projstatemap.erase(it->second);
+        else
+            dirtyplayerfname[pf] = true;
     }
     else
-        newprojmeta.push_back(pf);
+        newprojmeta.insert(pf);
 
     pm.set_name(fname);
     pm.set_playerid(pj.playerid());
@@ -359,14 +374,22 @@ std::string ProjStore::process(const std::string &txid, const ProjectionTrans &p
 
 std::string ProjStore::process(const std::string &txid, const PlayerPoints &pj, const std::string &fname) {
     ProjMeta pm;
+//    if ( pj.playerid() == "1122" && fname == "The Savages")
+//        qDebug() << " 1122 " << pj.DebugString().data();
+
     auto pf = makeid(pj.playerid(),fname);
     auto it = m_projid2metaid.find(pf);
     if ( it != m_projid2metaid.end()) {
-        pm.set_prev(it->second);
-        dirtyplayerfname[pf] = true;
+        pm.set_prev(it->second);       
+        if ( newprojmeta.find(pf) != newprojmeta.end() )
+            m_projstatemap.erase(it->second);
+        else if ( dirtyplayerfname.find(pf) !=  dirtyplayerfname.end())
+            m_projstatemap.erase(it->second);
+        else
+            dirtyplayerfname[pf] = true;
     }
     else
-        newprojmeta.push_back(pf);
+        newprojmeta.insert(pf);
 
     pm.set_name(fname);
     pm.set_playerid(pj.playerid());
