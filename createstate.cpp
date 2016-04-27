@@ -555,7 +555,7 @@ void CreateState::processGameResult(const GameResult &grslt,
     fromProj2Results(awayprojmeta,awayresultsmeta,id, trid);
 
 
-//    qDebug() << " home ";
+    qDebug() << "****************** home ";
 
 //    for ( auto hr : grslt.home_result())
 //        qDebug() << hr.DebugString().data();
@@ -566,7 +566,7 @@ void CreateState::processGameResult(const GameResult &grslt,
                                id,trid,grslt.gameid()));
 
 
-//    qDebug() << " away ";
+    qDebug() << "****************** away ";
 
 //    for ( auto hr : grslt.away_result())
 //        qDebug() << hr.DebugString().data();
@@ -645,10 +645,12 @@ void CreateState::fromProj2Results(const TeamProjMeta &teamproj,TeamResultMeta &
  * @return TeamResultMeta
  */
 std::string CreateState::ProcessResults(
-        decltype(GameResult::default_instance().home_result()) &ingr,
+        const ::google::protobuf::RepeatedPtrField< ::fantasybit::PlayerResult >&ingr,
         const std::string &gameplayerprojmetaroot,
         const string &id,const string &trid,
         const string &gid) {
+
+    qDebug() << "ProcessResults" << gameplayerprojmetaroot.data() << id.data() << gid.data() << trid.data();
 
     MerkleTree playerresulttree{};
     std::unordered_map<std::string,PlayerResultMeta> pid2res;
@@ -1379,9 +1381,9 @@ void CreateState::createTrPlayerDataState() {
 
     m_teamstatetree.set_root(makeMerkleRoot(m_teamstatetree.leaves()));
     ldb.write(m_teamstatetree.root(),m_teamstatetree.SerializeAsString());
-    this->loadMerkleMap(m_teamstatetree.root(),
-                        m_teamstatetree,
-                        m_teamstatemap);
+//    this->loadMerkleMap(m_teamstatetree.root(),
+//                        m_teamstatetree,
+//                        m_teamstatemap);
     m_playerstore.clean();
     m_pbstate.set_teamstatemid(m_teamstatetree.root());
 }

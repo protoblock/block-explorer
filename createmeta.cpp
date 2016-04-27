@@ -50,6 +50,10 @@ string CreateMeta::DoMetaTr(int32_t bnum, const SignedTransaction &st) {
     tr.set_season(dt.season());
     tr.set_week(dt.week());
 
+
+
+    if ( bnum == 139 )
+        qDebug() << " 139 " << dt.DebugString().data();
     auto txm = createTxMeta(bnum,0,st).SerializeAsString();
     auto txmid = fc::sha256::hash(txm).str();
     writer.write(txmid,txm);
@@ -81,6 +85,8 @@ string CreateMeta::DoMetaTr(int32_t bnum, const SignedTransaction &st) {
             auto gmsid = fc::sha256::hash(gmstr).str();
             writer.write(gmsid,gmstr);
             mt.add_leaves(gmsid);
+            if ( bnum == 139 )
+                qDebug() << " DataMeta " << gm.DebugString().data();
         }
         mt.set_root(makeMerkleRoot(mt.leaves()));
         writer.write(mt.root(),mt.SerializeAsString());
