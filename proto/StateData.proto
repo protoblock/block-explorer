@@ -214,13 +214,18 @@ message PosMeta {
 //awardmetaplayerroot -> MerkleTree<AwardMetaId> - 1 player many fnames
 //pnlmetaplayerroot -> MerkleTree<PnlMetaId> - 1 player many fnames
 message PlayerResultMeta {
-    optional string playerid = 20;
+    optional bytes playergamestatsid = 10;
     optional bytes gamestatusmetaid = 30;
-    optional float result = 40;
-    optional Stats stats = 50;
     optional bytes awardmetaplayerroot = 60;
     optional bytes pnlmetaplayerroot = 70;
     optional bytes resultdatametaid = 80;
+}
+
+message PlayerGameStats {
+    optional string playerid = 20;
+    optional float result = 40;
+    optional Stats stats = 50;
+    optional string gameid = 60;
 }
 
 //projmetaid -> FantasyBitProjMeta
@@ -229,7 +234,7 @@ message AwardMeta {
     optional int32 proj = 20;
     optional uint64 award = 30;
     optional bytes projmetaid = 40;
-    optional bytes resultdatametaid = 50;
+    optional bytes playergamestatsid = 50;
 }
 
 message PnlMeta {
@@ -238,7 +243,7 @@ message PnlMeta {
     optional int32 price = 30;
     optional int64 pnl = 40;
     optional bytes posmetaid = 50;
-    optional bytes resultdatametaid = 60;
+    optional bytes playergamestatsid = 60;
 }
 
 message PlayerMarketState {

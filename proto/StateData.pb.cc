@@ -74,6 +74,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* PlayerResultMeta_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   PlayerResultMeta_reflection_ = NULL;
+const ::google::protobuf::Descriptor* PlayerGameStats_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  PlayerGameStats_reflection_ = NULL;
 const ::google::protobuf::Descriptor* AwardMeta_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   AwardMeta_reflection_ = NULL;
@@ -456,11 +459,9 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PosMeta));
   PlayerResultMeta_descriptor_ = file->message_type(17);
-  static const int PlayerResultMeta_offsets_[7] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerResultMeta, playerid_),
+  static const int PlayerResultMeta_offsets_[5] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerResultMeta, playergamestatsid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerResultMeta, gamestatusmetaid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerResultMeta, result_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerResultMeta, stats_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerResultMeta, awardmetaplayerroot_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerResultMeta, pnlmetaplayerroot_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerResultMeta, resultdatametaid_),
@@ -476,13 +477,31 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PlayerResultMeta));
-  AwardMeta_descriptor_ = file->message_type(18);
+  PlayerGameStats_descriptor_ = file->message_type(18);
+  static const int PlayerGameStats_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerGameStats, playerid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerGameStats, result_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerGameStats, stats_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerGameStats, gameid_),
+  };
+  PlayerGameStats_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      PlayerGameStats_descriptor_,
+      PlayerGameStats::default_instance_,
+      PlayerGameStats_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerGameStats, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerGameStats, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(PlayerGameStats));
+  AwardMeta_descriptor_ = file->message_type(19);
   static const int AwardMeta_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AwardMeta, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AwardMeta, proj_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AwardMeta, award_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AwardMeta, projmetaid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AwardMeta, resultdatametaid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AwardMeta, playergamestatsid_),
   };
   AwardMeta_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -495,14 +514,14 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AwardMeta));
-  PnlMeta_descriptor_ = file->message_type(19);
+  PnlMeta_descriptor_ = file->message_type(20);
   static const int PnlMeta_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, qty_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, price_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, pnl_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, posmetaid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, resultdatametaid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PnlMeta, playergamestatsid_),
   };
   PnlMeta_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -515,7 +534,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PnlMeta));
-  PlayerMarketState_descriptor_ = file->message_type(20);
+  PlayerMarketState_descriptor_ = file->message_type(21);
   static const int PlayerMarketState_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerMarketState, limitbookmetaid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerMarketState, playerid_),
@@ -534,7 +553,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PlayerMarketState));
-  LimitBookMeta_descriptor_ = file->message_type(21);
+  LimitBookMeta_descriptor_ = file->message_type(22);
   static const int LimitBookMeta_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LimitBookMeta, bid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LimitBookMeta, bidsize_),
@@ -554,7 +573,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LimitBookMeta));
-  MarketTicMeta_descriptor_ = file->message_type(22);
+  MarketTicMeta_descriptor_ = file->message_type(23);
   static const int MarketTicMeta_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MarketTicMeta, price_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MarketTicMeta, size_),
@@ -572,7 +591,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(MarketTicMeta));
-  OrderMeta_descriptor_ = file->message_type(23);
+  OrderMeta_descriptor_ = file->message_type(24);
   static const int OrderMeta_offsets_[10] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderMeta, refnum_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderMeta, fname_),
@@ -596,7 +615,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(OrderMeta));
-  OrderFillMeta_descriptor_ = file->message_type(24);
+  OrderFillMeta_descriptor_ = file->message_type(25);
   static const int OrderFillMeta_offsets_[9] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderFillMeta, refnum_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OrderFillMeta, fname_),
@@ -619,7 +638,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(OrderFillMeta));
-  GlobalStateMeta_descriptor_ = file->message_type(25);
+  GlobalStateMeta_descriptor_ = file->message_type(26);
   static const int GlobalStateMeta_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GlobalStateMeta, globalstate_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GlobalStateMeta, trmetaid_),
@@ -637,7 +656,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(GlobalStateMeta));
-  PlayerMeta_descriptor_ = file->message_type(26);
+  PlayerMeta_descriptor_ = file->message_type(27);
   static const int PlayerMeta_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerMeta, playerid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerMeta, player_base_),
@@ -656,7 +675,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PlayerMeta));
-  TeamMeta_descriptor_ = file->message_type(27);
+  TeamMeta_descriptor_ = file->message_type(28);
   static const int TeamMeta_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TeamMeta, teamid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TeamMeta, playermetaidroot_),
@@ -673,7 +692,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TeamMeta));
-  pbstate_descriptor_ = file->message_type(28);
+  pbstate_descriptor_ = file->message_type(29);
   static const int pbstate_offsets_[9] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbstate, schedulestateid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(pbstate, leaderboardstateid_),
@@ -696,7 +715,7 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(pbstate));
-  MerkleTree_descriptor_ = file->message_type(29);
+  MerkleTree_descriptor_ = file->message_type(30);
   static const int MerkleTree_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MerkleTree, root_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MerkleTree, leaves_),
@@ -760,6 +779,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     PosMeta_descriptor_, &PosMeta::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     PlayerResultMeta_descriptor_, &PlayerResultMeta::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    PlayerGameStats_descriptor_, &PlayerGameStats::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     AwardMeta_descriptor_, &AwardMeta::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -825,6 +846,8 @@ void protobuf_ShutdownFile_StateData_2eproto() {
   delete PosMeta_reflection_;
   delete PlayerResultMeta::default_instance_;
   delete PlayerResultMeta_reflection_;
+  delete PlayerGameStats::default_instance_;
+  delete PlayerGameStats_reflection_;
   delete AwardMeta::default_instance_;
   delete AwardMeta_reflection_;
   delete PnlMeta::default_instance_;
@@ -921,50 +944,51 @@ void protobuf_AddDesc_StateData_2eproto() {
     "\n\010playerid\030\036 \001(\t\022\020\n\010txmetaid\030( \001(\014\022\014\n\004pr"
     "ev\0302 \001(\014\"e\n\007PosMeta\022\014\n\004name\030\n \001(\t\022\013\n\003qty"
     "\030\024 \001(\005\022\r\n\005price\030\036 \001(\005\022\020\n\010playerid\030( \001(\t\022"
-    "\020\n\010txmetaid\0302 \001(\014\022\014\n\004prev\030< \001(\014\"\302\001\n\020Play"
-    "erResultMeta\022\020\n\010playerid\030\024 \001(\t\022\030\n\020gamest"
-    "atusmetaid\030\036 \001(\014\022\016\n\006result\030( \001(\002\022 \n\005stat"
-    "s\0302 \001(\0132\021.fantasybit.Stats\022\033\n\023awardmetap"
-    "layerroot\030< \001(\014\022\031\n\021pnlmetaplayerroot\030F \001"
-    "(\014\022\030\n\020resultdatametaid\030P \001(\014\"d\n\tAwardMet"
-    "a\022\014\n\004name\030\n \001(\t\022\014\n\004proj\030\024 \001(\005\022\r\n\005award\030\036"
-    " \001(\004\022\022\n\nprojmetaid\030( \001(\014\022\030\n\020resultdatame"
-    "taid\0302 \001(\014\"m\n\007PnlMeta\022\014\n\004name\030\n \001(\t\022\013\n\003q"
-    "ty\030\024 \001(\005\022\r\n\005price\030\036 \001(\005\022\013\n\003pnl\030( \001(\003\022\021\n\t"
-    "posmetaid\0302 \001(\014\022\030\n\020resultdatametaid\030< \001("
-    "\014\"s\n\021PlayerMarketState\022\027\n\017limitbookmetai"
-    "d\030\n \001(\014\022\020\n\010playerid\030\024 \001(\t\022\027\n\017marketticme"
-    "taid\030\036 \001(\014\022\014\n\004prev\030( \001(\014\022\014\n\004next\0302 \001(\014\"\177"
-    "\n\rLimitBookMeta\022\013\n\003bid\030\n \001(\005\022\017\n\007bidsize\030"
-    "\024 \001(\005\022\017\n\007asksize\030\036 \001(\005\022\013\n\003ask\030( \001(\005\022\030\n\020b"
-    "idordermetaroot\0302 \001(\014\022\030\n\020askordermetaroo"
-    "t\030< \001(\014\"Q\n\rMarketTicMeta\022\r\n\005price\030\024 \001(\005\022"
-    "\014\n\004size\030\036 \001(\005\022\025\n\rorderfillhead\030( \001(\014\022\014\n\004"
-    "prev\0302 \001(\014\"\266\001\n\tOrderMeta\022\016\n\006refnum\030\001 \001(\005"
-    "\022\r\n\005fname\030\n \001(\t\022\020\n\010playerid\030\024 \001(\t\022\017\n\007buy"
-    "side\030\036 \001(\010\022\014\n\004size\030( \001(\005\022\r\n\005price\0302 \001(\005\022"
-    "\020\n\010txmetaid\030< \001(\014\022\027\n\017orderfillmetaid\030F \001"
-    "(\014\022\021\n\ttimestamp\030K \001(\005\022\014\n\004prev\030P \001(\014\"\251\001\n\r"
-    "OrderFillMeta\022\016\n\006refnum\030\001 \001(\005\022\r\n\005fname\030\n"
-    " \001(\t\022\020\n\010playerid\030\017 \001(\t\022\021\n\tfillprice\030\024 \001("
-    "\005\022\020\n\010fillsize\030\036 \001(\005\022\017\n\007buyside\030# \001(\010\022\021\n\t"
-    "timestamp\030( \001(\005\022\020\n\010txmetaid\030< \001(\014\022\014\n\004pre"
-    "v\030F \001(\014\"m\n\017GlobalStateMeta\022,\n\013globalstat"
-    "e\030\n \001(\0132\027.fantasybit.GlobalState\022\020\n\010trme"
-    "taid\030\024 \001(\014\022\014\n\004prev\030\036 \001(\014\022\014\n\004next\030( \001(\014\"\236"
-    "\001\n\nPlayerMeta\022\020\n\010playerid\030\n \001(\t\022+\n\013playe"
-    "r_base\030\024 \001(\0132\026.fantasybit.PlayerBase\022/\n\r"
-    "player_status\030\036 \001(\0132\030.fantasybit.PlayerS"
-    "tatus\022\022\n\ndatametaid\030( \001(\014\022\014\n\004prev\0302 \001(\014\""
-    "B\n\010TeamMeta\022\016\n\006teamid\030\n \001(\t\022\030\n\020playermet"
-    "aidroot\030\024 \001(\014\022\014\n\004prev\030\036 \001(\014\"\335\001\n\007pbstate\022"
-    "\027\n\017schedulestateid\030\n \001(\014\022\032\n\022leaderboards"
-    "tateid\030\024 \001(\014\022\023\n\013projstateid\030\036 \001(\014\022\022\n\npos"
-    "stateid\030# \001(\014\022\024\n\014orderstateid\030( \001(\014\022\025\n\rm"
-    "arketstateid\0302 \001(\014\022\025\n\rglobalstateid\030< \001("
-    "\014\022\024\n\014teamstatemid\030F \001(\014\022\032\n\022fantasynamest"
-    "ateid\030P \001(\014\"*\n\nMerkleTree\022\014\n\004root\030\n \001(\014\022"
-    "\016\n\006leaves\030\024 \003(\014", 4055);
+    "\020\n\010txmetaid\0302 \001(\014\022\014\n\004prev\030< \001(\014\"\231\001\n\020Play"
+    "erResultMeta\022\031\n\021playergamestatsid\030\n \001(\014\022"
+    "\030\n\020gamestatusmetaid\030\036 \001(\014\022\033\n\023awardmetapl"
+    "ayerroot\030< \001(\014\022\031\n\021pnlmetaplayerroot\030F \001("
+    "\014\022\030\n\020resultdatametaid\030P \001(\014\"e\n\017PlayerGam"
+    "eStats\022\020\n\010playerid\030\024 \001(\t\022\016\n\006result\030( \001(\002"
+    "\022 \n\005stats\0302 \001(\0132\021.fantasybit.Stats\022\016\n\006ga"
+    "meid\030< \001(\t\"e\n\tAwardMeta\022\014\n\004name\030\n \001(\t\022\014\n"
+    "\004proj\030\024 \001(\005\022\r\n\005award\030\036 \001(\004\022\022\n\nprojmetaid"
+    "\030( \001(\014\022\031\n\021playergamestatsid\0302 \001(\014\"n\n\007Pnl"
+    "Meta\022\014\n\004name\030\n \001(\t\022\013\n\003qty\030\024 \001(\005\022\r\n\005price"
+    "\030\036 \001(\005\022\013\n\003pnl\030( \001(\003\022\021\n\tposmetaid\0302 \001(\014\022\031"
+    "\n\021playergamestatsid\030< \001(\014\"s\n\021PlayerMarke"
+    "tState\022\027\n\017limitbookmetaid\030\n \001(\014\022\020\n\010playe"
+    "rid\030\024 \001(\t\022\027\n\017marketticmetaid\030\036 \001(\014\022\014\n\004pr"
+    "ev\030( \001(\014\022\014\n\004next\0302 \001(\014\"\177\n\rLimitBookMeta\022"
+    "\013\n\003bid\030\n \001(\005\022\017\n\007bidsize\030\024 \001(\005\022\017\n\007asksize"
+    "\030\036 \001(\005\022\013\n\003ask\030( \001(\005\022\030\n\020bidordermetaroot\030"
+    "2 \001(\014\022\030\n\020askordermetaroot\030< \001(\014\"Q\n\rMarke"
+    "tTicMeta\022\r\n\005price\030\024 \001(\005\022\014\n\004size\030\036 \001(\005\022\025\n"
+    "\rorderfillhead\030( \001(\014\022\014\n\004prev\0302 \001(\014\"\266\001\n\tO"
+    "rderMeta\022\016\n\006refnum\030\001 \001(\005\022\r\n\005fname\030\n \001(\t\022"
+    "\020\n\010playerid\030\024 \001(\t\022\017\n\007buyside\030\036 \001(\010\022\014\n\004si"
+    "ze\030( \001(\005\022\r\n\005price\0302 \001(\005\022\020\n\010txmetaid\030< \001("
+    "\014\022\027\n\017orderfillmetaid\030F \001(\014\022\021\n\ttimestamp\030"
+    "K \001(\005\022\014\n\004prev\030P \001(\014\"\251\001\n\rOrderFillMeta\022\016\n"
+    "\006refnum\030\001 \001(\005\022\r\n\005fname\030\n \001(\t\022\020\n\010playerid"
+    "\030\017 \001(\t\022\021\n\tfillprice\030\024 \001(\005\022\020\n\010fillsize\030\036 "
+    "\001(\005\022\017\n\007buyside\030# \001(\010\022\021\n\ttimestamp\030( \001(\005\022"
+    "\020\n\010txmetaid\030< \001(\014\022\014\n\004prev\030F \001(\014\"m\n\017Globa"
+    "lStateMeta\022,\n\013globalstate\030\n \001(\0132\027.fantas"
+    "ybit.GlobalState\022\020\n\010trmetaid\030\024 \001(\014\022\014\n\004pr"
+    "ev\030\036 \001(\014\022\014\n\004next\030( \001(\014\"\236\001\n\nPlayerMeta\022\020\n"
+    "\010playerid\030\n \001(\t\022+\n\013player_base\030\024 \001(\0132\026.f"
+    "antasybit.PlayerBase\022/\n\rplayer_status\030\036 "
+    "\001(\0132\030.fantasybit.PlayerStatus\022\022\n\ndatamet"
+    "aid\030( \001(\014\022\014\n\004prev\0302 \001(\014\"B\n\010TeamMeta\022\016\n\006t"
+    "eamid\030\n \001(\t\022\030\n\020playermetaidroot\030\024 \001(\014\022\014\n"
+    "\004prev\030\036 \001(\014\"\335\001\n\007pbstate\022\027\n\017schedulestate"
+    "id\030\n \001(\014\022\032\n\022leaderboardstateid\030\024 \001(\014\022\023\n\013"
+    "projstateid\030\036 \001(\014\022\022\n\nposstateid\030# \001(\014\022\024\n"
+    "\014orderstateid\030( \001(\014\022\025\n\rmarketstateid\0302 \001"
+    "(\014\022\025\n\rglobalstateid\030< \001(\014\022\024\n\014teamstatemi"
+    "d\030F \001(\014\022\032\n\022fantasynamestateid\030P \001(\014\"*\n\nM"
+    "erkleTree\022\014\n\004root\030\n \001(\014\022\016\n\006leaves\030\024 \003(\014", 4119);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "StateData.proto", &protobuf_RegisterTypes);
   BlockMeta::default_instance_ = new BlockMeta();
@@ -985,6 +1009,7 @@ void protobuf_AddDesc_StateData_2eproto() {
   ProjMeta::default_instance_ = new ProjMeta();
   PosMeta::default_instance_ = new PosMeta();
   PlayerResultMeta::default_instance_ = new PlayerResultMeta();
+  PlayerGameStats::default_instance_ = new PlayerGameStats();
   AwardMeta::default_instance_ = new AwardMeta();
   PnlMeta::default_instance_ = new PnlMeta();
   PlayerMarketState::default_instance_ = new PlayerMarketState();
@@ -1015,6 +1040,7 @@ void protobuf_AddDesc_StateData_2eproto() {
   ProjMeta::default_instance_->InitAsDefaultInstance();
   PosMeta::default_instance_->InitAsDefaultInstance();
   PlayerResultMeta::default_instance_->InitAsDefaultInstance();
+  PlayerGameStats::default_instance_->InitAsDefaultInstance();
   AwardMeta::default_instance_->InitAsDefaultInstance();
   PnlMeta::default_instance_->InitAsDefaultInstance();
   PlayerMarketState::default_instance_->InitAsDefaultInstance();
@@ -8545,10 +8571,8 @@ void PosMeta::Swap(PosMeta* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int PlayerResultMeta::kPlayeridFieldNumber;
+const int PlayerResultMeta::kPlayergamestatsidFieldNumber;
 const int PlayerResultMeta::kGamestatusmetaidFieldNumber;
-const int PlayerResultMeta::kResultFieldNumber;
-const int PlayerResultMeta::kStatsFieldNumber;
 const int PlayerResultMeta::kAwardmetaplayerrootFieldNumber;
 const int PlayerResultMeta::kPnlmetaplayerrootFieldNumber;
 const int PlayerResultMeta::kResultdatametaidFieldNumber;
@@ -8560,7 +8584,6 @@ PlayerResultMeta::PlayerResultMeta()
 }
 
 void PlayerResultMeta::InitAsDefaultInstance() {
-  stats_ = const_cast< ::fantasybit::Stats*>(&::fantasybit::Stats::default_instance());
 }
 
 PlayerResultMeta::PlayerResultMeta(const PlayerResultMeta& from)
@@ -8571,10 +8594,8 @@ PlayerResultMeta::PlayerResultMeta(const PlayerResultMeta& from)
 
 void PlayerResultMeta::SharedCtor() {
   _cached_size_ = 0;
-  playerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  playergamestatsid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   gamestatusmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  result_ = 0;
-  stats_ = NULL;
   awardmetaplayerroot_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   pnlmetaplayerroot_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   resultdatametaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -8586,8 +8607,8 @@ PlayerResultMeta::~PlayerResultMeta() {
 }
 
 void PlayerResultMeta::SharedDtor() {
-  if (playerid_ != &::google::protobuf::internal::kEmptyString) {
-    delete playerid_;
+  if (playergamestatsid_ != &::google::protobuf::internal::kEmptyString) {
+    delete playergamestatsid_;
   }
   if (gamestatusmetaid_ != &::google::protobuf::internal::kEmptyString) {
     delete gamestatusmetaid_;
@@ -8602,7 +8623,6 @@ void PlayerResultMeta::SharedDtor() {
     delete resultdatametaid_;
   }
   if (this != default_instance_) {
-    delete stats_;
   }
 }
 
@@ -8629,19 +8649,15 @@ PlayerResultMeta* PlayerResultMeta::New() const {
 
 void PlayerResultMeta::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_playerid()) {
-      if (playerid_ != &::google::protobuf::internal::kEmptyString) {
-        playerid_->clear();
+    if (has_playergamestatsid()) {
+      if (playergamestatsid_ != &::google::protobuf::internal::kEmptyString) {
+        playergamestatsid_->clear();
       }
     }
     if (has_gamestatusmetaid()) {
       if (gamestatusmetaid_ != &::google::protobuf::internal::kEmptyString) {
         gamestatusmetaid_->clear();
       }
-    }
-    result_ = 0;
-    if (has_stats()) {
-      if (stats_ != NULL) stats_->::fantasybit::Stats::Clear();
     }
     if (has_awardmetaplayerroot()) {
       if (awardmetaplayerroot_ != &::google::protobuf::internal::kEmptyString) {
@@ -8669,15 +8685,12 @@ bool PlayerResultMeta::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string playerid = 20;
-      case 20: {
+      // optional bytes playergamestatsid = 10;
+      case 10: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_playerid()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->playerid().data(), this->playerid().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_playergamestatsid()));
         } else {
           goto handle_uninterpreted;
         }
@@ -8692,36 +8705,6 @@ bool PlayerResultMeta::MergePartialFromCodedStream(
          parse_gamestatusmetaid:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_gamestatusmetaid()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(325)) goto parse_result;
-        break;
-      }
-
-      // optional float result = 40;
-      case 40: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
-         parse_result:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &result_)));
-          set_has_result();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(402)) goto parse_stats;
-        break;
-      }
-
-      // optional .fantasybit.Stats stats = 50;
-      case 50: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_stats:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_stats()));
         } else {
           goto handle_uninterpreted;
         }
@@ -8789,30 +8772,16 @@ bool PlayerResultMeta::MergePartialFromCodedStream(
 
 void PlayerResultMeta::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional string playerid = 20;
-  if (has_playerid()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->playerid().data(), this->playerid().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      20, this->playerid(), output);
+  // optional bytes playergamestatsid = 10;
+  if (has_playergamestatsid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      10, this->playergamestatsid(), output);
   }
 
   // optional bytes gamestatusmetaid = 30;
   if (has_gamestatusmetaid()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       30, this->gamestatusmetaid(), output);
-  }
-
-  // optional float result = 40;
-  if (has_result()) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(40, this->result(), output);
-  }
-
-  // optional .fantasybit.Stats stats = 50;
-  if (has_stats()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      50, this->stats(), output);
   }
 
   // optional bytes awardmetaplayerroot = 60;
@@ -8841,14 +8810,11 @@ void PlayerResultMeta::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* PlayerResultMeta::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional string playerid = 20;
-  if (has_playerid()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->playerid().data(), this->playerid().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
+  // optional bytes playergamestatsid = 10;
+  if (has_playergamestatsid()) {
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        20, this->playerid(), target);
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        10, this->playergamestatsid(), target);
   }
 
   // optional bytes gamestatusmetaid = 30;
@@ -8856,18 +8822,6 @@ void PlayerResultMeta::SerializeWithCachedSizes(
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         30, this->gamestatusmetaid(), target);
-  }
-
-  // optional float result = 40;
-  if (has_result()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(40, this->result(), target);
-  }
-
-  // optional .fantasybit.Stats stats = 50;
-  if (has_stats()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        50, this->stats(), target);
   }
 
   // optional bytes awardmetaplayerroot = 60;
@@ -8902,11 +8856,11 @@ int PlayerResultMeta::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional string playerid = 20;
-    if (has_playerid()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->playerid());
+    // optional bytes playergamestatsid = 10;
+    if (has_playergamestatsid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->playergamestatsid());
     }
 
     // optional bytes gamestatusmetaid = 30;
@@ -8914,18 +8868,6 @@ int PlayerResultMeta::ByteSize() const {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->gamestatusmetaid());
-    }
-
-    // optional float result = 40;
-    if (has_result()) {
-      total_size += 2 + 4;
-    }
-
-    // optional .fantasybit.Stats stats = 50;
-    if (has_stats()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->stats());
     }
 
     // optional bytes awardmetaplayerroot = 60;
@@ -8976,17 +8918,11 @@ void PlayerResultMeta::MergeFrom(const ::google::protobuf::Message& from) {
 void PlayerResultMeta::MergeFrom(const PlayerResultMeta& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_playerid()) {
-      set_playerid(from.playerid());
+    if (from.has_playergamestatsid()) {
+      set_playergamestatsid(from.playergamestatsid());
     }
     if (from.has_gamestatusmetaid()) {
       set_gamestatusmetaid(from.gamestatusmetaid());
-    }
-    if (from.has_result()) {
-      set_result(from.result());
-    }
-    if (from.has_stats()) {
-      mutable_stats()->::fantasybit::Stats::MergeFrom(from.stats());
     }
     if (from.has_awardmetaplayerroot()) {
       set_awardmetaplayerroot(from.awardmetaplayerroot());
@@ -9020,10 +8956,8 @@ bool PlayerResultMeta::IsInitialized() const {
 
 void PlayerResultMeta::Swap(PlayerResultMeta* other) {
   if (other != this) {
-    std::swap(playerid_, other->playerid_);
+    std::swap(playergamestatsid_, other->playergamestatsid_);
     std::swap(gamestatusmetaid_, other->gamestatusmetaid_);
-    std::swap(result_, other->result_);
-    std::swap(stats_, other->stats_);
     std::swap(awardmetaplayerroot_, other->awardmetaplayerroot_);
     std::swap(pnlmetaplayerroot_, other->pnlmetaplayerroot_);
     std::swap(resultdatametaid_, other->resultdatametaid_);
@@ -9045,11 +8979,376 @@ void PlayerResultMeta::Swap(PlayerResultMeta* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int PlayerGameStats::kPlayeridFieldNumber;
+const int PlayerGameStats::kResultFieldNumber;
+const int PlayerGameStats::kStatsFieldNumber;
+const int PlayerGameStats::kGameidFieldNumber;
+#endif  // !_MSC_VER
+
+PlayerGameStats::PlayerGameStats()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void PlayerGameStats::InitAsDefaultInstance() {
+  stats_ = const_cast< ::fantasybit::Stats*>(&::fantasybit::Stats::default_instance());
+}
+
+PlayerGameStats::PlayerGameStats(const PlayerGameStats& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void PlayerGameStats::SharedCtor() {
+  _cached_size_ = 0;
+  playerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  result_ = 0;
+  stats_ = NULL;
+  gameid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+PlayerGameStats::~PlayerGameStats() {
+  SharedDtor();
+}
+
+void PlayerGameStats::SharedDtor() {
+  if (playerid_ != &::google::protobuf::internal::kEmptyString) {
+    delete playerid_;
+  }
+  if (gameid_ != &::google::protobuf::internal::kEmptyString) {
+    delete gameid_;
+  }
+  if (this != default_instance_) {
+    delete stats_;
+  }
+}
+
+void PlayerGameStats::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PlayerGameStats::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PlayerGameStats_descriptor_;
+}
+
+const PlayerGameStats& PlayerGameStats::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_StateData_2eproto();
+  return *default_instance_;
+}
+
+PlayerGameStats* PlayerGameStats::default_instance_ = NULL;
+
+PlayerGameStats* PlayerGameStats::New() const {
+  return new PlayerGameStats;
+}
+
+void PlayerGameStats::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_playerid()) {
+      if (playerid_ != &::google::protobuf::internal::kEmptyString) {
+        playerid_->clear();
+      }
+    }
+    result_ = 0;
+    if (has_stats()) {
+      if (stats_ != NULL) stats_->::fantasybit::Stats::Clear();
+    }
+    if (has_gameid()) {
+      if (gameid_ != &::google::protobuf::internal::kEmptyString) {
+        gameid_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool PlayerGameStats::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string playerid = 20;
+      case 20: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_playerid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->playerid().data(), this->playerid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(325)) goto parse_result;
+        break;
+      }
+
+      // optional float result = 40;
+      case 40: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_result:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &result_)));
+          set_has_result();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(402)) goto parse_stats;
+        break;
+      }
+
+      // optional .fantasybit.Stats stats = 50;
+      case 50: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_stats:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_stats()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(482)) goto parse_gameid;
+        break;
+      }
+
+      // optional string gameid = 60;
+      case 60: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_gameid:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_gameid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->gameid().data(), this->gameid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void PlayerGameStats::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional string playerid = 20;
+  if (has_playerid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->playerid().data(), this->playerid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      20, this->playerid(), output);
+  }
+
+  // optional float result = 40;
+  if (has_result()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(40, this->result(), output);
+  }
+
+  // optional .fantasybit.Stats stats = 50;
+  if (has_stats()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      50, this->stats(), output);
+  }
+
+  // optional string gameid = 60;
+  if (has_gameid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->gameid().data(), this->gameid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      60, this->gameid(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* PlayerGameStats::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional string playerid = 20;
+  if (has_playerid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->playerid().data(), this->playerid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        20, this->playerid(), target);
+  }
+
+  // optional float result = 40;
+  if (has_result()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(40, this->result(), target);
+  }
+
+  // optional .fantasybit.Stats stats = 50;
+  if (has_stats()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        50, this->stats(), target);
+  }
+
+  // optional string gameid = 60;
+  if (has_gameid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->gameid().data(), this->gameid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        60, this->gameid(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int PlayerGameStats::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional string playerid = 20;
+    if (has_playerid()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->playerid());
+    }
+
+    // optional float result = 40;
+    if (has_result()) {
+      total_size += 2 + 4;
+    }
+
+    // optional .fantasybit.Stats stats = 50;
+    if (has_stats()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->stats());
+    }
+
+    // optional string gameid = 60;
+    if (has_gameid()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->gameid());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PlayerGameStats::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const PlayerGameStats* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const PlayerGameStats*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void PlayerGameStats::MergeFrom(const PlayerGameStats& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_playerid()) {
+      set_playerid(from.playerid());
+    }
+    if (from.has_result()) {
+      set_result(from.result());
+    }
+    if (from.has_stats()) {
+      mutable_stats()->::fantasybit::Stats::MergeFrom(from.stats());
+    }
+    if (from.has_gameid()) {
+      set_gameid(from.gameid());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void PlayerGameStats::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PlayerGameStats::CopyFrom(const PlayerGameStats& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PlayerGameStats::IsInitialized() const {
+
+  return true;
+}
+
+void PlayerGameStats::Swap(PlayerGameStats* other) {
+  if (other != this) {
+    std::swap(playerid_, other->playerid_);
+    std::swap(result_, other->result_);
+    std::swap(stats_, other->stats_);
+    std::swap(gameid_, other->gameid_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata PlayerGameStats::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = PlayerGameStats_descriptor_;
+  metadata.reflection = PlayerGameStats_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
 const int AwardMeta::kNameFieldNumber;
 const int AwardMeta::kProjFieldNumber;
 const int AwardMeta::kAwardFieldNumber;
 const int AwardMeta::kProjmetaidFieldNumber;
-const int AwardMeta::kResultdatametaidFieldNumber;
+const int AwardMeta::kPlayergamestatsidFieldNumber;
 #endif  // !_MSC_VER
 
 AwardMeta::AwardMeta()
@@ -9072,7 +9371,7 @@ void AwardMeta::SharedCtor() {
   proj_ = 0;
   award_ = GOOGLE_ULONGLONG(0);
   projmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  resultdatametaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  playergamestatsid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -9087,8 +9386,8 @@ void AwardMeta::SharedDtor() {
   if (projmetaid_ != &::google::protobuf::internal::kEmptyString) {
     delete projmetaid_;
   }
-  if (resultdatametaid_ != &::google::protobuf::internal::kEmptyString) {
-    delete resultdatametaid_;
+  if (playergamestatsid_ != &::google::protobuf::internal::kEmptyString) {
+    delete playergamestatsid_;
   }
   if (this != default_instance_) {
   }
@@ -9129,9 +9428,9 @@ void AwardMeta::Clear() {
         projmetaid_->clear();
       }
     }
-    if (has_resultdatametaid()) {
-      if (resultdatametaid_ != &::google::protobuf::internal::kEmptyString) {
-        resultdatametaid_->clear();
+    if (has_playergamestatsid()) {
+      if (playergamestatsid_ != &::google::protobuf::internal::kEmptyString) {
+        playergamestatsid_->clear();
       }
     }
   }
@@ -9203,17 +9502,17 @@ bool AwardMeta::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(402)) goto parse_resultdatametaid;
+        if (input->ExpectTag(402)) goto parse_playergamestatsid;
         break;
       }
 
-      // optional bytes resultdatametaid = 50;
+      // optional bytes playergamestatsid = 50;
       case 50: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_resultdatametaid:
+         parse_playergamestatsid:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_resultdatametaid()));
+                input, this->mutable_playergamestatsid()));
         } else {
           goto handle_uninterpreted;
         }
@@ -9264,10 +9563,10 @@ void AwardMeta::SerializeWithCachedSizes(
       40, this->projmetaid(), output);
   }
 
-  // optional bytes resultdatametaid = 50;
-  if (has_resultdatametaid()) {
+  // optional bytes playergamestatsid = 50;
+  if (has_playergamestatsid()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      50, this->resultdatametaid(), output);
+      50, this->playergamestatsid(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -9305,11 +9604,11 @@ void AwardMeta::SerializeWithCachedSizes(
         40, this->projmetaid(), target);
   }
 
-  // optional bytes resultdatametaid = 50;
-  if (has_resultdatametaid()) {
+  // optional bytes playergamestatsid = 50;
+  if (has_playergamestatsid()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        50, this->resultdatametaid(), target);
+        50, this->playergamestatsid(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -9351,11 +9650,11 @@ int AwardMeta::ByteSize() const {
           this->projmetaid());
     }
 
-    // optional bytes resultdatametaid = 50;
-    if (has_resultdatametaid()) {
+    // optional bytes playergamestatsid = 50;
+    if (has_playergamestatsid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->resultdatametaid());
+          this->playergamestatsid());
     }
 
   }
@@ -9397,8 +9696,8 @@ void AwardMeta::MergeFrom(const AwardMeta& from) {
     if (from.has_projmetaid()) {
       set_projmetaid(from.projmetaid());
     }
-    if (from.has_resultdatametaid()) {
-      set_resultdatametaid(from.resultdatametaid());
+    if (from.has_playergamestatsid()) {
+      set_playergamestatsid(from.playergamestatsid());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -9427,7 +9726,7 @@ void AwardMeta::Swap(AwardMeta* other) {
     std::swap(proj_, other->proj_);
     std::swap(award_, other->award_);
     std::swap(projmetaid_, other->projmetaid_);
-    std::swap(resultdatametaid_, other->resultdatametaid_);
+    std::swap(playergamestatsid_, other->playergamestatsid_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -9451,7 +9750,7 @@ const int PnlMeta::kQtyFieldNumber;
 const int PnlMeta::kPriceFieldNumber;
 const int PnlMeta::kPnlFieldNumber;
 const int PnlMeta::kPosmetaidFieldNumber;
-const int PnlMeta::kResultdatametaidFieldNumber;
+const int PnlMeta::kPlayergamestatsidFieldNumber;
 #endif  // !_MSC_VER
 
 PnlMeta::PnlMeta()
@@ -9475,7 +9774,7 @@ void PnlMeta::SharedCtor() {
   price_ = 0;
   pnl_ = GOOGLE_LONGLONG(0);
   posmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  resultdatametaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  playergamestatsid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -9490,8 +9789,8 @@ void PnlMeta::SharedDtor() {
   if (posmetaid_ != &::google::protobuf::internal::kEmptyString) {
     delete posmetaid_;
   }
-  if (resultdatametaid_ != &::google::protobuf::internal::kEmptyString) {
-    delete resultdatametaid_;
+  if (playergamestatsid_ != &::google::protobuf::internal::kEmptyString) {
+    delete playergamestatsid_;
   }
   if (this != default_instance_) {
   }
@@ -9533,9 +9832,9 @@ void PnlMeta::Clear() {
         posmetaid_->clear();
       }
     }
-    if (has_resultdatametaid()) {
-      if (resultdatametaid_ != &::google::protobuf::internal::kEmptyString) {
-        resultdatametaid_->clear();
+    if (has_playergamestatsid()) {
+      if (playergamestatsid_ != &::google::protobuf::internal::kEmptyString) {
+        playergamestatsid_->clear();
       }
     }
   }
@@ -9623,17 +9922,17 @@ bool PnlMeta::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(482)) goto parse_resultdatametaid;
+        if (input->ExpectTag(482)) goto parse_playergamestatsid;
         break;
       }
 
-      // optional bytes resultdatametaid = 60;
+      // optional bytes playergamestatsid = 60;
       case 60: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_resultdatametaid:
+         parse_playergamestatsid:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_resultdatametaid()));
+                input, this->mutable_playergamestatsid()));
         } else {
           goto handle_uninterpreted;
         }
@@ -9689,10 +9988,10 @@ void PnlMeta::SerializeWithCachedSizes(
       50, this->posmetaid(), output);
   }
 
-  // optional bytes resultdatametaid = 60;
-  if (has_resultdatametaid()) {
+  // optional bytes playergamestatsid = 60;
+  if (has_playergamestatsid()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      60, this->resultdatametaid(), output);
+      60, this->playergamestatsid(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -9735,11 +10034,11 @@ void PnlMeta::SerializeWithCachedSizes(
         50, this->posmetaid(), target);
   }
 
-  // optional bytes resultdatametaid = 60;
-  if (has_resultdatametaid()) {
+  // optional bytes playergamestatsid = 60;
+  if (has_playergamestatsid()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        60, this->resultdatametaid(), target);
+        60, this->playergamestatsid(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -9788,11 +10087,11 @@ int PnlMeta::ByteSize() const {
           this->posmetaid());
     }
 
-    // optional bytes resultdatametaid = 60;
-    if (has_resultdatametaid()) {
+    // optional bytes playergamestatsid = 60;
+    if (has_playergamestatsid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->resultdatametaid());
+          this->playergamestatsid());
     }
 
   }
@@ -9837,8 +10136,8 @@ void PnlMeta::MergeFrom(const PnlMeta& from) {
     if (from.has_posmetaid()) {
       set_posmetaid(from.posmetaid());
     }
-    if (from.has_resultdatametaid()) {
-      set_resultdatametaid(from.resultdatametaid());
+    if (from.has_playergamestatsid()) {
+      set_playergamestatsid(from.playergamestatsid());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -9868,7 +10167,7 @@ void PnlMeta::Swap(PnlMeta* other) {
     std::swap(price_, other->price_);
     std::swap(pnl_, other->pnl_);
     std::swap(posmetaid_, other->posmetaid_);
-    std::swap(resultdatametaid_, other->resultdatametaid_);
+    std::swap(playergamestatsid_, other->playergamestatsid_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
