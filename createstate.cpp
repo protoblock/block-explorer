@@ -1375,6 +1375,8 @@ void CreateState::createTrPlayerDataState() {
             auto ts = tm.SerializeAsString();
             auto th = hashit(ts);
             m_teamstatetree.set_leaves(i,th);
+            m_teamstatemap[th] = tm;
+            m_teamstatemap.erase(id);
             ldb.write(th,ts);
         }
     }
