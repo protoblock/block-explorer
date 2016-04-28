@@ -770,7 +770,7 @@ void CreateState::processTx(const std::string &txmetaid) {
     loadMerkleMap(txmetaid,txtree,txtreemap);
 
     processNameTx(txtreemap);
-    processRegTx(txtreemap);
+    processRegTx(txtreemap,txtree);
 }
 
 /**
@@ -795,11 +795,15 @@ void CreateState::processNameTx(std::unordered_map<std::string, TxMeta> &tmap) {
  * @brief CreateState::processRegTx process other (non-name) transactions
  * @param tmap list of transaction in this block
  */
-void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
+void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap,MerkleTree &tree) {
     std::string id;
-    for ( auto nt : tmap ) {
+    for ( auto lt : tree.leaves() ) {
+        auto nt = *tmap.find(lt);
         switch ( nt.second.txtype()) {
         case TransType::PROJECTION:
+            if ( nt.second.fantasy_name() == "Show me More of your TDs")
+                qDebug() << nt.second.DebugString().data();
+
             id = m_projstore.process(nt.first,
                                      nt.second.tx().GetExtension(ProjectionTrans::proj_trans),
                                      nt.second.fantasy_name());
@@ -809,6 +813,9 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap) {
 
             break;
         case TransType::PROJECTION_BLOCK: {
+            if ( nt.second.fantasy_name() == "Show me More of your TDs")
+                qDebug() << nt.second.DebugString().data();
+
             const ProjectionTransBlock & ptb = nt.second.tx().GetExtension(ProjectionTransBlock::proj_trans_block);
             for (const PlayerPoints & pt : ptb.player_points() ) {
                 id = m_projstore.process(nt.first,pt,nt.second.fantasy_name());

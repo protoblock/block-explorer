@@ -25,11 +25,12 @@ NameValuePairs<int>
     DistribuePointsAvg::distribute(const double result, const std::string &agent) const
 {
     NameValuePairs<int> award{};
-	if (projections.size() == 0) {
+    if (projections.size() == 0 || result <= 0.0001 ) {
         //LOG(lg, info) << "no projections agent " << agent << " gets balance " << result;
         //qInfo() << "no projections agent " << agent << " gets balance " << result;
-        award[agent] = result * 100.0;
-		return award;
+        if ( result > 0.0001 )
+            award[agent] = result * 100.0;
+        return award;
 	}
 	
     double mean = 0;

@@ -209,7 +209,7 @@ public:
 
     void processNameTx(std::unordered_map<std::string, TxMeta> &tmap);
 
-    void processRegTx(std::unordered_map<std::string, TxMeta> &tmap);
+    void processRegTx(std::unordered_map<std::string, TxMeta> &tmap,MerkleTree &tree);
 
     void processGameStart(const std::string &gmid,const GameMeta &gmeta,const std::string &trid);
 
