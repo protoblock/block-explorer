@@ -535,10 +535,11 @@ void protobuf_AssignDesc_StateData_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PnlMeta));
   PlayerMarketState_descriptor_ = file->message_type(21);
-  static const int PlayerMarketState_offsets_[5] = {
+  static const int PlayerMarketState_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerMarketState, limitbookmetaid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerMarketState, playerid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerMarketState, marketticmetaid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerMarketState, locked_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerMarketState, prev_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerMarketState, next_),
   };
@@ -956,39 +957,40 @@ void protobuf_AddDesc_StateData_2eproto() {
     "\030( \001(\014\022\031\n\021playergamestatsid\0302 \001(\014\"n\n\007Pnl"
     "Meta\022\014\n\004name\030\n \001(\t\022\013\n\003qty\030\024 \001(\005\022\r\n\005price"
     "\030\036 \001(\005\022\013\n\003pnl\030( \001(\003\022\021\n\tposmetaid\0302 \001(\014\022\031"
-    "\n\021playergamestatsid\030< \001(\014\"s\n\021PlayerMarke"
-    "tState\022\027\n\017limitbookmetaid\030\n \001(\014\022\020\n\010playe"
-    "rid\030\024 \001(\t\022\027\n\017marketticmetaid\030\036 \001(\014\022\014\n\004pr"
-    "ev\030( \001(\014\022\014\n\004next\0302 \001(\014\"\177\n\rLimitBookMeta\022"
-    "\013\n\003bid\030\n \001(\005\022\017\n\007bidsize\030\024 \001(\005\022\017\n\007asksize"
-    "\030\036 \001(\005\022\013\n\003ask\030( \001(\005\022\030\n\020bidordermetaroot\030"
-    "2 \001(\014\022\030\n\020askordermetaroot\030< \001(\014\"Q\n\rMarke"
-    "tTicMeta\022\r\n\005price\030\024 \001(\005\022\014\n\004size\030\036 \001(\005\022\025\n"
-    "\rorderfillhead\030( \001(\014\022\014\n\004prev\0302 \001(\014\"\266\001\n\tO"
-    "rderMeta\022\016\n\006refnum\030\001 \001(\005\022\r\n\005fname\030\n \001(\t\022"
-    "\020\n\010playerid\030\024 \001(\t\022\017\n\007buyside\030\036 \001(\010\022\014\n\004si"
-    "ze\030( \001(\005\022\r\n\005price\0302 \001(\005\022\020\n\010txmetaid\030< \001("
-    "\014\022\027\n\017orderfillmetaid\030F \001(\014\022\021\n\ttimestamp\030"
-    "K \001(\005\022\014\n\004prev\030P \001(\014\"\251\001\n\rOrderFillMeta\022\016\n"
-    "\006refnum\030\001 \001(\005\022\r\n\005fname\030\n \001(\t\022\020\n\010playerid"
-    "\030\017 \001(\t\022\021\n\tfillprice\030\024 \001(\005\022\020\n\010fillsize\030\036 "
-    "\001(\005\022\017\n\007buyside\030# \001(\010\022\021\n\ttimestamp\030( \001(\005\022"
-    "\020\n\010txmetaid\030< \001(\014\022\014\n\004prev\030F \001(\014\"m\n\017Globa"
-    "lStateMeta\022,\n\013globalstate\030\n \001(\0132\027.fantas"
-    "ybit.GlobalState\022\020\n\010trmetaid\030\024 \001(\014\022\014\n\004pr"
-    "ev\030\036 \001(\014\022\014\n\004next\030( \001(\014\"\236\001\n\nPlayerMeta\022\020\n"
-    "\010playerid\030\n \001(\t\022+\n\013player_base\030\024 \001(\0132\026.f"
-    "antasybit.PlayerBase\022/\n\rplayer_status\030\036 "
-    "\001(\0132\030.fantasybit.PlayerStatus\022\022\n\ndatamet"
-    "aid\030( \001(\014\022\014\n\004prev\0302 \001(\014\"B\n\010TeamMeta\022\016\n\006t"
-    "eamid\030\n \001(\t\022\030\n\020playermetaidroot\030\024 \001(\014\022\014\n"
-    "\004prev\030\036 \001(\014\"\335\001\n\007pbstate\022\027\n\017schedulestate"
-    "id\030\n \001(\014\022\032\n\022leaderboardstateid\030\024 \001(\014\022\023\n\013"
-    "projstateid\030\036 \001(\014\022\022\n\nposstateid\030# \001(\014\022\024\n"
-    "\014orderstateid\030( \001(\014\022\025\n\rmarketstateid\0302 \001"
-    "(\014\022\025\n\rglobalstateid\030< \001(\014\022\024\n\014teamstatemi"
-    "d\030F \001(\014\022\032\n\022fantasynamestateid\030P \001(\014\"*\n\nM"
-    "erkleTree\022\014\n\004root\030\n \001(\014\022\016\n\006leaves\030\024 \003(\014", 4119);
+    "\n\021playergamestatsid\030< \001(\014\"\203\001\n\021PlayerMark"
+    "etState\022\027\n\017limitbookmetaid\030\n \001(\014\022\020\n\010play"
+    "erid\030\024 \001(\t\022\027\n\017marketticmetaid\030\036 \001(\014\022\016\n\006l"
+    "ocked\030\037 \001(\010\022\014\n\004prev\030( \001(\014\022\014\n\004next\0302 \001(\014\""
+    "\177\n\rLimitBookMeta\022\013\n\003bid\030\n \001(\005\022\017\n\007bidsize"
+    "\030\024 \001(\005\022\017\n\007asksize\030\036 \001(\005\022\013\n\003ask\030( \001(\005\022\030\n\020"
+    "bidordermetaroot\0302 \001(\014\022\030\n\020askordermetaro"
+    "ot\030< \001(\014\"Q\n\rMarketTicMeta\022\r\n\005price\030\024 \001(\005"
+    "\022\014\n\004size\030\036 \001(\005\022\025\n\rorderfillhead\030( \001(\014\022\014\n"
+    "\004prev\0302 \001(\014\"\266\001\n\tOrderMeta\022\016\n\006refnum\030\001 \001("
+    "\005\022\r\n\005fname\030\n \001(\t\022\020\n\010playerid\030\024 \001(\t\022\017\n\007bu"
+    "yside\030\036 \001(\010\022\014\n\004size\030( \001(\005\022\r\n\005price\0302 \001(\005"
+    "\022\020\n\010txmetaid\030< \001(\014\022\027\n\017orderfillmetaid\030F "
+    "\001(\014\022\021\n\ttimestamp\030K \001(\005\022\014\n\004prev\030P \001(\014\"\251\001\n"
+    "\rOrderFillMeta\022\016\n\006refnum\030\001 \001(\005\022\r\n\005fname\030"
+    "\n \001(\t\022\020\n\010playerid\030\017 \001(\t\022\021\n\tfillprice\030\024 \001"
+    "(\005\022\020\n\010fillsize\030\036 \001(\005\022\017\n\007buyside\030# \001(\010\022\021\n"
+    "\ttimestamp\030( \001(\005\022\020\n\010txmetaid\030< \001(\014\022\014\n\004pr"
+    "ev\030F \001(\014\"m\n\017GlobalStateMeta\022,\n\013globalsta"
+    "te\030\n \001(\0132\027.fantasybit.GlobalState\022\020\n\010trm"
+    "etaid\030\024 \001(\014\022\014\n\004prev\030\036 \001(\014\022\014\n\004next\030( \001(\014\""
+    "\236\001\n\nPlayerMeta\022\020\n\010playerid\030\n \001(\t\022+\n\013play"
+    "er_base\030\024 \001(\0132\026.fantasybit.PlayerBase\022/\n"
+    "\rplayer_status\030\036 \001(\0132\030.fantasybit.Player"
+    "Status\022\022\n\ndatametaid\030( \001(\014\022\014\n\004prev\0302 \001(\014"
+    "\"B\n\010TeamMeta\022\016\n\006teamid\030\n \001(\t\022\030\n\020playerme"
+    "taidroot\030\024 \001(\014\022\014\n\004prev\030\036 \001(\014\"\335\001\n\007pbstate"
+    "\022\027\n\017schedulestateid\030\n \001(\014\022\032\n\022leaderboard"
+    "stateid\030\024 \001(\014\022\023\n\013projstateid\030\036 \001(\014\022\022\n\npo"
+    "sstateid\030# \001(\014\022\024\n\014orderstateid\030( \001(\014\022\025\n\r"
+    "marketstateid\0302 \001(\014\022\025\n\rglobalstateid\030< \001"
+    "(\014\022\024\n\014teamstatemid\030F \001(\014\022\032\n\022fantasynames"
+    "tateid\030P \001(\014\"*\n\nMerkleTree\022\014\n\004root\030\n \001(\014"
+    "\022\016\n\006leaves\030\024 \003(\014", 4136);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "StateData.proto", &protobuf_RegisterTypes);
   BlockMeta::default_instance_ = new BlockMeta();
@@ -10189,6 +10191,7 @@ void PnlMeta::Swap(PnlMeta* other) {
 const int PlayerMarketState::kLimitbookmetaidFieldNumber;
 const int PlayerMarketState::kPlayeridFieldNumber;
 const int PlayerMarketState::kMarketticmetaidFieldNumber;
+const int PlayerMarketState::kLockedFieldNumber;
 const int PlayerMarketState::kPrevFieldNumber;
 const int PlayerMarketState::kNextFieldNumber;
 #endif  // !_MSC_VER
@@ -10212,6 +10215,7 @@ void PlayerMarketState::SharedCtor() {
   limitbookmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   playerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   marketticmetaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  locked_ = false;
   prev_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   next_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -10279,6 +10283,7 @@ void PlayerMarketState::Clear() {
         marketticmetaid_->clear();
       }
     }
+    locked_ = false;
     if (has_prev()) {
       if (prev_ != &::google::protobuf::internal::kEmptyString) {
         prev_->clear();
@@ -10337,6 +10342,22 @@ bool PlayerMarketState::MergePartialFromCodedStream(
          parse_marketticmetaid:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_marketticmetaid()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(248)) goto parse_locked;
+        break;
+      }
+
+      // optional bool locked = 31;
+      case 31: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_locked:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &locked_)));
+          set_has_locked();
         } else {
           goto handle_uninterpreted;
         }
@@ -10411,6 +10432,11 @@ void PlayerMarketState::SerializeWithCachedSizes(
       30, this->marketticmetaid(), output);
   }
 
+  // optional bool locked = 31;
+  if (has_locked()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(31, this->locked(), output);
+  }
+
   // optional bytes prev = 40;
   if (has_prev()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
@@ -10453,6 +10479,11 @@ void PlayerMarketState::SerializeWithCachedSizes(
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         30, this->marketticmetaid(), target);
+  }
+
+  // optional bool locked = 31;
+  if (has_locked()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(31, this->locked(), target);
   }
 
   // optional bytes prev = 40;
@@ -10499,6 +10530,11 @@ int PlayerMarketState::ByteSize() const {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->marketticmetaid());
+    }
+
+    // optional bool locked = 31;
+    if (has_locked()) {
+      total_size += 2 + 1;
     }
 
     // optional bytes prev = 40;
@@ -10551,6 +10587,9 @@ void PlayerMarketState::MergeFrom(const PlayerMarketState& from) {
     if (from.has_marketticmetaid()) {
       set_marketticmetaid(from.marketticmetaid());
     }
+    if (from.has_locked()) {
+      set_locked(from.locked());
+    }
     if (from.has_prev()) {
       set_prev(from.prev());
     }
@@ -10583,6 +10622,7 @@ void PlayerMarketState::Swap(PlayerMarketState* other) {
     std::swap(limitbookmetaid_, other->limitbookmetaid_);
     std::swap(playerid_, other->playerid_);
     std::swap(marketticmetaid_, other->marketticmetaid_);
+    std::swap(locked_, other->locked_);
     std::swap(prev_, other->prev_);
     std::swap(next_, other->next_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);

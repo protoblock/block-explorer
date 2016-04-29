@@ -152,8 +152,8 @@ std::string FantasyNameStore::award(const AwardMeta &am, const string &trid) {
     fnbm->set_bits(am.award() + fnbm->bits());
     fnbm->set_stake(am.award() + fnbm->stake());
 
-    qDebug() << "adding award" << am.award() << " :: " << fnbm->name().data() <<
-             fnbm->public_key().data() << fnbm->bits();
+//    qDebug() << "adding award" << am.award() << " :: " << fnbm->name().data() <<
+//             fnbm->public_key().data() << fnbm->bits();
 
 
     return "";
@@ -190,6 +190,9 @@ std::string FantasyNameStore::pnl(const PnlMeta &am, const string &trid) {
 
     ammt->add_leaves(hashit(am));
     fnbm->set_stake(fnbm->stake() + am.pnl());
+
+    qDebug() << "adding pnl" << am.pnl() << " :: " << fnbm->name().data() <<
+             fnbm->public_key().data() << fnbm->bits();
 
     return "";
 }
@@ -349,8 +352,8 @@ void ProjStore::init() {
 
 std::string ProjStore::process(const std::string &txid, const ProjectionTrans &pj, const std::string &fname) {
     ProjMeta pm;
-//    if ( pj.playerid() == "1122" && fname == "The Savages")
-//        qDebug() << " 1122 " << pj.DebugString().data();
+    if ( pj.playerid() == "1088" && fname == "Show me More of your TDs")
+        qDebug() << " 1088 " << pj.DebugString().data();
     auto pf = makeid(pj.playerid(),fname);
     auto it = m_projid2metaid.find(pf);
     if ( it != m_projid2metaid.end()) {
@@ -374,8 +377,8 @@ std::string ProjStore::process(const std::string &txid, const ProjectionTrans &p
 
 std::string ProjStore::process(const std::string &txid, const PlayerPoints &pj, const std::string &fname) {
     ProjMeta pm;
-//    if ( pj.playerid() == "1122" && fname == "The Savages")
-//        qDebug() << " 1122 " << pj.DebugString().data();
+    if ( pj.playerid() == "1088" && fname == "Show me More of your TDs")
+        qDebug() << " 1088 " << pj.DebugString().data();
 
     auto pf = makeid(pj.playerid(),fname);
     auto it = m_projid2metaid.find(pf);

@@ -56,6 +56,7 @@ class GamePlayerProjMeta;
 class ProjMeta;
 class PosMeta;
 class PlayerResultMeta;
+class PlayerGameStats;
 class AwardMeta;
 class PnlMeta;
 class PlayerMarketState;
@@ -2689,17 +2690,17 @@ class PlayerResultMeta : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional string playerid = 20;
-  inline bool has_playerid() const;
-  inline void clear_playerid();
-  static const int kPlayeridFieldNumber = 20;
-  inline const ::std::string& playerid() const;
-  inline void set_playerid(const ::std::string& value);
-  inline void set_playerid(const char* value);
-  inline void set_playerid(const char* value, size_t size);
-  inline ::std::string* mutable_playerid();
-  inline ::std::string* release_playerid();
-  inline void set_allocated_playerid(::std::string* playerid);
+  // optional bytes playergamestatsid = 10;
+  inline bool has_playergamestatsid() const;
+  inline void clear_playergamestatsid();
+  static const int kPlayergamestatsidFieldNumber = 10;
+  inline const ::std::string& playergamestatsid() const;
+  inline void set_playergamestatsid(const ::std::string& value);
+  inline void set_playergamestatsid(const char* value);
+  inline void set_playergamestatsid(const void* value, size_t size);
+  inline ::std::string* mutable_playergamestatsid();
+  inline ::std::string* release_playergamestatsid();
+  inline void set_allocated_playergamestatsid(::std::string* playergamestatsid);
 
   // optional bytes gamestatusmetaid = 30;
   inline bool has_gamestatusmetaid() const;
@@ -2712,22 +2713,6 @@ class PlayerResultMeta : public ::google::protobuf::Message {
   inline ::std::string* mutable_gamestatusmetaid();
   inline ::std::string* release_gamestatusmetaid();
   inline void set_allocated_gamestatusmetaid(::std::string* gamestatusmetaid);
-
-  // optional float result = 40;
-  inline bool has_result() const;
-  inline void clear_result();
-  static const int kResultFieldNumber = 40;
-  inline float result() const;
-  inline void set_result(float value);
-
-  // optional .fantasybit.Stats stats = 50;
-  inline bool has_stats() const;
-  inline void clear_stats();
-  static const int kStatsFieldNumber = 50;
-  inline const ::fantasybit::Stats& stats() const;
-  inline ::fantasybit::Stats* mutable_stats();
-  inline ::fantasybit::Stats* release_stats();
-  inline void set_allocated_stats(::fantasybit::Stats* stats);
 
   // optional bytes awardmetaplayerroot = 60;
   inline bool has_awardmetaplayerroot() const;
@@ -2767,14 +2752,10 @@ class PlayerResultMeta : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:fantasybit.PlayerResultMeta)
  private:
-  inline void set_has_playerid();
-  inline void clear_has_playerid();
+  inline void set_has_playergamestatsid();
+  inline void clear_has_playergamestatsid();
   inline void set_has_gamestatusmetaid();
   inline void clear_has_gamestatusmetaid();
-  inline void set_has_result();
-  inline void clear_has_result();
-  inline void set_has_stats();
-  inline void clear_has_stats();
   inline void set_has_awardmetaplayerroot();
   inline void clear_has_awardmetaplayerroot();
   inline void set_has_pnlmetaplayerroot();
@@ -2784,16 +2765,14 @@ class PlayerResultMeta : public ::google::protobuf::Message {
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::std::string* playerid_;
+  ::std::string* playergamestatsid_;
   ::std::string* gamestatusmetaid_;
-  ::fantasybit::Stats* stats_;
   ::std::string* awardmetaplayerroot_;
   ::std::string* pnlmetaplayerroot_;
   ::std::string* resultdatametaid_;
-  float result_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
 
   friend void  protobuf_AddDesc_StateData_2eproto();
   friend void protobuf_AssignDesc_StateData_2eproto();
@@ -2801,6 +2780,130 @@ class PlayerResultMeta : public ::google::protobuf::Message {
 
   void InitAsDefaultInstance();
   static PlayerResultMeta* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class PlayerGameStats : public ::google::protobuf::Message {
+ public:
+  PlayerGameStats();
+  virtual ~PlayerGameStats();
+
+  PlayerGameStats(const PlayerGameStats& from);
+
+  inline PlayerGameStats& operator=(const PlayerGameStats& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PlayerGameStats& default_instance();
+
+  void Swap(PlayerGameStats* other);
+
+  // implements Message ----------------------------------------------
+
+  PlayerGameStats* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const PlayerGameStats& from);
+  void MergeFrom(const PlayerGameStats& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string playerid = 20;
+  inline bool has_playerid() const;
+  inline void clear_playerid();
+  static const int kPlayeridFieldNumber = 20;
+  inline const ::std::string& playerid() const;
+  inline void set_playerid(const ::std::string& value);
+  inline void set_playerid(const char* value);
+  inline void set_playerid(const char* value, size_t size);
+  inline ::std::string* mutable_playerid();
+  inline ::std::string* release_playerid();
+  inline void set_allocated_playerid(::std::string* playerid);
+
+  // optional float result = 40;
+  inline bool has_result() const;
+  inline void clear_result();
+  static const int kResultFieldNumber = 40;
+  inline float result() const;
+  inline void set_result(float value);
+
+  // optional .fantasybit.Stats stats = 50;
+  inline bool has_stats() const;
+  inline void clear_stats();
+  static const int kStatsFieldNumber = 50;
+  inline const ::fantasybit::Stats& stats() const;
+  inline ::fantasybit::Stats* mutable_stats();
+  inline ::fantasybit::Stats* release_stats();
+  inline void set_allocated_stats(::fantasybit::Stats* stats);
+
+  // optional string gameid = 60;
+  inline bool has_gameid() const;
+  inline void clear_gameid();
+  static const int kGameidFieldNumber = 60;
+  inline const ::std::string& gameid() const;
+  inline void set_gameid(const ::std::string& value);
+  inline void set_gameid(const char* value);
+  inline void set_gameid(const char* value, size_t size);
+  inline ::std::string* mutable_gameid();
+  inline ::std::string* release_gameid();
+  inline void set_allocated_gameid(::std::string* gameid);
+
+  // @@protoc_insertion_point(class_scope:fantasybit.PlayerGameStats)
+ private:
+  inline void set_has_playerid();
+  inline void clear_has_playerid();
+  inline void set_has_result();
+  inline void clear_has_result();
+  inline void set_has_stats();
+  inline void clear_has_stats();
+  inline void set_has_gameid();
+  inline void clear_has_gameid();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::std::string* playerid_;
+  ::fantasybit::Stats* stats_;
+  ::std::string* gameid_;
+  float result_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+
+  friend void  protobuf_AddDesc_StateData_2eproto();
+  friend void protobuf_AssignDesc_StateData_2eproto();
+  friend void protobuf_ShutdownFile_StateData_2eproto();
+
+  void InitAsDefaultInstance();
+  static PlayerGameStats* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -2896,17 +2999,17 @@ class AwardMeta : public ::google::protobuf::Message {
   inline ::std::string* release_projmetaid();
   inline void set_allocated_projmetaid(::std::string* projmetaid);
 
-  // optional bytes resultdatametaid = 50;
-  inline bool has_resultdatametaid() const;
-  inline void clear_resultdatametaid();
-  static const int kResultdatametaidFieldNumber = 50;
-  inline const ::std::string& resultdatametaid() const;
-  inline void set_resultdatametaid(const ::std::string& value);
-  inline void set_resultdatametaid(const char* value);
-  inline void set_resultdatametaid(const void* value, size_t size);
-  inline ::std::string* mutable_resultdatametaid();
-  inline ::std::string* release_resultdatametaid();
-  inline void set_allocated_resultdatametaid(::std::string* resultdatametaid);
+  // optional bytes playergamestatsid = 50;
+  inline bool has_playergamestatsid() const;
+  inline void clear_playergamestatsid();
+  static const int kPlayergamestatsidFieldNumber = 50;
+  inline const ::std::string& playergamestatsid() const;
+  inline void set_playergamestatsid(const ::std::string& value);
+  inline void set_playergamestatsid(const char* value);
+  inline void set_playergamestatsid(const void* value, size_t size);
+  inline ::std::string* mutable_playergamestatsid();
+  inline ::std::string* release_playergamestatsid();
+  inline void set_allocated_playergamestatsid(::std::string* playergamestatsid);
 
   // @@protoc_insertion_point(class_scope:fantasybit.AwardMeta)
  private:
@@ -2918,15 +3021,15 @@ class AwardMeta : public ::google::protobuf::Message {
   inline void clear_has_award();
   inline void set_has_projmetaid();
   inline void clear_has_projmetaid();
-  inline void set_has_resultdatametaid();
-  inline void clear_has_resultdatametaid();
+  inline void set_has_playergamestatsid();
+  inline void clear_has_playergamestatsid();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::std::string* name_;
   ::google::protobuf::uint64 award_;
   ::std::string* projmetaid_;
-  ::std::string* resultdatametaid_;
+  ::std::string* playergamestatsid_;
   ::google::protobuf::int32 proj_;
 
   mutable int _cached_size_;
@@ -3040,17 +3143,17 @@ class PnlMeta : public ::google::protobuf::Message {
   inline ::std::string* release_posmetaid();
   inline void set_allocated_posmetaid(::std::string* posmetaid);
 
-  // optional bytes resultdatametaid = 60;
-  inline bool has_resultdatametaid() const;
-  inline void clear_resultdatametaid();
-  static const int kResultdatametaidFieldNumber = 60;
-  inline const ::std::string& resultdatametaid() const;
-  inline void set_resultdatametaid(const ::std::string& value);
-  inline void set_resultdatametaid(const char* value);
-  inline void set_resultdatametaid(const void* value, size_t size);
-  inline ::std::string* mutable_resultdatametaid();
-  inline ::std::string* release_resultdatametaid();
-  inline void set_allocated_resultdatametaid(::std::string* resultdatametaid);
+  // optional bytes playergamestatsid = 60;
+  inline bool has_playergamestatsid() const;
+  inline void clear_playergamestatsid();
+  static const int kPlayergamestatsidFieldNumber = 60;
+  inline const ::std::string& playergamestatsid() const;
+  inline void set_playergamestatsid(const ::std::string& value);
+  inline void set_playergamestatsid(const char* value);
+  inline void set_playergamestatsid(const void* value, size_t size);
+  inline ::std::string* mutable_playergamestatsid();
+  inline ::std::string* release_playergamestatsid();
+  inline void set_allocated_playergamestatsid(::std::string* playergamestatsid);
 
   // @@protoc_insertion_point(class_scope:fantasybit.PnlMeta)
  private:
@@ -3064,8 +3167,8 @@ class PnlMeta : public ::google::protobuf::Message {
   inline void clear_has_pnl();
   inline void set_has_posmetaid();
   inline void clear_has_posmetaid();
-  inline void set_has_resultdatametaid();
-  inline void clear_has_resultdatametaid();
+  inline void set_has_playergamestatsid();
+  inline void clear_has_playergamestatsid();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -3074,7 +3177,7 @@ class PnlMeta : public ::google::protobuf::Message {
   ::google::protobuf::int32 price_;
   ::google::protobuf::int64 pnl_;
   ::std::string* posmetaid_;
-  ::std::string* resultdatametaid_;
+  ::std::string* playergamestatsid_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
@@ -3178,6 +3281,13 @@ class PlayerMarketState : public ::google::protobuf::Message {
   inline ::std::string* release_marketticmetaid();
   inline void set_allocated_marketticmetaid(::std::string* marketticmetaid);
 
+  // optional bool locked = 31;
+  inline bool has_locked() const;
+  inline void clear_locked();
+  static const int kLockedFieldNumber = 31;
+  inline bool locked() const;
+  inline void set_locked(bool value);
+
   // optional bytes prev = 40;
   inline bool has_prev() const;
   inline void clear_prev();
@@ -3210,6 +3320,8 @@ class PlayerMarketState : public ::google::protobuf::Message {
   inline void clear_has_playerid();
   inline void set_has_marketticmetaid();
   inline void clear_has_marketticmetaid();
+  inline void set_has_locked();
+  inline void clear_has_locked();
   inline void set_has_prev();
   inline void clear_has_prev();
   inline void set_has_next();
@@ -3222,9 +3334,10 @@ class PlayerMarketState : public ::google::protobuf::Message {
   ::std::string* marketticmetaid_;
   ::std::string* prev_;
   ::std::string* next_;
+  bool locked_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
 
   friend void  protobuf_AddDesc_StateData_2eproto();
   friend void protobuf_AssignDesc_StateData_2eproto();
@@ -10321,73 +10434,73 @@ inline void PosMeta::set_allocated_prev(::std::string* prev) {
 
 // PlayerResultMeta
 
-// optional string playerid = 20;
-inline bool PlayerResultMeta::has_playerid() const {
+// optional bytes playergamestatsid = 10;
+inline bool PlayerResultMeta::has_playergamestatsid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void PlayerResultMeta::set_has_playerid() {
+inline void PlayerResultMeta::set_has_playergamestatsid() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void PlayerResultMeta::clear_has_playerid() {
+inline void PlayerResultMeta::clear_has_playergamestatsid() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void PlayerResultMeta::clear_playerid() {
-  if (playerid_ != &::google::protobuf::internal::kEmptyString) {
-    playerid_->clear();
+inline void PlayerResultMeta::clear_playergamestatsid() {
+  if (playergamestatsid_ != &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_->clear();
   }
-  clear_has_playerid();
+  clear_has_playergamestatsid();
 }
-inline const ::std::string& PlayerResultMeta::playerid() const {
-  return *playerid_;
+inline const ::std::string& PlayerResultMeta::playergamestatsid() const {
+  return *playergamestatsid_;
 }
-inline void PlayerResultMeta::set_playerid(const ::std::string& value) {
-  set_has_playerid();
-  if (playerid_ == &::google::protobuf::internal::kEmptyString) {
-    playerid_ = new ::std::string;
+inline void PlayerResultMeta::set_playergamestatsid(const ::std::string& value) {
+  set_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_ = new ::std::string;
   }
-  playerid_->assign(value);
+  playergamestatsid_->assign(value);
 }
-inline void PlayerResultMeta::set_playerid(const char* value) {
-  set_has_playerid();
-  if (playerid_ == &::google::protobuf::internal::kEmptyString) {
-    playerid_ = new ::std::string;
+inline void PlayerResultMeta::set_playergamestatsid(const char* value) {
+  set_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_ = new ::std::string;
   }
-  playerid_->assign(value);
+  playergamestatsid_->assign(value);
 }
-inline void PlayerResultMeta::set_playerid(const char* value, size_t size) {
-  set_has_playerid();
-  if (playerid_ == &::google::protobuf::internal::kEmptyString) {
-    playerid_ = new ::std::string;
+inline void PlayerResultMeta::set_playergamestatsid(const void* value, size_t size) {
+  set_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_ = new ::std::string;
   }
-  playerid_->assign(reinterpret_cast<const char*>(value), size);
+  playergamestatsid_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* PlayerResultMeta::mutable_playerid() {
-  set_has_playerid();
-  if (playerid_ == &::google::protobuf::internal::kEmptyString) {
-    playerid_ = new ::std::string;
+inline ::std::string* PlayerResultMeta::mutable_playergamestatsid() {
+  set_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_ = new ::std::string;
   }
-  return playerid_;
+  return playergamestatsid_;
 }
-inline ::std::string* PlayerResultMeta::release_playerid() {
-  clear_has_playerid();
-  if (playerid_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* PlayerResultMeta::release_playergamestatsid() {
+  clear_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = playerid_;
-    playerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = playergamestatsid_;
+    playergamestatsid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
-inline void PlayerResultMeta::set_allocated_playerid(::std::string* playerid) {
-  if (playerid_ != &::google::protobuf::internal::kEmptyString) {
-    delete playerid_;
+inline void PlayerResultMeta::set_allocated_playergamestatsid(::std::string* playergamestatsid) {
+  if (playergamestatsid_ != &::google::protobuf::internal::kEmptyString) {
+    delete playergamestatsid_;
   }
-  if (playerid) {
-    set_has_playerid();
-    playerid_ = playerid;
+  if (playergamestatsid) {
+    set_has_playergamestatsid();
+    playergamestatsid_ = playergamestatsid;
   } else {
-    clear_has_playerid();
-    playerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    clear_has_playergamestatsid();
+    playergamestatsid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   }
 }
 
@@ -10461,75 +10574,15 @@ inline void PlayerResultMeta::set_allocated_gamestatusmetaid(::std::string* game
   }
 }
 
-// optional float result = 40;
-inline bool PlayerResultMeta::has_result() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PlayerResultMeta::set_has_result() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PlayerResultMeta::clear_has_result() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void PlayerResultMeta::clear_result() {
-  result_ = 0;
-  clear_has_result();
-}
-inline float PlayerResultMeta::result() const {
-  return result_;
-}
-inline void PlayerResultMeta::set_result(float value) {
-  set_has_result();
-  result_ = value;
-}
-
-// optional .fantasybit.Stats stats = 50;
-inline bool PlayerResultMeta::has_stats() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PlayerResultMeta::set_has_stats() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PlayerResultMeta::clear_has_stats() {
-  _has_bits_[0] &= ~0x00000008u;
-}
-inline void PlayerResultMeta::clear_stats() {
-  if (stats_ != NULL) stats_->::fantasybit::Stats::Clear();
-  clear_has_stats();
-}
-inline const ::fantasybit::Stats& PlayerResultMeta::stats() const {
-  return stats_ != NULL ? *stats_ : *default_instance_->stats_;
-}
-inline ::fantasybit::Stats* PlayerResultMeta::mutable_stats() {
-  set_has_stats();
-  if (stats_ == NULL) stats_ = new ::fantasybit::Stats;
-  return stats_;
-}
-inline ::fantasybit::Stats* PlayerResultMeta::release_stats() {
-  clear_has_stats();
-  ::fantasybit::Stats* temp = stats_;
-  stats_ = NULL;
-  return temp;
-}
-inline void PlayerResultMeta::set_allocated_stats(::fantasybit::Stats* stats) {
-  delete stats_;
-  stats_ = stats;
-  if (stats) {
-    set_has_stats();
-  } else {
-    clear_has_stats();
-  }
-}
-
 // optional bytes awardmetaplayerroot = 60;
 inline bool PlayerResultMeta::has_awardmetaplayerroot() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void PlayerResultMeta::set_has_awardmetaplayerroot() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000004u;
 }
 inline void PlayerResultMeta::clear_has_awardmetaplayerroot() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void PlayerResultMeta::clear_awardmetaplayerroot() {
   if (awardmetaplayerroot_ != &::google::protobuf::internal::kEmptyString) {
@@ -10593,13 +10646,13 @@ inline void PlayerResultMeta::set_allocated_awardmetaplayerroot(::std::string* a
 
 // optional bytes pnlmetaplayerroot = 70;
 inline bool PlayerResultMeta::has_pnlmetaplayerroot() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void PlayerResultMeta::set_has_pnlmetaplayerroot() {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000008u;
 }
 inline void PlayerResultMeta::clear_has_pnlmetaplayerroot() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void PlayerResultMeta::clear_pnlmetaplayerroot() {
   if (pnlmetaplayerroot_ != &::google::protobuf::internal::kEmptyString) {
@@ -10663,13 +10716,13 @@ inline void PlayerResultMeta::set_allocated_pnlmetaplayerroot(::std::string* pnl
 
 // optional bytes resultdatametaid = 80;
 inline bool PlayerResultMeta::has_resultdatametaid() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void PlayerResultMeta::set_has_resultdatametaid() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void PlayerResultMeta::clear_has_resultdatametaid() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void PlayerResultMeta::clear_resultdatametaid() {
   if (resultdatametaid_ != &::google::protobuf::internal::kEmptyString) {
@@ -10728,6 +10781,210 @@ inline void PlayerResultMeta::set_allocated_resultdatametaid(::std::string* resu
   } else {
     clear_has_resultdatametaid();
     resultdatametaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// -------------------------------------------------------------------
+
+// PlayerGameStats
+
+// optional string playerid = 20;
+inline bool PlayerGameStats::has_playerid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void PlayerGameStats::set_has_playerid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void PlayerGameStats::clear_has_playerid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void PlayerGameStats::clear_playerid() {
+  if (playerid_ != &::google::protobuf::internal::kEmptyString) {
+    playerid_->clear();
+  }
+  clear_has_playerid();
+}
+inline const ::std::string& PlayerGameStats::playerid() const {
+  return *playerid_;
+}
+inline void PlayerGameStats::set_playerid(const ::std::string& value) {
+  set_has_playerid();
+  if (playerid_ == &::google::protobuf::internal::kEmptyString) {
+    playerid_ = new ::std::string;
+  }
+  playerid_->assign(value);
+}
+inline void PlayerGameStats::set_playerid(const char* value) {
+  set_has_playerid();
+  if (playerid_ == &::google::protobuf::internal::kEmptyString) {
+    playerid_ = new ::std::string;
+  }
+  playerid_->assign(value);
+}
+inline void PlayerGameStats::set_playerid(const char* value, size_t size) {
+  set_has_playerid();
+  if (playerid_ == &::google::protobuf::internal::kEmptyString) {
+    playerid_ = new ::std::string;
+  }
+  playerid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PlayerGameStats::mutable_playerid() {
+  set_has_playerid();
+  if (playerid_ == &::google::protobuf::internal::kEmptyString) {
+    playerid_ = new ::std::string;
+  }
+  return playerid_;
+}
+inline ::std::string* PlayerGameStats::release_playerid() {
+  clear_has_playerid();
+  if (playerid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = playerid_;
+    playerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void PlayerGameStats::set_allocated_playerid(::std::string* playerid) {
+  if (playerid_ != &::google::protobuf::internal::kEmptyString) {
+    delete playerid_;
+  }
+  if (playerid) {
+    set_has_playerid();
+    playerid_ = playerid;
+  } else {
+    clear_has_playerid();
+    playerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional float result = 40;
+inline bool PlayerGameStats::has_result() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void PlayerGameStats::set_has_result() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void PlayerGameStats::clear_has_result() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void PlayerGameStats::clear_result() {
+  result_ = 0;
+  clear_has_result();
+}
+inline float PlayerGameStats::result() const {
+  return result_;
+}
+inline void PlayerGameStats::set_result(float value) {
+  set_has_result();
+  result_ = value;
+}
+
+// optional .fantasybit.Stats stats = 50;
+inline bool PlayerGameStats::has_stats() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void PlayerGameStats::set_has_stats() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void PlayerGameStats::clear_has_stats() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void PlayerGameStats::clear_stats() {
+  if (stats_ != NULL) stats_->::fantasybit::Stats::Clear();
+  clear_has_stats();
+}
+inline const ::fantasybit::Stats& PlayerGameStats::stats() const {
+  return stats_ != NULL ? *stats_ : *default_instance_->stats_;
+}
+inline ::fantasybit::Stats* PlayerGameStats::mutable_stats() {
+  set_has_stats();
+  if (stats_ == NULL) stats_ = new ::fantasybit::Stats;
+  return stats_;
+}
+inline ::fantasybit::Stats* PlayerGameStats::release_stats() {
+  clear_has_stats();
+  ::fantasybit::Stats* temp = stats_;
+  stats_ = NULL;
+  return temp;
+}
+inline void PlayerGameStats::set_allocated_stats(::fantasybit::Stats* stats) {
+  delete stats_;
+  stats_ = stats;
+  if (stats) {
+    set_has_stats();
+  } else {
+    clear_has_stats();
+  }
+}
+
+// optional string gameid = 60;
+inline bool PlayerGameStats::has_gameid() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void PlayerGameStats::set_has_gameid() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void PlayerGameStats::clear_has_gameid() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void PlayerGameStats::clear_gameid() {
+  if (gameid_ != &::google::protobuf::internal::kEmptyString) {
+    gameid_->clear();
+  }
+  clear_has_gameid();
+}
+inline const ::std::string& PlayerGameStats::gameid() const {
+  return *gameid_;
+}
+inline void PlayerGameStats::set_gameid(const ::std::string& value) {
+  set_has_gameid();
+  if (gameid_ == &::google::protobuf::internal::kEmptyString) {
+    gameid_ = new ::std::string;
+  }
+  gameid_->assign(value);
+}
+inline void PlayerGameStats::set_gameid(const char* value) {
+  set_has_gameid();
+  if (gameid_ == &::google::protobuf::internal::kEmptyString) {
+    gameid_ = new ::std::string;
+  }
+  gameid_->assign(value);
+}
+inline void PlayerGameStats::set_gameid(const char* value, size_t size) {
+  set_has_gameid();
+  if (gameid_ == &::google::protobuf::internal::kEmptyString) {
+    gameid_ = new ::std::string;
+  }
+  gameid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PlayerGameStats::mutable_gameid() {
+  set_has_gameid();
+  if (gameid_ == &::google::protobuf::internal::kEmptyString) {
+    gameid_ = new ::std::string;
+  }
+  return gameid_;
+}
+inline ::std::string* PlayerGameStats::release_gameid() {
+  clear_has_gameid();
+  if (gameid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = gameid_;
+    gameid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void PlayerGameStats::set_allocated_gameid(::std::string* gameid) {
+  if (gameid_ != &::google::protobuf::internal::kEmptyString) {
+    delete gameid_;
+  }
+  if (gameid) {
+    set_has_gameid();
+    gameid_ = gameid;
+  } else {
+    clear_has_gameid();
+    gameid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   }
 }
 
@@ -10919,73 +11176,73 @@ inline void AwardMeta::set_allocated_projmetaid(::std::string* projmetaid) {
   }
 }
 
-// optional bytes resultdatametaid = 50;
-inline bool AwardMeta::has_resultdatametaid() const {
+// optional bytes playergamestatsid = 50;
+inline bool AwardMeta::has_playergamestatsid() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
-inline void AwardMeta::set_has_resultdatametaid() {
+inline void AwardMeta::set_has_playergamestatsid() {
   _has_bits_[0] |= 0x00000010u;
 }
-inline void AwardMeta::clear_has_resultdatametaid() {
+inline void AwardMeta::clear_has_playergamestatsid() {
   _has_bits_[0] &= ~0x00000010u;
 }
-inline void AwardMeta::clear_resultdatametaid() {
-  if (resultdatametaid_ != &::google::protobuf::internal::kEmptyString) {
-    resultdatametaid_->clear();
+inline void AwardMeta::clear_playergamestatsid() {
+  if (playergamestatsid_ != &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_->clear();
   }
-  clear_has_resultdatametaid();
+  clear_has_playergamestatsid();
 }
-inline const ::std::string& AwardMeta::resultdatametaid() const {
-  return *resultdatametaid_;
+inline const ::std::string& AwardMeta::playergamestatsid() const {
+  return *playergamestatsid_;
 }
-inline void AwardMeta::set_resultdatametaid(const ::std::string& value) {
-  set_has_resultdatametaid();
-  if (resultdatametaid_ == &::google::protobuf::internal::kEmptyString) {
-    resultdatametaid_ = new ::std::string;
+inline void AwardMeta::set_playergamestatsid(const ::std::string& value) {
+  set_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_ = new ::std::string;
   }
-  resultdatametaid_->assign(value);
+  playergamestatsid_->assign(value);
 }
-inline void AwardMeta::set_resultdatametaid(const char* value) {
-  set_has_resultdatametaid();
-  if (resultdatametaid_ == &::google::protobuf::internal::kEmptyString) {
-    resultdatametaid_ = new ::std::string;
+inline void AwardMeta::set_playergamestatsid(const char* value) {
+  set_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_ = new ::std::string;
   }
-  resultdatametaid_->assign(value);
+  playergamestatsid_->assign(value);
 }
-inline void AwardMeta::set_resultdatametaid(const void* value, size_t size) {
-  set_has_resultdatametaid();
-  if (resultdatametaid_ == &::google::protobuf::internal::kEmptyString) {
-    resultdatametaid_ = new ::std::string;
+inline void AwardMeta::set_playergamestatsid(const void* value, size_t size) {
+  set_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_ = new ::std::string;
   }
-  resultdatametaid_->assign(reinterpret_cast<const char*>(value), size);
+  playergamestatsid_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* AwardMeta::mutable_resultdatametaid() {
-  set_has_resultdatametaid();
-  if (resultdatametaid_ == &::google::protobuf::internal::kEmptyString) {
-    resultdatametaid_ = new ::std::string;
+inline ::std::string* AwardMeta::mutable_playergamestatsid() {
+  set_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_ = new ::std::string;
   }
-  return resultdatametaid_;
+  return playergamestatsid_;
 }
-inline ::std::string* AwardMeta::release_resultdatametaid() {
-  clear_has_resultdatametaid();
-  if (resultdatametaid_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* AwardMeta::release_playergamestatsid() {
+  clear_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = resultdatametaid_;
-    resultdatametaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = playergamestatsid_;
+    playergamestatsid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
-inline void AwardMeta::set_allocated_resultdatametaid(::std::string* resultdatametaid) {
-  if (resultdatametaid_ != &::google::protobuf::internal::kEmptyString) {
-    delete resultdatametaid_;
+inline void AwardMeta::set_allocated_playergamestatsid(::std::string* playergamestatsid) {
+  if (playergamestatsid_ != &::google::protobuf::internal::kEmptyString) {
+    delete playergamestatsid_;
   }
-  if (resultdatametaid) {
-    set_has_resultdatametaid();
-    resultdatametaid_ = resultdatametaid;
+  if (playergamestatsid) {
+    set_has_playergamestatsid();
+    playergamestatsid_ = playergamestatsid;
   } else {
-    clear_has_resultdatametaid();
-    resultdatametaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    clear_has_playergamestatsid();
+    playergamestatsid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   }
 }
 
@@ -11199,73 +11456,73 @@ inline void PnlMeta::set_allocated_posmetaid(::std::string* posmetaid) {
   }
 }
 
-// optional bytes resultdatametaid = 60;
-inline bool PnlMeta::has_resultdatametaid() const {
+// optional bytes playergamestatsid = 60;
+inline bool PnlMeta::has_playergamestatsid() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
-inline void PnlMeta::set_has_resultdatametaid() {
+inline void PnlMeta::set_has_playergamestatsid() {
   _has_bits_[0] |= 0x00000020u;
 }
-inline void PnlMeta::clear_has_resultdatametaid() {
+inline void PnlMeta::clear_has_playergamestatsid() {
   _has_bits_[0] &= ~0x00000020u;
 }
-inline void PnlMeta::clear_resultdatametaid() {
-  if (resultdatametaid_ != &::google::protobuf::internal::kEmptyString) {
-    resultdatametaid_->clear();
+inline void PnlMeta::clear_playergamestatsid() {
+  if (playergamestatsid_ != &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_->clear();
   }
-  clear_has_resultdatametaid();
+  clear_has_playergamestatsid();
 }
-inline const ::std::string& PnlMeta::resultdatametaid() const {
-  return *resultdatametaid_;
+inline const ::std::string& PnlMeta::playergamestatsid() const {
+  return *playergamestatsid_;
 }
-inline void PnlMeta::set_resultdatametaid(const ::std::string& value) {
-  set_has_resultdatametaid();
-  if (resultdatametaid_ == &::google::protobuf::internal::kEmptyString) {
-    resultdatametaid_ = new ::std::string;
+inline void PnlMeta::set_playergamestatsid(const ::std::string& value) {
+  set_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_ = new ::std::string;
   }
-  resultdatametaid_->assign(value);
+  playergamestatsid_->assign(value);
 }
-inline void PnlMeta::set_resultdatametaid(const char* value) {
-  set_has_resultdatametaid();
-  if (resultdatametaid_ == &::google::protobuf::internal::kEmptyString) {
-    resultdatametaid_ = new ::std::string;
+inline void PnlMeta::set_playergamestatsid(const char* value) {
+  set_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_ = new ::std::string;
   }
-  resultdatametaid_->assign(value);
+  playergamestatsid_->assign(value);
 }
-inline void PnlMeta::set_resultdatametaid(const void* value, size_t size) {
-  set_has_resultdatametaid();
-  if (resultdatametaid_ == &::google::protobuf::internal::kEmptyString) {
-    resultdatametaid_ = new ::std::string;
+inline void PnlMeta::set_playergamestatsid(const void* value, size_t size) {
+  set_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_ = new ::std::string;
   }
-  resultdatametaid_->assign(reinterpret_cast<const char*>(value), size);
+  playergamestatsid_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* PnlMeta::mutable_resultdatametaid() {
-  set_has_resultdatametaid();
-  if (resultdatametaid_ == &::google::protobuf::internal::kEmptyString) {
-    resultdatametaid_ = new ::std::string;
+inline ::std::string* PnlMeta::mutable_playergamestatsid() {
+  set_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
+    playergamestatsid_ = new ::std::string;
   }
-  return resultdatametaid_;
+  return playergamestatsid_;
 }
-inline ::std::string* PnlMeta::release_resultdatametaid() {
-  clear_has_resultdatametaid();
-  if (resultdatametaid_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* PnlMeta::release_playergamestatsid() {
+  clear_has_playergamestatsid();
+  if (playergamestatsid_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = resultdatametaid_;
-    resultdatametaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = playergamestatsid_;
+    playergamestatsid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
-inline void PnlMeta::set_allocated_resultdatametaid(::std::string* resultdatametaid) {
-  if (resultdatametaid_ != &::google::protobuf::internal::kEmptyString) {
-    delete resultdatametaid_;
+inline void PnlMeta::set_allocated_playergamestatsid(::std::string* playergamestatsid) {
+  if (playergamestatsid_ != &::google::protobuf::internal::kEmptyString) {
+    delete playergamestatsid_;
   }
-  if (resultdatametaid) {
-    set_has_resultdatametaid();
-    resultdatametaid_ = resultdatametaid;
+  if (playergamestatsid) {
+    set_has_playergamestatsid();
+    playergamestatsid_ = playergamestatsid;
   } else {
-    clear_has_resultdatametaid();
-    resultdatametaid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    clear_has_playergamestatsid();
+    playergamestatsid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   }
 }
 
@@ -11483,15 +11740,37 @@ inline void PlayerMarketState::set_allocated_marketticmetaid(::std::string* mark
   }
 }
 
-// optional bytes prev = 40;
-inline bool PlayerMarketState::has_prev() const {
+// optional bool locked = 31;
+inline bool PlayerMarketState::has_locked() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void PlayerMarketState::set_has_prev() {
+inline void PlayerMarketState::set_has_locked() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void PlayerMarketState::clear_has_prev() {
+inline void PlayerMarketState::clear_has_locked() {
   _has_bits_[0] &= ~0x00000008u;
+}
+inline void PlayerMarketState::clear_locked() {
+  locked_ = false;
+  clear_has_locked();
+}
+inline bool PlayerMarketState::locked() const {
+  return locked_;
+}
+inline void PlayerMarketState::set_locked(bool value) {
+  set_has_locked();
+  locked_ = value;
+}
+
+// optional bytes prev = 40;
+inline bool PlayerMarketState::has_prev() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void PlayerMarketState::set_has_prev() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void PlayerMarketState::clear_has_prev() {
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void PlayerMarketState::clear_prev() {
   if (prev_ != &::google::protobuf::internal::kEmptyString) {
@@ -11555,13 +11834,13 @@ inline void PlayerMarketState::set_allocated_prev(::std::string* prev) {
 
 // optional bytes next = 50;
 inline bool PlayerMarketState::has_next() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void PlayerMarketState::set_has_next() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void PlayerMarketState::clear_has_next() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void PlayerMarketState::clear_next() {
   if (next_ != &::google::protobuf::internal::kEmptyString) {

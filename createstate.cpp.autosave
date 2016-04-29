@@ -313,8 +313,8 @@ void CreateState::processTrData(const std::string &datametaroot) {
             ResultData rd = datap.second.data().GetExtension(ResultData::result_data);
 //            m_gamestatustore.m_id2ingameprojmeta[rd.game_result().gameid()]
 
-            if ( rd.game_result().gameid() == "201501503" || rd.game_result().gameid() == "")
-                qDebug() << rd.game_result().DebugString().data();
+//            if ( rd.game_result().gameid() == "201501503" || rd.game_result().gameid() == "")
+//                qDebug() << rd.game_result().DebugString().data();
 
             InGameProjMeta igpm;
             ldb.read(m_gamestatustore.m_id2ingameprojmeta[rd.game_result().gameid()],igpm);
@@ -707,7 +707,7 @@ std::string CreateState::ProcessResults(
             DistribuePointsAvg dist(nameproj);
 //            if ( gppm.playerid() == "1122")
 //                qDebug() << "1122";
-            qDebug() << "***player result" << pgm.playerid().data() << pgm.result();
+//            qDebug() << "***player result" << pgm.playerid().data() << pgm.result();
             auto awards = dist.distribute(pgm.result(),"FantasyAgent");
 
             MerkleTree awardtree{};
@@ -739,19 +739,22 @@ std::string CreateState::ProcessResults(
                 pnlm[pm.name()] = pnl;
                 namepos[pm.name()] = {pnl.qty(),pnl.price()};
             }
-            SettlePositionsRawStake set(namepos);
-            auto pnls = set.settle(pgm.result(),"FantasyAgent");
-            MerkleTree pnltree{};
-            for ( auto &r : pnls ) {
-                PnlMeta &pnl = pnlm[r.first];
-                pnl.set_pnl(r.second);
-
-                pnltree.add_leaves(ldb.write(pnl));
-                m_fantasynamestore.pnl(pnl,trid);
+            if ( namepos.size() > 0 ) {
+                qDebug() << "***player result" << pgm.playerid().data() << pgm.result();
+                SettlePositionsRawStake set(namepos);
+                auto pnls = set.settle(pgm.result(),"FantasyAgent");
+                MerkleTree pnltree{};
+                for ( auto &r : pnls ) {
+                    PnlMeta &pnl = pnlm[r.first];
+                    pnl.set_pnl(r.second);
+    
+                    pnltree.add_leaves(ldb.write(pnl));
+                    m_fantasynamestore.pnl(pnl,trid);
+                }
+                pnltree.set_root(makeMerkleRoot(pnltree.leaves()));
+                ldb.write(pnltree);
+                prm.set_pnlmetaplayerroot(pnltree.root());
             }
-            pnltree.set_root(makeMerkleRoot(pnltree.leaves()));
-            ldb.write(pnltree);
-            prm.set_pnlmetaplayerroot(pnltree.root());
         }
         playerresulttree.add_leaves(ldb.write(prm));
 //        qDebug() << gppm.DebugString().data();
@@ -928,87 +931,6 @@ std::string CreateState::processNewOrder(
 
 
     return "";
-
-
-//    auto &tree = m_marketstore.m_pid2limitbookid[ometa.playerid()];
-//    int newaggsize = ometa.size();
-
-//    if ( tree.leaves_size() == 0) {
-//        processFirstOrder(ometa,ometaid);
-//        return "";
-//    }
-
-
-//    for ( auto l : tree.leaves() ) {
-//        LimitBookMeta & lbm = m_marketstore.m_limitbookidmap[l];
-//        auto &bapair = m_marketstore.m_limitid2insideidpair[l];
-
-//        auto price = ometa.buyside() ? lbm.ask() : lbm.bid();
-
-//        if ( ometa.buyside() && ometa.price() < lbm.ask() ||
-//             !ometa.buyside() && ometa.price() > lbm.bid()) {
-//            //dopassive
-
-//            //processPassiveOrder(ometa,ometaid);
-//            break;
-//        }
-
-//        else {
-//            //while(true) {
-//            auto ibmid = ometa.buyside() ? bapair.second : bapair.first;
-//            InsideBookMeta &ibm = m_insidemetamap[ibmid];
-//            int newtotal = ibm.totsize();
-//            std::list<std::string> &olist = m_inside2orderlist[ibm.orderidroot()];
-//            for (auto it = olist.begin(); it != olist.end();) {
-//                auto iordid = *it;
-//                OrderMeta &order = orderstore.m_ordermetamap[iordid];
-//                int newpasssize = order.size();
-//                int maxfills = std::min(newpasssize,newtotal);
-//                if (  maxfills >= newpasssize ) {
-//                    //DoFill(order,iordid,order.size());
-//                    newtotal -= newpasssize;
-//                    newaggsize -= newpasssize;
-//                    newpasssize = 0;
-//                }
-//                else {
-//                    newpasssize -= maxfills;
-//                    newtotal -= maxfills;
-//                    //DoFill(order,iordid,newsize);
-//                    newaggsize -= maxfills;
-//                }
-//                int numfills = (order.size() - newpasssize);
-
-
-//                if (numfills <= 0 ) {
-//                    //qDebug() << "unexpected numfilles = 0 ";
-//                    continue;
-//                }
-
-//                //DoFill  numfiils  order omet
-//                if ( newpasssize == 0 ) olist.erase(it);
-//                else it++;
-
-//                DoFill(orderstore,order,numfills,price,iordid);
-
-//                dirtyinsideid.push_back(ibmid);
-
-//                if ( newtotal == 0) break;
-//            }
-
-//            lbm.set_bidsize(newtotal);
-//            dirtypidlimitbook.push_back(pid);
-//            DoFill(orderstore,ometa,ometa.size() - newaggsize,price,ometaid);
-//        }
-//    }
-
-//    if ( newaggsize > 0 ) {
-//        ometa.set_size(newaggsize);
-//        insideordernew.push_back(ometaid);
-//    }
-
-//    ometa.set_prev(ometaid);
-
-//    return update();
 }
 
 std::string CreateState::processCancelOrder(

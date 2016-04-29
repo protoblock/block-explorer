@@ -250,6 +250,7 @@ message PlayerMarketState {
     optional bytes limitbookmetaid = 10;
     optional string playerid = 20;
     optional bytes marketticmetaid = 30;
+    optional bool  locked = 31;
     optional bytes prev = 40;
     optional bytes next = 50;
 }

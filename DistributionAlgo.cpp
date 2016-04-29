@@ -43,7 +43,7 @@ NameValuePairs<int>
         mean+=diff;
         diffs.emplace_back(diff);
 
-        qInfo() << pair.first.data() << " projection " << pair.second << " diff " << diff;
+//        qInfo() << pair.first.data() << " projection " << pair.second << " diff " << diff;
     }
   
     mean /= projections.size();
@@ -90,10 +90,10 @@ NameValuePairs<int>
 			double amount = (result - diff)*payout;
             award[pair.first] = amount * 100.0;
 			total += amount;
-            qDebug() << pair.first.data() << " projection " << pair.second << " award " << amount;
+//            qDebug() << pair.first.data() << " projection " << pair.second << " award " << amount;
 		}
-        else
-            qDebug() << pair.first.data() << " projection " << pair.second << "no award ";
+        else;
+//            qDebug() << pair.first.data() << " projection " << pair.second << "no award ";
     }
 
     if (result < total) {
@@ -130,6 +130,9 @@ PnlResults SettlePositionsRawStake::
     for(const auto& settlepos : positions) {
         int hispnl = (settlepos.second.first * intresult) + settlepos.second.second * 100;
         pnl[settlepos.first] = hispnl;
+        qDebug() << settlepos.first.data() <<
+                    " pnl " <<  hispnl << " result " << result <<
+                    " pos " << settlepos.second.first << " " << settlepos.second.second;
     }
 
     return pnl;

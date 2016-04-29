@@ -39,7 +39,7 @@ public:
     void SaveRemove(Order &o,int32_t fillqty);
     //void SaveNew(const OrderCore &oc);
     void SendFill(Order &o, int32_t q, int price, bool );
-
+    bool Locked = false;
 public:
     QQueue<fantasybit::OrderFillMeta> m_qFills{} ;
 
