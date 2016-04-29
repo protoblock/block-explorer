@@ -3,7 +3,7 @@
 #include "DistributionAlgo.h"
 
 using namespace std;
-namespace fantasybit {
+namespace fantasybit_bx {
 
 void CreateState::dump(const std::string &pbstateid) {
     //m_pbstateid = loadStateId(pbstateid);
@@ -39,7 +39,7 @@ std::string CreateState::createState(const BlockMeta &bm) {
     return pbstateid;
 }
 
-std::string fantasybit::CreateState::loadStateId(const std::string &pbstatemetaid) {
+std::string fantasybit_bx::CreateState::loadStateId(const std::string &pbstatemetaid) {
 
     auto pbstatemetastr = ldb.read(pbstatemetaid);
     if ( !m_pbstate.ParseFromString(pbstatemetastr) )
@@ -78,7 +78,7 @@ std::string fantasybit::CreateState::loadStateId(const std::string &pbstatemetai
     return hashit(pbstatemetastr);
 }
 
-std::string fantasybit::CreateState::loadDefaultStates() {
+std::string fantasybit_bx::CreateState::loadDefaultStates() {
 
     TeamMeta tm;
     for( auto d : CreateState::GENESIS_NFL_TEAMS) {
@@ -102,7 +102,7 @@ std::string fantasybit::CreateState::loadDefaultStates() {
 }
 
 
-std::string fantasybit::CreateState::getStateId(const std::string &blockmetaid) {
+std::string fantasybit_bx::CreateState::getStateId(const std::string &blockmetaid) {
     std::string ret = "";
 
     auto blockmetastr = ldb.read(blockmetaid);
@@ -649,7 +649,7 @@ void CreateState::fromProj2Results(const TeamProjMeta &teamproj,TeamResultMeta &
  * @return TeamResultMeta
  */
 std::string CreateState::ProcessResults(
-        const ::google::protobuf::RepeatedPtrField< ::fantasybit::PlayerResult >&ingr,
+        const ::google::protobuf::RepeatedPtrField< ::fantasybit_bx::PlayerResult >&ingr,
         const std::string &gameplayerprojmetaroot,
         const string &id,const string &trid,
         const string &gid) {

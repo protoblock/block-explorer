@@ -3,7 +3,9 @@
 #include <queue>
 
 using namespace std;
-namespace fantasybit {
+namespace fantasybit_bx {
+
+std::string StaticUtil::DATAPATH = "./block";
 
 std::string hashit(const std::string &in) {
     return fc::sha256::hash(in).str();
@@ -109,7 +111,7 @@ void displayBlock(leveldb::DB *db, int32_t blockNum) {
         cout << "block not found " << num << endl;
     }
 
-    fantasybit::Block block{};
+    fantasybit_bx::Block block{};
     block.ParseFromString(value);
 
     cout << "block: " << block.DebugString() << endl;
@@ -118,7 +120,7 @@ void displayBlock(leveldb::DB *db, int32_t blockNum) {
 void displayHeaders(leveldb::DB *db) {
     leveldb::Iterator* it = db->NewIterator(leveldb::ReadOptions());
     for (it->SeekToFirst(); it->Valid(); it->Next()) {
-        fantasybit::Block block{};
+        fantasybit_bx::Block block{};
         block.ParseFromString(it->value().ToString());
 
         cout << "block: " << block.signedhead().DebugString() << endl;
@@ -134,7 +136,7 @@ void displayHeaders(leveldb::DB *db) {
 void displayTimestamps(leveldb::DB *db) {
     leveldb::Iterator* it = db->NewIterator(leveldb::ReadOptions());
     for (it->SeekToFirst(); it->Valid(); it->Next()) {
-        fantasybit::Block block{};
+        fantasybit_bx::Block block{};
         block.ParseFromString(it->value().ToString());
 
         int32_t block_num = block.signedhead().head().num();
@@ -152,7 +154,7 @@ void displayTimestamps(leveldb::DB *db) {
 void displayDiagnostics(leveldb::DB *db) {
     leveldb::Iterator* it = db->NewIterator(leveldb::ReadOptions());
 
-    fantasybit::Block prevBlock{};
+    fantasybit_bx::Block prevBlock{};
 
     // Get Genesis Block
     it->SeekToFirst();
@@ -162,7 +164,7 @@ void displayDiagnostics(leveldb::DB *db) {
     // Loop through rest of blocks
     for (; it->Valid(); it->Next()) {
         bool displayBlock = false;
-        fantasybit::Block curBlock{};
+        fantasybit_bx::Block curBlock{};
         curBlock.ParseFromString(it->value().ToString());
 
         //cout << "prevBlockNum:" << prevBlock.signedhead().head().num() << endl;

@@ -3,7 +3,7 @@
 #include "createstate.h"
 using namespace std;
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
 string CreateMeta::DoMeta(const Block &b, const string &prev) {
     BlockMeta bm{};

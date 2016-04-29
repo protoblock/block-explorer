@@ -4,7 +4,7 @@
 
 using namespace std;
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
 Display::Display(QObject *parent) : QObject(parent)
 {

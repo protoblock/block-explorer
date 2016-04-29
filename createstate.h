@@ -8,7 +8,7 @@
 #include "unordered_map"
 #include "datastores.h"
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
 /**
  * @brief The CreateState class is used to create state during creation of BlockMeta,
@@ -141,7 +141,7 @@ public:
      * @param bm
      * @return
      */
-    std::string createState(const fantasybit::BlockMeta &bm );
+    std::string createState(const fantasybit_bx::BlockMeta &bm );
 
     /**
      * @brief loadStateId - load state into memory from blockmetaid
@@ -312,7 +312,7 @@ public:
     void createMarketOrderState();
     void createPosState();
     void fromProj2Results(const TeamProjMeta &teamproj, TeamResultMeta &teamresult, const std::string &statusid, const std::string &trid);
-    std::string ProcessResults(const ::google::protobuf::RepeatedPtrField< ::fantasybit::PlayerResult >&in,
+    std::string ProcessResults(const ::google::protobuf::RepeatedPtrField< ::fantasybit_bx::PlayerResult >&in,
                         const std::string &, const std::string &id,
                                const std::string &trid,const std::string &);
     void processGameResult(const GameResult &grslt, const InGameProjMeta &igmeta, const std::string &trid);

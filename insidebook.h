@@ -6,7 +6,7 @@
 #include "utils.h"
 #include <unordered_map>
 
-namespace fantasybit {
+namespace fantasybit_bx {
 /**
  * @brief The InsideBook struct represents a single price in a
  *      limitbook for a trading matching engine
@@ -22,6 +22,8 @@ namespace fantasybit {
  *          to high or to low for execution. Instead they sit in a
  *      "limit order book"  - see @LimitBook
  */
+
+using fantasybit::OrderMeta;
 class InsideBook : public QObject
 {
     Q_OBJECT

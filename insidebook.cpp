@@ -1,6 +1,6 @@
 #include "insidebook.h"
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
 InsideBook::InsideBook(QObject *parent)
     : QObject(parent), totSize(0) {}
@@ -19,7 +19,7 @@ void InsideBook::New(OrderMeta &order) {
     return;
 }
 
-void InsideBook::Cancel(fantasybit::OrderMeta &order) {
+void InsideBook::Cancel(fantasybit_bx::OrderMeta &order) {
     auto it = mOMap.find(order.refnum());
     if ( it == end(mOMap) )
         return;
@@ -77,7 +77,7 @@ bool InsideBook::Fill(int32_t qty, std::list<OrderMeta>::reverse_iterator &iter)
     return true;
 }
 
-void InsideBook::Remove(fantasybit::OrderMeta &order) {
+void InsideBook::Remove(fantasybit_bx::OrderMeta &order) {
     auto it = mOMap.find(order.refnum());
     if ( it == end(mOMap) )
         return;

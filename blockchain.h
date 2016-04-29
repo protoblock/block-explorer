@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
 class Blockchain
 {

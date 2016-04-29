@@ -5,7 +5,7 @@
 
 #include <blockchain.h>
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
 class Display : public QObject
 {

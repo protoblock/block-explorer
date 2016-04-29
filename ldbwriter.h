@@ -6,7 +6,7 @@
 #include "utils.h"
 #include <string>
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
 class LdbWriter {
     leveldb::DB *db;
@@ -32,7 +32,7 @@ public:
         return write(msg.SerializeAsString());
     }
 
-    std::string write(const MerkleTree &tree) {
+    std::string write(const fantasybit::MerkleTree &tree) {
         return write(tree.root(),tree.SerializeAsString());
     }
 

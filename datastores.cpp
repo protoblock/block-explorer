@@ -1,7 +1,7 @@
 #include "datastores.h"
 #include "createstate.h"
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
 using namespace std;
 

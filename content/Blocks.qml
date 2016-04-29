@@ -7,18 +7,12 @@ import QtQuick.Dialogs 1.2
 import "../content"
 
 Item {
-    property alias bh: tophead.text
+    //property alias bh: tophead.text
     property alias modelclass: list.model
     ColumnLayout {
         id: mainLayout
         anchors.fill: parent
         anchors.margins: margin
-
-        Text {
-            id: tophead
-            text: ""
-            //modelclass.blockheight
-        }
 
         ListView {
             id: list
@@ -107,7 +101,6 @@ Item {
                     PropertyChanges { target: txrow; opacity: 0 }
                     PropertyChanges { target: txdetail; opacity: 1 }
                     PropertyChanges { target: wrapper; height: list.height }
-                    PropertyChanges { target: tophead; text: "details for: " + blocknum }
                     PropertyChanges { target: list; contentY: wrapper.y; interactive: false }
 
                 }

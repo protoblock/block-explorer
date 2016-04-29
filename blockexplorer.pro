@@ -4,28 +4,31 @@
 QT += quick
 !no_desktop: QT += widgets
 
+QT -= gui
+
 #RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
 # Default rules for deployment.
-include(deployment.pri)
+#include(deployment.pri)
 
 TARGET = blockexplorer
 #CONFIG += console
 #CONFIG -= app_bundle
-CONFIG += c++11
--stdlib=libc++
+CONFIG += c++11 staticlib
+#-stdlib=libc++
 
-#TEMPLATE = app
+TEMPLATE = lib
 
-SOURCES += main.cpp \
+SOURCES += \
+    #main.cpp \
     utils.cpp \
     blockchain.cpp \
-    actions.cpp \
+    #actions.cpp \
     display.cpp \
-    modelclass.cpp \
+#    modelclass.cpp \
     createmeta.cpp \
     currentheaderblock.cpp \
     createstate.cpp \
@@ -65,7 +68,7 @@ unix:macx {
 }
 
 win32 {
-   LIBS+= -L"D:/libwin64"
+   LIBS+= -L"$$PWD/libwin64"
 
     CONFIG(debug, debug|release) {
        LIBS+= -llibprotobufd \
@@ -95,9 +98,9 @@ INCLUDEPATH += $$PWD/include
 HEADERS += \
     utils.h \
     blockchain.h \
-    actions.h \
+    #actions.h \
     display.h \
-    modelclass.h \
+    #modelclass.h \
     createmeta.h \
     currentheaderblock.h \
     createstate.h \
@@ -105,7 +108,8 @@ HEADERS += \
     datastores.h \
     DistributionAlgo.h \
     limitbook.h \
-    insidebook.h
+    insidebook.h \
+    blockexplorer.h
 
 
 DISTFILES += \
@@ -114,5 +118,10 @@ DISTFILES += \
     NodeHash.qml
 
 
-PROTOS = proto/*.proto
-include(Protobuf.pri)
+contains(DEFINES, CUTE_FANTASY) {
+}
+
+!contains(DEFINES, CUTE_FANTASY) {
+    PROTOS = proto/*.proto
+    include(Protobuf.pri)
+}

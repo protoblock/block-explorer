@@ -7,7 +7,7 @@
 #include <QQueue>
 
 
-namespace fantasybit {
+namespace fantasybit_bx {
 #define BOOK_SIZE 40
 
 class LimitBook : public QObject {

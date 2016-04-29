@@ -9,17 +9,34 @@
 #include <string>
 #include <createmeta.h>
 #include <ldbwriter.h>
-
-#include "currentheaderblock.h"
+#include "blockexplorer.h"
+//#include "currentheaderblock.h"
 
 using namespace std;
-using namespace fantasybit;
+using namespace fantasybit_bx;
 int main(int argc, char *argv[])
 {
 
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+
+    Blockchain bc{};
+    bc.init();
+
+    BlockExplorer bx{};
+
+    auto bh = bc.GetBlockHeight();
+    int start = bx.init("blocknum_2187");
+    for ( int i = start+1 ; i < bh; i++) {
+        Block b = bc.GetBlock(i);
+        bx.pblock(b);
+    }
+    bx.endit();
+
+    /*
+
 
     LdbWriter ldb;
     ldb.init();
@@ -45,6 +62,8 @@ int main(int argc, char *argv[])
 
     }
     ldb.write("blockhead",prev);
+
+    */
     return 0;
 
 /*
@@ -94,9 +113,9 @@ int main(int argc, char *argv[])
     } while ( blockmetaid != "");
 */
 
-    qmlRegisterUncreatableType<ModelClass>("satoshifantasy.com",1,1,"ModelClass","modelclass singleton");
+//    qmlRegisterUncreatableType<ModelClass>("satoshifantasy.com",1,1,"ModelClass","modelclass singleton");
 
-    qmlRegisterSingletonType<CurrentHeaderBlock>("BlockExplorer",1,0,"CurrentFocusedBlock", currentHeaderBlockSingle);
+    //qmlRegisterSingletonType<CurrentHeaderBlock>("BlockExplorer",1,0,"CurrentFocusedBlock", currentHeaderBlockSingle);
 
 
 

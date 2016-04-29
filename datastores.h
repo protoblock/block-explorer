@@ -12,9 +12,9 @@
 #include <QString>
 #include "limitbook.h"
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
-
+using namespace fantasybit;
 /**
  * @brief The PlayerStore class stores playermeta state data
  */

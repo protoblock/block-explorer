@@ -2,8 +2,9 @@
 #include <QDebug>
 using namespace std;
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
+using namespace fantasybit;
 LimitBook::LimitBook(const QString &playerid, QObject *parent)
     : QObject(parent), m_playerId(playerid) {
     m_bestBid = -1;

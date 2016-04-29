@@ -17,7 +17,7 @@
 //#include "core.h"
 #include <QDebug>
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
 using namespace std;
 

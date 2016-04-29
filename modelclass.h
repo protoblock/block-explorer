@@ -7,7 +7,7 @@
 
 #include <blockchain.h>
 
-namespace fantasybit {
+namespace fantasybit_bx {
 //class ModelClass : public QStringListModel
 class ModelClass : public QAbstractListModel
 {

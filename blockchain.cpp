@@ -1,21 +1,29 @@
 #include "blockchain.h"
 #include <QDebug>
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
 Blockchain::Blockchain() {}
 
 void Blockchain::init() {
     Int32Comparator *cmp = new Int32Comparator();
     leveldb::Options optionsInt;
-    optionsInt.create_if_missing = true;
+    optionsInt.create_if_missing = false;
     optionsInt.error_if_exists = false;
     optionsInt.comparator = cmp;
 
     leveldb::Status status;
 
     leveldb::DB *db;
+
+#ifdef JAYDESK
     status = leveldb::DB::Open(optionsInt, "D:/data/working-explorer/block/blockchain", &db);
+
+#else
+    status = leveldb::DB::Open(optionsInt, StaticUtil::DATAPATH+"/blockchain", &db);
+
+#endif
+
     if (!status.ok()) {
         cout << "!!! error opening db block/blockchain" << endl;
         cout << "!!! " << status.ToString() << endl;
@@ -24,7 +32,7 @@ void Blockchain::init() {
 
     /*
     int32_t num{3861};
-    fantasybit::Block b{};
+    fantasybit_bx::Block b{};
     leveldb::Slice s((char*)&num, sizeof(int32_t));
     std::string value;
     auto ret = (*db)->Get(leveldb::ReadOptions(),s,&value);

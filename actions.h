@@ -17,7 +17,7 @@ class Actions
 public:
     Actions();
 
-    static fantasybit::MerkleTree CreateMerkle(fantasybit::Block &block);
+    static fantasybit_bx::MerkleTree CreateMerkle(fantasybit_bx::Block &block);
 
     static void Test();
 };

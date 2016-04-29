@@ -10,7 +10,7 @@
 #include <string>
 
 //using namespace std;
-namespace fantasybit {
+namespace fantasybit_bx {
 
 class Int32Comparator : public leveldb::Comparator {
  public:
@@ -20,9 +20,12 @@ class Int32Comparator : public leveldb::Comparator {
   const char* Name() const;
   void FindShortestSeparator(std::string*, const leveldb::Slice&) const;
   void FindShortSuccessor(std::string*) const;
+
 };
 
-
+struct StaticUtil {
+    static std::string DATAPATH;
+};
 std::string makeMerkleRoot(decltype(fantasybit::MerkleTree::default_instance().leaves()) &in);
 std::string hashit(const std::string &in);
 std::string hashit(const google::protobuf::Message  &in);

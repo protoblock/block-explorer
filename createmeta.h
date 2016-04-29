@@ -11,7 +11,7 @@
 #include "createstate.h"
 #include <ldbwriter.h>
 
-namespace fantasybit {
+namespace fantasybit_bx {
 
 //using namespace std;
 
@@ -22,6 +22,7 @@ class CreateMeta
     CreateState bState;
 public:
     CreateMeta(LdbWriter &idb) : writer(idb), bState(idb) {
+        idb.init();
         bState.init();
     }
 

@@ -14,7 +14,7 @@
 #include <iostream>
 #include <unordered_map>
 
-namespace fantasybit
+namespace fantasybit_bx
 {
 
 template<class T>
