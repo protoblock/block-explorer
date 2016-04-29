@@ -874,13 +874,16 @@ std::string CreateState::processNewOrder(
                         const std::string &fname,
                         int32_t refnum) {
 
+    qDebug() << eo.playerid().data() <<":newOrder:" << refnum << " : " << fname.data();
     if ( m_marketstore.isLocked(eo.playerid())) {
-        qDebug() << " game locked" << eo.DebugString().data();
+        //qDebug() << " game locked" << eo.DebugString().data();
+        qWarning() << "invalid order, locked limitbook for" << eo.playerid().data();
         return "";
     }
 
-    if ( m_fantasynamestore.getStake(fname) < 0 ) {
-        qDebug() << fname.data() << " no balance to trade " <<  eo.DebugString().data();
+    if ( m_fantasynamestore.getStake(fname) <= 0 ) {
+        //qDebug() << fname.data() << " no balance to trade " <<  eo.DebugString().data();
+        qWarning() << "invalid order, exitonly for" << eo.playerid().data();
         return "";
     }
 
@@ -896,9 +899,6 @@ std::string CreateState::processNewOrder(
         m_marketstore.addLimitbook(pid);
         //lb = m_marketstore.m_pid2LimitBook[pid];
         it = m_marketstore.m_pid2LimitBook.find(pid);
-        if ( pid == "1619") {
-//            qDebug() << " pid";
-        }
     }
 
     auto lb = m_marketstore.m_pid2LimitBook[pid];
@@ -906,10 +906,8 @@ std::string CreateState::processNewOrder(
     m_orderstore.m_dirtypid.insert(pid.toStdString());
     if ( lb->NewOrder(ometa,pm) ) {
 
+        qDebug() << "level2 OnOrderNew haveinstapos";
         while( !lb->m_qFills.isEmpty() ) {
-            if ( pid == "1619") {
-//                qDebug() << " pid";
-            }
             OrderFillMeta ofm = lb->m_qFills.dequeue();
             if ( ofm.fname() == ometa.fname() && ofm.refnum() != ometa.refnum() ) {
                 qDebug() << " self trade\n" << ofm.DebugString().data() << ometa.DebugString().data();

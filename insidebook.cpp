@@ -58,7 +58,7 @@ bool InsideBook::Fill(int32_t qty, std::list<OrderMeta>::iterator &iter) {
 
 bool InsideBook::Fill(int32_t qty, std::list<OrderMeta>::reverse_iterator &iter) {
 #ifdef TRACE
-    qDebug() << "level2 qty " << qty << iter->core().size() << totSize;
+//    qDebug() << "level2 qty " << qty << iter->core().size() << totSize;
 #endif
     totSize -= qty;
     /*

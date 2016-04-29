@@ -186,7 +186,7 @@ qDebug() << "level2 New Bid " << order.price() << order.size();
         //{
          m_bids[myprice].New(order);
 #ifdef TRACE
-    qDebug() << "level2 NewBid 1 mBb" <<  mBb;
+    qDebug() << "level2 NewBid 1 mBb" <<  m_bestBid;
 #endif
 
          if (myprice >= m_bestBid) {
@@ -221,13 +221,13 @@ qDebug() << "level2 New Bid " << order.price() << order.size();
              //    Send(new BookFeedData(ExecType.Canceled, order));
              //else {
 #ifdef TRACE
-    qDebug() << "level2 NewBid 6 mBb" <<  mBb;
+    qDebug() << "level2 NewBid 6 m_bestBid" <<  m_bestBid;
 #endif
 
              m_bids[myprice].New(order);
              m_bestBid = myprice;
 #ifdef TRACE
-    qDebug() << "level2 NewBid 7 mBb" <<  mBb;
+    qDebug() << "level2 NewBid 7 m_bestBid" <<  m_bestBid;
 #endif
 
              NewTop(myprice+1, m_bids[myprice].totSize, true);
@@ -245,7 +245,7 @@ qDebug() << "level2 New Bid " << order.price() << order.size();
 
 bool LimitBook::NewAsk(Order &order, Position &deltapos) {
 #ifdef TRACE
-    qDebug() << "level2 New Ask " << order.price() << order.size();
+    qDebug() << order.refnum() << "level2 New Ask " << order.price() << order.size();
 #endif
 
     auto myprice = order.price()-1;
@@ -270,13 +270,13 @@ bool LimitBook::NewAsk(Order &order, Position &deltapos) {
     else {
 
 #ifdef TRACE
-        qDebug() << " order.size() " << order.size() << " before";
+        qDebug() << order.refnum() << " order.size() " << order.size() << " before";
 #endif
         int fillqty = order.size();
         int32_t pos =
                 SweepBids(order); //will modify size
 #ifdef TRACE
-        qDebug() << " order.size() " << order.size() << " after";
+        qDebug() << order.refnum() << " order.size() " << order.size() << " after";
 #endif
 
         GetTop(true);
@@ -312,20 +312,30 @@ int32_t LimitBook::SweepAsks( Order &order) {
     int32_t pos = 0;
     for (; m_bestAsk <= price; ++m_bestAsk) {
         InsideBook &curr = m_asks[m_bestAsk];
+#ifdef TRACE
+qDebug() << order.refnum() << "level2 SweepAsks  curr " << m_bestBid << curr.totSize << " ord core " << order.size();
+#endif
 
         int fillqty = min(curr.totSize, left);
         if (fillqty <= 0)
             continue;
+#ifdef TRACE
+qDebug() << order.refnum() << "level2 SweepAsks  fillqty continue " << fillqty;
+#endif
 
         pos += (m_bestAsk+1) * fillqty; //for instafill
 
         SendFill(order, fillqty, m_bestAsk, false);
         //left -= fillqty;
-        //NewTrade(mBa, fillqty, Side.BID);
+        //NewTrade(m_bestAsk, fillqty, Side.BID);
 
         for (auto iiter = curr.top();
              iiter != curr.bot() && left > 0;) {
             Order &ord = *iiter;
+#ifdef TRACE
+qDebug() << order.refnum() << "level2 SweepAsks  curr ord iityer" << m_bestBid << ord.DebugString().data() << " left " << left;
+#endif
+
             fillqty = min(ord.size(), left);
             if (fillqty <= 0)
                 continue;
@@ -339,6 +349,9 @@ int32_t LimitBook::SweepAsks( Order &order) {
                 ;//Send(new BookFeedData(ExecType.Done, ord));
         }
 
+#ifdef TRACE
+qDebug() << order.refnum() << "level2 SweepAsks  curr bottom" << m_bestBid << curr.totSize;
+#endif
         NewDepth(false, m_bestAsk);
 
         if (left <= 0)
@@ -351,13 +364,15 @@ int32_t LimitBook::SweepAsks( Order &order) {
 int32_t LimitBook::SweepBids( Order &order) {
     int price = order.price()-1;
     int left = order.size();
-//    qDebug() << "level2 sweepbids  top ord core" << order.size();
+#ifdef TRACE
+qDebug() << order.refnum() << "level2 sweepbids  top ord core" << order.size();
+#endif
     int32_t pos = 0;
     for (; m_bestBid >= price; --m_bestBid) {
         InsideBook &curr = m_bids[m_bestBid];
 
 #ifdef TRACE
-qDebug() << "level2 sweepbids  curr " << mBb << curr.totSize << " ord core " << order.size();
+qDebug() << order.refnum() << "level2 sweepbids  curr " << m_bestBid << curr.totSize << " ord core " << order.size();
 #endif
 
         int fillqty = min(curr.totSize, left);
@@ -365,19 +380,19 @@ qDebug() << "level2 sweepbids  curr " << mBb << curr.totSize << " ord core " << 
             continue;
 
 #ifdef TRACE
-qDebug() << "level2 sweepbids  fillqty continue " << fillqty;
+qDebug() << order.refnum() << "level2 sweepbids  fillqty continue " << fillqty;
 #endif
 
         pos += (m_bestBid+1) * fillqty; //for instafill
 
         SendFill(order, fillqty, m_bestBid, false);
-        //NewTrade(mBb, fillqty, Side.ASK);
+        //NewTrade(m_bestBid, fillqty, Side.ASK);
 
         for (auto iiter = curr.top();
              iiter != curr.bot() && left > 0;) {
             Order &ord = *iiter;
 #ifdef TRACE
-qDebug() << "level2 sweepbids  curr ord iityer" << mBb << ord.DebugString() << " left " << left;
+qDebug() << order.refnum() << "level2 sweepbids  curr ord iityer" << m_bestBid << ord.DebugString().data() << " left " << left;
 #endif
 
             fillqty = min(ord.size(), left);
@@ -394,7 +409,7 @@ qDebug() << "level2 sweepbids  curr ord iityer" << mBb << ord.DebugString() << "
         }
 
 #ifdef TRACE
-qDebug() << "level2 sweepbids  curr bottom" << mBb << curr.totSize;
+qDebug() << order.refnum() << "level2 sweepbids  curr bottom" << m_bestBid << curr.totSize;
 #endif
 
         NewDepth(true, m_bestBid);
@@ -410,7 +425,7 @@ qDebug() << "level2 sweepbids  curr bottom" << mBb << curr.totSize;
 void LimitBook::SendFill(Order &o, int32_t q, int price, bool ispassive ) {
 
 #ifdef TRACE
-        qDebug() << "level2 SendFill " << q << price << ispassive << o.DebugString();
+        qDebug() << o.refnum() << "level2 SendFill " << q << price << ispassive << o.DebugString().data();
 #endif
 
     price += 1;
@@ -501,7 +516,7 @@ void LimitBook::NewNew(Order &order) {
     NewDepth(order.buyside(), order.price()-1);
 
 #ifdef TRACE
-        qDebug() << "level2 NewNew " << order.DebugString();
+        qDebug() << order.refnum() << "level2 NewNew " << order.DebugString().data();
 #endif
 
 }
@@ -519,7 +534,7 @@ void LimitBook::NewTop(int price, int32_t qty, bool isbuy) {
 
 #ifdef TRACE
     string s = isbuy ? "Bid" : "Ask";
-    qDebug() << "level2 NewTop " <<  s << price << qty;
+    qDebug() << "level2 NewTop " <<  s.data() << price << qty;
 #endif
 
 }
