@@ -203,7 +203,7 @@ public:
 
     std::unordered_map<std::string, bool> dirtyplayerfname;
 
-    std::vector<std::string> newposmeta;
+    std::set<std::string> newposmeta;
 
     void init() {
         for ( auto pmp : m_posstatemap) {
@@ -231,20 +231,25 @@ public:
         auto pf = makeid(ofm.playerid(),ofm.fname());
         auto it = m_posid2metaid.find(pf);
         if ( it != m_posid2metaid.end()) {
-            pm.CopyFrom(m_posstatemap[it->second]);
             pm.set_prev(it->second);
+            pm.CopyFrom(m_posstatemap[it->second]);
             pm.set_qty(pm.qty() + fillqty);
             pm.set_price(pm.price() + fillpos);
-            dirtyplayerfname[pf] = true;
+            if ( newposmeta.find(pf) != newposmeta.end() )
+                m_posstatemap.erase(it->second);
+            else if ( dirtyplayerfname.find(pf) !=  dirtyplayerfname.end())
+                m_posstatemap.erase(it->second);
+            else
+                dirtyplayerfname[pf] = true;
         }
-        else  {
+        else {
+            newposmeta.insert(pf);
             pm.set_qty(fillqty);
             pm.set_price(fillpos);
-            newposmeta.push_back(pf);
+            pm.set_name(ofm.fname());
+            pm.set_playerid(ofm.playerid());
         }
 
-        pm.set_name(ofm.fname());
-        pm.set_playerid(ofm.playerid());
         pm.set_txmetaid(ofm.txmetaid());
 
         return update(pm,pf);

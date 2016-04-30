@@ -444,6 +444,9 @@ void CreateState::processGameStart(const string &gmid,const GameMeta &gmeta,cons
     igpm.set_gameid(gmeta.gamedata().gameid());
     igpm.set_gamestatusmetaid(id);
     igpm.set_gamedatametaid(gmid);
+#ifdef TRACE
+    qDebug() << "createstate GameStart " << gmeta.DebugString().data();
+#endif
     for ( auto ts : m_teamstatemap) {
         if ( ts.second.teamid() == gi.home() ) {
             home = true;
@@ -499,6 +502,10 @@ string CreateState::processTeamGameStart(
             it++;
             continue;
         }
+
+#ifdef TRACE
+    qDebug() << "level2 createstate OnGameStart settlepos " << it->second.DebugString().data();
+#endif
 
         projposplayermap[it->second.playerid()].second.add_leaves(it->first);
         it = m_posstore.m_posstatemap.erase(it);
@@ -874,6 +881,9 @@ std::string CreateState::processNewOrder(
                         const std::string &fname,
                         int32_t refnum) {
 
+    if ( fname == "jc" ) {
+        qDebug() << " jc";
+    }
     qDebug() << eo.playerid().data() <<":newOrder:" << refnum << " : " << fname.data();
     if ( m_marketstore.isLocked(eo.playerid())) {
         //qDebug() << " game locked" << eo.DebugString().data();
@@ -923,7 +933,6 @@ std::string CreateState::processNewOrder(
             auto id = m_posstore.process(ofm);
             if ( id != "")
                 ldb.write(id,m_posstore.m_posstatemap[id].SerializeAsString());
-
         }
     }
 
@@ -1105,6 +1114,7 @@ void CreateState::createTrLeaderboardState() {
 void CreateState::createTrState() {
     createTrGameDataState();
     createProjState();
+    createPosState();
     createTrLeaderboardState();
 }
 
@@ -1114,8 +1124,8 @@ void CreateState::createTrState() {
 void CreateState::createTxState() {
     createNameTxState();
     createProjState();
-    createMarketOrderState();
     createPosState();
+    createMarketOrderState();
 }
 
 void CreateState::createMarketOrderState() {
@@ -1226,35 +1236,6 @@ void CreateState::createMarketOrderState() {
     //    for (m_playermarketstatemap
         m_orderstore.m_dirtypid.clear();
     }
-
-//    if ( m_orderstore.m_dirtypid.size() > 0) {
-//        m_playermarketstatemap.clear();
-//        m_playermarketstatetree.clear_leaves();
-//        m_playermarketstatemap = m_marketstore.m_marketmetamap;
-//        //MerkleTree mtree;
-//        setNewMerkelTree(m_playermarketstatemap,m_playermarketstatetree);
-//        m_pbstate.set_marketstateid(mtree.root());
-
-//    //    if (m_orderstore.m_dirtypid.size() > 0)
-//    //    for (m_playermarketstatemap
-//        m_orderstore.m_dirtypid.clear();
-//    }
-
-/*
-    for ( auto oref : m_orderstore.m_neworders) {
-        OrderMeta &order = m_orderstore.m_ordermetamap[m_orderstore.m_refnum2orderid[oref]];
-
-        //m_marketstore.process(m_orderstore,oref);
-    }
-
-    for ( auto fl : m_orderstore.m_newfills) {
-        auto &filldata = m_orderstore.m_orderfillmetamap[fl];
-
-        auto id = m_posstore.process(filldata);
-        if ( id != "")
-            ldb.write(id,m_posstore.m_posstatemap[id].SerializeAsString());
-    }
-*/
 }
 
 /**

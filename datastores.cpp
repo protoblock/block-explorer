@@ -352,8 +352,6 @@ void ProjStore::init() {
 
 std::string ProjStore::process(const std::string &txid, const ProjectionTrans &pj, const std::string &fname) {
     ProjMeta pm;
-    if ( pj.playerid() == "1088" && fname == "Show me More of your TDs")
-        qDebug() << " 1088 " << pj.DebugString().data();
     auto pf = makeid(pj.playerid(),fname);
     auto it = m_projid2metaid.find(pf);
     if ( it != m_projid2metaid.end()) {
