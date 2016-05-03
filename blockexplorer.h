@@ -50,6 +50,10 @@ public:
         if ( prev != "")
             ldb.write("blockhead",prev);
     }
+
+    uint64_t SkillBalance(const std::string &fname) {
+        return cm.getSkillBalance(fname);
+    }
 };
 }
 #endif // BLOCKEXPLORER

@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "unordered_map"
 #include "datastores.h"
+#include "stdint.h"
 
 namespace fantasybit_bx {
 
@@ -321,6 +322,10 @@ public:
     void processFirstOrder(const OrderMeta &ordernew, const std::string &newoid);
     std::string processCancelOrder(const std::string &txid, const ExchangeOrder &eo, const std::string &fname, int32_t refnum);
     void createTrMarketState();
+
+    uint64_t getSkillBalance(const std::string &fname) {
+        return m_fantasynamestore.getStake(fname);
+    }
 };
 
 

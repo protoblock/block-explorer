@@ -78,7 +78,7 @@ public:
     std::string award(const AwardMeta &am, const std::string &trid);
     std::string pnl(const PnlMeta &am, const std::string &trid);
 
-    uint32_t getStake(const std::string &fname) {
+    uint64_t getStake(const std::string &fname) {
         auto it = m_name2metaid.find(fname);
         if ( it == end(m_name2metaid)) return 0;
 
@@ -479,10 +479,11 @@ public:
           m_marketmetamap[ret] = pms;
        }
        else {
-          PlayerMarketState &pms = m_marketmetamap[pid];
+          PlayerMarketState &pms = m_marketmetamap[it->second];
           pms.set_prev(it->second);
           pms.set_locked(true);
           ret = hashit(pms);
+          m_marketmetamap[ret] = pms;
           m_marketmetamap.erase(it->second);
        }
        m_pid2marketid[pid] = ret;

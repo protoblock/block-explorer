@@ -6,8 +6,8 @@ QT += quick
 
 QT -= gui
 
-DEFINES += TRACE
-
+#DEFINES += TRACE
+DEFINES += JAYDESK
 #RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -19,10 +19,8 @@ QML_IMPORT_PATH =
 TARGET = blockexplorer
 #CONFIG += console
 #CONFIG -= app_bundle
-CONFIG += c++11 staticlib
+CONFIG += c++11
 #-stdlib=libc++
-
-TEMPLATE = lib
 
 SOURCES += \
     #main.cpp \
@@ -121,9 +119,13 @@ DISTFILES += \
 
 
 contains(DEFINES, CUTE_FANTASY) {
+    CONFIG += staticlib
+    TEMPLATE = lib
 }
 
 !contains(DEFINES, CUTE_FANTASY) {
+    TEMPLATE = app
     PROTOS = proto/*.proto
     include(Protobuf.pri)
+    SOURCES += main.cpp
 }

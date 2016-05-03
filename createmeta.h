@@ -31,6 +31,9 @@ public:
     std::string DoMetaTr(int32_t bnum, const SignedTransaction &st);
     std::string DoMetaTx(int32_t bnum, const Block &b);
 
+    uint64_t getSkillBalance(const std::string &fname) {
+        return bState.getSkillBalance(fname);
+    }
 
 };
 

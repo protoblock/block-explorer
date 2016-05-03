@@ -3,13 +3,12 @@
 
 #include <QtQml>
 
-#include <display.h>
-#include <modelclass.h>
-#include <actions.h>
 #include <string>
 #include <createmeta.h>
 #include <ldbwriter.h>
 #include "blockexplorer.h"
+#include "blockchain.h"
+
 //#include "currentheaderblock.h"
 
 using namespace std;
@@ -28,7 +27,7 @@ int main(int argc, char *argv[])
     BlockExplorer bx{};
 
     auto bh = bc.GetBlockHeight();
-    int start = bx.init("blocknum_2187");
+    int start = bx.init("blockhead");
     for ( int i = start+1 ; i < bh; i++) {
         Block b = bc.GetBlock(i);
         bx.pblock(b);

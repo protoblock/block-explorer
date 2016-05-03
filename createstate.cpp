@@ -57,6 +57,13 @@ std::string fantasybit_bx::CreateState::loadStateId(const std::string &pbstateme
                   m_projmetatree,
                   m_projmetamap);
 
+    m_posmetatree.Clear();
+    m_posmetamap.clear();
+    this->loadMerkleMap(m_pbstate.posstateid(),
+                  m_posmetatree,
+                  m_posmetamap);
+
+
     this->loadMerkleMap(m_pbstate.orderstateid(),
                   m_ordermetatree,
                   m_ordermetamap);
@@ -260,6 +267,9 @@ void CreateState::loadProjState() {
     m_projstore.m_projstatemap.insert(m_projmetamap.begin(),m_projmetamap.end());
 
     m_projstore.init();
+
+    m_posstore.m_posstatemap.insert(m_posmetamap.begin(),m_posmetamap.end());
+    m_posstore.init();
 }
 
 void CreateState::process(const BlockMeta &bm) {
@@ -371,8 +381,6 @@ void CreateState::processTr(const TrMeta &trmeta, const std::string &trid) {
         std::unordered_map<std::string, GameMeta> gamemetamap;
         loadMerkleMap(trmeta.gamemetaroot(),gamemetatree,gamemetamap);
         for (auto gmid : gamemetatree.leaves() ) {
-            if ( gmid == "201501503")
-                qDebug() << "";
             processGameStart(gmid,gamemetamap[gmid],trid);
         }
         break;
@@ -429,7 +437,7 @@ void CreateState::processGameStart(const string &gmid,const GameMeta &gmeta,cons
     if ( id != "")
         ldb.write(id,m_gamestatustore.m_gamestatsstatemap[id].SerializeAsString());
 
-    if ( gmeta.gamedata().gameid() == "201501503")
+    if ( gmeta.gamedata().gameid() == "201500305")
         qDebug() << "";
 
     GameStatusMeta gsm = m_gamestatustore.getGameStatusMeta(gmeta.gamedata().gameid());
@@ -527,9 +535,13 @@ string CreateState::processTeamGameStart(
     m_posstore.dirty = true;
 
     for ( auto &p : pids) {
+        if ( p == "1700")
+            qDebug() << p.data();
         auto id = m_marketstore.lock(p);
         auto pms = m_marketstore.m_marketmetamap[id];
         ldb.write(pms);
+        if ( p == "1700")
+            qDebug() << pms.DebugString().data();
     }
     m_marketstore.dirty = true;
 
@@ -689,7 +701,7 @@ std::string CreateState::ProcessResults(
         if ( it == pid2res.end())
             continue;
 
-        PlayerResultMeta &prm = it->second;//pid2res[gppm.playerid()];
+        PlayerResultMeta prm = it->second;//pid2res[gppm.playerid()];
         PlayerGameStats pgm;
         ldb.read(prm.playergamestatsid(),pgm);
         //prm.set_playerid(gppm.playerid());
@@ -700,6 +712,7 @@ std::string CreateState::ProcessResults(
             ldb.read(gppm.projmetaplayerroot(),mtree2);
             std::unordered_map<std::string,int> nameproj;
             std::unordered_map<std::string, AwardMeta> awm{};
+            AwardMeta awardmetabase;
             for ( auto &projmid : mtree2.leaves() ) {
                 ProjMeta pm{};
                 ldb.read(projmid,pm);
@@ -714,12 +727,21 @@ std::string CreateState::ProcessResults(
             DistribuePointsAvg dist(nameproj);
 //            if ( gppm.playerid() == "1122")
 //                qDebug() << "1122";
-//            qDebug() << "***player result" << pgm.playerid().data() << pgm.result();
+            qDebug() << "***player result" << pgm.playerid().data() << pgm.result();
             auto awards = dist.distribute(pgm.result(),"FantasyAgent");
 
             MerkleTree awardtree{};
+            AwardMeta am;
             for ( auto &r : awards ) {
-                AwardMeta &am = awm[r.first];
+                am.Clear();
+                auto it = awm.find(r.first);
+                if ( it == awm.end() && r.first == "FantasyAgent") {
+                   am.set_name("FantasyAgent");
+                   am.set_playergamestatsid(prm.playergamestatsid());
+                }
+                else
+                    am = it->second;
+
                 am.set_award(r.second);
                 awardtree.add_leaves(ldb.write(am));
                 m_fantasynamestore.award(am,trid);
@@ -764,7 +786,22 @@ std::string CreateState::ProcessResults(
             }
         }
         playerresulttree.add_leaves(ldb.write(prm));
+        it = pid2res.erase(it);
 //        qDebug() << gppm.DebugString().data();
+    }
+
+    for ( auto it : pid2res ) {
+        MerkleTree awardtree{};
+        PlayerGameStats pgm;
+        ldb.read(it.second.playergamestatsid(),pgm);
+        PlayerResultMeta &prm = it.second;
+        AwardMeta am;
+        am.set_name("FantasyAgent");
+        am.set_playergamestatsid(prm.playergamestatsid());
+        am.set_award(pgm.result() * 100.0);
+        awardtree.add_leaves(ldb.write(am));
+        m_fantasynamestore.award(am,trid);
+        playerresulttree.add_leaves(ldb.write(prm));
     }
 
     playerresulttree.set_root(makeMerkleRoot(playerresulttree.leaves()));
@@ -813,8 +850,8 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap,Mer
         auto nt = *tmap.find(lt);
         switch ( nt.second.txtype()) {
         case TransType::PROJECTION:
-            if ( nt.second.fantasy_name() == "Show me More of your TDs")
-                qDebug() << nt.second.DebugString().data();
+//            if ( nt.second.fantasy_name() == "Show me More of your TDs")
+//                qDebug() << nt.second.DebugString().data();
 
             id = m_projstore.process(nt.first,
                                      nt.second.tx().GetExtension(ProjectionTrans::proj_trans),
@@ -825,8 +862,8 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap,Mer
 
             break;
         case TransType::PROJECTION_BLOCK: {
-            if ( nt.second.fantasy_name() == "Show me More of your TDs")
-                qDebug() << nt.second.DebugString().data();
+/*            if ( nt.second.fantasy_name() == "Show me More of your TDs")
+                qDebug() << nt.second.DebugString().data()*/;
 
             const ProjectionTransBlock & ptb = nt.second.tx().GetExtension(ProjectionTransBlock::proj_trans_block);
             for (const PlayerPoints & pt : ptb.player_points() ) {
@@ -881,19 +918,23 @@ std::string CreateState::processNewOrder(
                         const std::string &fname,
                         int32_t refnum) {
 
-    if ( fname == "jc" ) {
-        qDebug() << " jc";
-    }
+//    if ( fname == "jc" ) {
+//        qDebug() << " jc";
+//    }
+
+    if ( refnum == 5609)
+        qDebug() << "5609";
+
     qDebug() << eo.playerid().data() <<":newOrder:" << refnum << " : " << fname.data();
     if ( m_marketstore.isLocked(eo.playerid())) {
         //qDebug() << " game locked" << eo.DebugString().data();
-        qWarning() << "invalid order, locked limitbook for" << eo.playerid().data();
+        qDebug() << "invalid order, locked limitbook for" << eo.playerid().data();
         return "";
     }
 
     if ( m_fantasynamestore.getStake(fname) <= 0 ) {
         //qDebug() << fname.data() << " no balance to trade " <<  eo.DebugString().data();
-        qWarning() << "invalid order, exitonly for" << eo.playerid().data();
+        qDebug() << "invalid order, exitonly for" << eo.playerid().data();
         return "";
     }
 
@@ -981,6 +1022,10 @@ void CreateState::createTrMarketState() {
     m_playermarketstatetree.Clear();
     setNewMerkelTree(m_marketstore.m_marketmetamap,m_playermarketstatetree );
     m_pbstate.set_marketstateid(m_playermarketstatetree.root());
+    m_playermarketstatemap.clear();
+    m_playermarketstatemap.insert(m_marketstore.m_marketmetamap.begin(),
+                                  m_marketstore.m_marketmetamap.end());
+    m_marketstore.dirty = false;
 }
 
 void CreateState::createTrPlayerDataState() {
@@ -1116,6 +1161,7 @@ void CreateState::createTrState() {
     createProjState();
     createPosState();
     createTrLeaderboardState();
+    createTrMarketState();
 }
 
 /**
