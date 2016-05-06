@@ -296,7 +296,7 @@ message OrderFillMeta {
     optional int32 fillprice = 20;
     optional int32 fillsize = 30;
     optional bool buyside = 35;
-    optional int32 timestamp = 40;
+    optional uint64 timestamp = 40;
     optional bytes txmetaid = 60;
     optional bytes prev = 70;
 }
