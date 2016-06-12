@@ -1,7 +1,9 @@
 #include "createstate.h"
 #include "datastores.h"
 #include "DistributionAlgo.h"
-
+#ifdef WRITE_FILLS
+#include "proto/ApiData.pb.h"
+#endif
 using namespace std;
 namespace fantasybit_bx {
 
@@ -887,7 +889,7 @@ void CreateState::processRegTx(std::unordered_map<std::string, TxMeta> &tmap,Mer
             if ( emdg.type() == ExchangeOrder::NEW) {
                 processNewOrder(nt.first,emdg,
                                  stamped.signed_orig().fantasy_name(),
-                                 stamped.seqnum());
+                                 stamped.seqnum(), stamped.timestamp());
 
             }
             else if (emdg.type() == ExchangeOrder::CANCEL) {
@@ -916,14 +918,7 @@ std::string CreateState::processNewOrder(
                         const std::string &txid,
                         const ExchangeOrder &eo,
                         const std::string &fname,
-                        int32_t refnum) {
-
-//    if ( fname == "jc" ) {
-//        qDebug() << " jc";
-//    }
-
-    if ( refnum == 5609)
-        qDebug() << "5609";
+                        int32_t refnum, uint64_t timestamp) {
 
     qDebug() << eo.playerid().data() <<":newOrder:" << refnum << " : " << fname.data();
     if ( m_marketstore.isLocked(eo.playerid())) {
@@ -960,8 +955,33 @@ std::string CreateState::processNewOrder(
         qDebug() << "level2 OnOrderNew haveinstapos";
         while( !lb->m_qFills.isEmpty() ) {
             OrderFillMeta ofm = lb->m_qFills.dequeue();
+            ofm.set_timestamp(timestamp);
             if ( ofm.fname() == ometa.fname() && ofm.refnum() != ometa.refnum() ) {
                 qDebug() << " self trade\n" << ofm.DebugString().data() << ometa.DebugString().data();
+            }
+            else {
+#ifdef BLOCK_EXPLORER_WRITE_FILLS
+                if ( ofm.refnum() != refnum) {
+                    Fills fill;
+                    fill.set_passivebuy(!ometa.buyside());
+                    if ( fill.passivebuy() ) {
+                        fill.set_buyer(ofm.fname());
+                        fill.set_seller(ometa.fname());
+                    }
+                    else {
+                        fill.set_seller(ofm.fname());
+                        fill.set_buyer(ometa.fname());
+                    }
+
+                    fill.set_playerid(pid.toStdString());
+                    fill.set_season(m_globalstatemeta.globalstate().season());
+                    fill.set_week(m_globalstatemeta.globalstate().week());
+                    fill.set_qty(abs(ofm.fillsize()));
+                    fill.set_price(abs(ofm.fillprice()));
+
+                    staticglobal::FILL_QUEUE.enqueue(fill);
+                }
+#endif
             }
             ofm.set_txmetaid(txid);
             auto mid = m_marketstore.newFill(ofm);

@@ -6,8 +6,10 @@ QT += quick
 
 QT -= gui
 
+DEFINES += BLOCK_EXPLORER_WRITE_FILLS
 #DEFINES += TRACE
-DEFINES += JAYDESK
+#DEFINES += JAYDESK
+DEFINES += CUTE_FANTASY
 #RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

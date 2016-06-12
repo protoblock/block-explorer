@@ -18,6 +18,8 @@ void PlayerStore::init() {
 }
 
 std::string PlayerStore::process(const std::string &dataid, const PlayerData &pd) {
+    if ( pd.playerid() == "1103" )
+        qDebug() << pd.DebugString().data();
     std::string prevteam = "";
     PlayerMeta pm;
     auto it = m_playerid2metaid.find(pd.playerid());
@@ -116,8 +118,8 @@ std::string FantasyNameStore::update(const FantasyNameBalMeta &gm) {
 }
 
 std::string FantasyNameStore::award(const AwardMeta &am, const string &trid) {
-    if ( am.name() == "fantasy trader")
-        qDebug() << "";
+//    if ( am.name() == "fantasy trader")
+//        qDebug() << "";
 
     FantasyNameBalMeta *fnbm;
     MerkleTree *ammt;

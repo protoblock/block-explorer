@@ -5,6 +5,10 @@
 using namespace std;
 namespace fantasybit_bx {
 
+#ifdef BLOCK_EXPLORER_WRITE_FILLS
+QQueue<fantasybit::Fills> staticglobal::FILL_QUEUE{};
+#endif
+
 std::string StaticUtil::DATAPATH = "./block";
 
 std::string hashit(const std::string &in) {

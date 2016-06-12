@@ -318,7 +318,6 @@ public:
                                const std::string &trid,const std::string &);
     void processGameResult(const GameResult &grslt, const InGameProjMeta &igmeta, const std::string &trid);
     void createTrLeaderboardState();
-    std::string processNewOrder(const std::string &txid, const ExchangeOrder &eo, const std::string &fname, int32_t refnum);
     void processFirstOrder(const OrderMeta &ordernew, const std::string &newoid);
     std::string processCancelOrder(const std::string &txid, const ExchangeOrder &eo, const std::string &fname, int32_t refnum);
     void createTrMarketState();
@@ -326,6 +325,7 @@ public:
     uint64_t getSkillBalance(const std::string &fname) {
         return m_fantasynamestore.getStake(fname);
     }
+    std::string processNewOrder(const std::string &txid, const ExchangeOrder &eo, const std::string &fname, int32_t refnum, uint64_t timestamp);
 };
 
 

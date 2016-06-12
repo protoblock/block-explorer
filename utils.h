@@ -6,8 +6,10 @@
 #include <leveldb/comparator.h>
 #include <proto/ProtoData.pb.h>
 #include <proto/StateData.pb.h>
+#include <proto/ApiData.pb.h>
 #include <fc/crypto/sha256.hpp>
 #include <string>
+#include <QQueue>
 
 //using namespace std;
 namespace fantasybit_bx {
@@ -30,7 +32,11 @@ std::string makeMerkleRoot(decltype(fantasybit::MerkleTree::default_instance().l
 std::string hashit(const std::string &in);
 std::string hashit(const google::protobuf::Message  &in);
 
-
+#ifdef BLOCK_EXPLORER_WRITE_FILLS
+struct staticglobal {
+    static QQueue<fantasybit::Fills> FILL_QUEUE;
+};
+#endif
 }
 
 //decltype(MerkleTree:: ::default_instance().data()) in,
